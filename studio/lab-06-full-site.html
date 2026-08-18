@@ -1,0 +1,944 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>LAB 06 · ประกอบเว็บทั้งเว็บ — Studio</title>
+<link rel="stylesheet" href="studio.css">
+</head>
+<body>
+
+<div class="bar"><div class="bar-in">
+  <div class="mark">WEB <b>STUDIO</b></div>
+  <nav>
+    <a href="index.html">ห้องปฏิบัติการ</a>
+    <a href="lab-00-first-page.html">LAB 00</a>
+    <a href="design-eye.html">ฝึกตาออกแบบ</a>
+    <a href="../index.html">คลังความรู้</a>
+  </nav>
+</div></div>
+
+<div class="bench">
+  <div class="sheet"><div id="labHead"></div><div id="steps"></div></div>
+  <div class="board">
+    <div class="board-head">
+      <div class="seg">
+        <button data-mode="build" class="on">ที่กำลังทำ</button>
+        <button data-mode="target">เป้าหมาย</button>
+      </div>
+      <button class="tool" id="noteBtn">เส้นบอกระยะ</button>
+      <div class="spacer"></div>
+      <div class="sizebtns">
+        <button class="tool on" data-w="100%">จอใหญ่</button>
+        <button class="tool" data-w="390px">มือถือ</button>
+      </div>
+    </div>
+    <div class="stage"><iframe id="frame" title="ตัวอย่างงาน"></iframe></div>
+    <div class="board-foot">
+      <span id="stepNow"></span>
+      <div class="pbar"><i id="pbar"></i></div>
+      <div class="navbtns">
+        <button class="ghost" id="prev">ย้อน</button>
+        <button id="next">ขั้นต่อไป</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const LAB = {
+no: 6,
+title: 'ประกอบเว็บทั้งเว็บ — จากไฟล์เปล่าถึงงานที่ส่งแข่งได้',
+lede: 'ห้องก่อนหน้าสอนทีละชิ้นส่วน. ห้องนี้เอาทุกชิ้นมาประกอบเป็นเว็บจริงหนึ่งเว็บที่สมบูรณ์ — มีเมนู หัวเว็บ รายการที่กรองและค้นหาได้ ฟอร์มจองที่ตรวจข้อมูล คำถามที่พบบ่อย และท้ายเว็บ พร้อมทำงานบนมือถือ. จบห้องนี้คุณจะมีไฟล์เดียวที่ยื่นส่งได้เลย.',
+minutes: 60,
+uses: ['ลำดับการทำงาน', 'ประกอบทั้งเว็บ', 'JavaScript จริง', 'ตรวจงานก่อนส่ง'],
+
+notes: [
+  {sel:'header.site', label:'แถบเมนูติดบน สูง 64px', side:'in'},
+  {sel:'.hero',       label:'หัวเว็บ padding 88px', side:'top'},
+  {sel:'.menu-grid',  label:'grid auto-fit ขั้นต่ำ 230px', side:'top'},
+  {sel:'.booking',    label:'ฟอร์มกว้างสูงสุด 520px', side:'top'},
+  {sel:'footer.site', label:'ท้ายเว็บ บอกข้อมูลติดต่อจริง', side:'top'},
+],
+
+steps: [
+/* ============ 1 ============ */
+{
+ t:'วางแผน 5 นาทีก่อนพิมพ์โค้ดสักตัว',
+ why:'นี่คือขั้นที่คนแพ้มักข้าม. ก่อนแตะคีย์บอร์ด ต้องรู้ว่า<b>เว็บนี้มีกี่ส่วน เรียงลำดับยังไง และส่วนไหนคือหัวใจ</b>. เขียนใส่กระดาษก่อน แล้วการเขียนโค้ดจะกลายเป็นแค่การทำตามรายการ ไม่ต้องคิดไปทำไป.',
+ rule:{t:'โครงเว็บที่ใช้ได้กับ 90% ของโจทย์', d:'<b>แถบเมนู</b> ➝ <b>หัวเว็บ</b> (บอกว่าเว็บนี้คืออะไร + ปุ่มหลัก) ➝ <b>ส่วนหัวใจ</b> (รายการ/ตาราง/ฟีเจอร์ที่โจทย์ขอ) ➝ <b>ส่วนรับข้อมูล</b> (ฟอร์ม) ➝ <b>คำถามที่พบบ่อย</b> ➝ <b>ท้ายเว็บ</b>.<br><br>ทำเรียงจากบนลงล่าง <b>ห้ามกระโดด</b> เพราะถ้าเวลาหมดกลางทาง ส่วนที่เสร็จแล้วจะเป็นเว็บที่ดูสมบูรณ์อยู่ดี.'},
+ do:[
+  'เขียนใส่กระดาษ: เว็บนี้เพื่อใคร ต้องการให้เขาทำอะไร',
+  'ลิสต์ส่วนของเว็บเรียงบนลงล่าง แล้ววงกลม<b>ส่วนเดียว</b>ที่เป็นหัวใจ',
+  'เขียนข้อมูลที่ต้องแสดงเป็นรายการ เช่น เมนูอาหารมีชื่อ ราคา หมวด รูป',
+  'เปิด VS Code สร้างไฟล์ <b>index.html</b> แล้วพิมพ์ <code>!</code> กด <kbd>Tab</kbd> เพื่อได้โครง HTML'
+ ],
+ css:`/* ===== 1. ชุดค่าประจำเว็บ — ล็อกก่อนเขียนอย่างอื่นเสมอ ===== */
+:root{
+  --ground:#fffdf9;
+  --panel:#ffffff;
+  --ink:#1c1a17;
+  --ink-2:#6c655c;
+  --line:#e9e3d9;
+  --accent:#2f6b4f;
+  --accent-soft:#eaf3ee;
+  --bad:#b3402f;
+  --r:12px;
+}
+*,*::before,*::after{ box-sizing:border-box; }
+*{ margin:0; }
+img{ display:block; max-width:100%; }
+button,input,select,textarea{ font:inherit; color:inherit; }
+html{ scroll-behavior:smooth; }
+
+body{
+  background:var(--ground);
+  color:var(--ink);
+  font-family:system-ui,-apple-system,"Segoe UI","Noto Sans Thai",sans-serif;
+  line-height:1.7;
+}
+a{ color:inherit; text-decoration:none; }
+
+/* กล่องครอบมาตรฐาน ใช้ทุก section */
+.wrap{ width:min(1060px, 100% - 36px); margin-inline:auto; }
+section{ padding:72px 0; scroll-margin-top:64px; }`,
+ cssLines:[
+  {c:'--accent-soft: #eaf3ee;', d:'สีเน้นแบบจาง ไว้ทำพื้นป้ายและกล่องเน้น. <b>มีคู่จาง-เข้มของสีเดียวกันจะทำให้เว็บดูเป็นชุด</b>โดยไม่ต้องเพิ่มสีใหม่'},
+  {c:'html{ scroll-behavior:smooth; }', d:'ทำให้ลิงก์เมนูที่ชี้ไป <code>#id</code> เลื่อนแบบนุ่ม ไม่กระโดด. <b>บรรทัดเดียว ได้ความรู้สึกพรีเมียมทันที</b>'},
+  {c:'scroll-margin-top: 64px;', d:'เผื่อที่ให้แถบเมนูที่ติดอยู่ด้านบน. <b>ขาดบรรทัดนี้ หัวข้อจะถูกแถบเมนูบังทุกครั้งที่กดลิงก์</b> — จุดที่มือใหม่พลาดเสมอ'},
+  {c:'padding: 72px 0;', d:'ระยะห่างระหว่างส่วน. <b>ใช้ค่าเดียวกันทุก section</b> เพื่อให้เว็บมีจังหวะสม่ำเสมอ เป็นสิ่งที่ตาจับได้แม้บอกไม่ถูกว่าเพราะอะไร'}
+ ],
+ try:'ตอนนี้กระดานขวายังว่าง เพราะเรามีแค่ CSS ยังไม่มี HTML. <b>นี่คือลำดับที่ถูกต้อง</b> — ล็อกชุดค่าก่อน แล้วทุกอย่างหลังจากนี้จะหยิบจากชุดนี้.'
+},
+/* ============ 2 ============ */
+{
+ t:'แถบเมนู — สิ่งแรกที่กรรมการเห็น',
+ why:'ทำแถบเมนูให้จบก่อนเป็นอันดับแรก เพราะมัน<b>อยู่ทุกหน้าจอและเห็นตลอดเวลา</b>. ลิงก์ในเมนูชี้ไปยัง id ของแต่ละส่วนที่เราจะสร้างต่อไป — เขียนเผื่อไว้เลยตอนนี้.',
+ rule:{t:'ลิงก์ในหน้าเดียว', d:'<code>href="#menu"</code> จะพาไปยังแท็กที่มี <code>id="menu"</code> ในหน้าเดียวกัน. <b>เว็บหน้าเดียวที่เลื่อนได้ลื่นดูเสร็จสมบูรณ์กว่าเว็บหลายหน้าที่ทำไม่ทัน</b> — ตอนแข่งเลือกแบบแรกเสมอถ้าโจทย์ไม่บังคับ.'},
+ css:`/* ===== 2. แถบเมนู ===== */
+header.site{
+  position:sticky; top:0; z-index:50;
+  background:rgba(255,253,249,.9);
+  backdrop-filter:blur(10px);
+  border-bottom:1px solid var(--line);
+}
+header.site .wrap{ display:flex; align-items:center; gap:26px; height:64px; }
+
+.logo{ font-weight:800; font-size:18px; letter-spacing:-.4px; }
+.logo i{ color:var(--accent); font-style:normal; }
+
+.site-nav{ margin-left:auto; display:flex; gap:22px; }
+.site-nav a{ color:var(--ink-2); font-size:14.5px; padding:6px 0; transition:color .15s; }
+.site-nav a:hover{ color:var(--ink); }
+.site-nav a.on{ color:var(--accent); font-weight:600; }
+.site-nav a:focus-visible{ outline:2px solid var(--accent); outline-offset:4px; border-radius:3px; }
+
+.btn{
+  background:var(--accent); color:#fff; border:0;
+  padding:11px 22px; border-radius:9px;
+  font-weight:700; cursor:pointer; white-space:nowrap; transition:.18s;
+}
+.btn:hover{ filter:brightness(1.1); transform:translateY(-1px); }
+.btn:focus-visible{ outline:3px solid var(--accent); outline-offset:3px; }
+.btn.quiet{ background:transparent; color:var(--ink); border:1px solid var(--line); }
+.btn.quiet:hover{ border-color:var(--accent); transform:none; filter:none; }`,
+ html:`<header class="site">
+  <div class="wrap">
+    <a class="logo" href="#top">ครัว<i>ริมคลอง</i></a>
+    <nav class="site-nav" id="siteNav">
+      <a href="#menu">เมนูอาหาร</a>
+      <a href="#book">จองโต๊ะ</a>
+      <a href="#faq">คำถามที่พบบ่อย</a>
+      <a href="#contact">ติดต่อ</a>
+    </nav>
+    <a class="btn" href="#book">จองโต๊ะ</a>
+  </div>
+</header>`,
+ try:'ยังกดลิงก์ไม่ได้เพราะส่วนปลายทางยังไม่มี — <b>ปกติ</b>. พอสร้างครบแล้วจะกลับมาใช้ได้เอง.'
+},
+/* ============ 3 ============ */
+{
+ t:'หัวเว็บ — สามวินาทีที่ตัดสินทุกอย่าง',
+ why:'พาดหัวต้องบอก<b>ประโยชน์ที่ผู้ใช้ได้</b> ไม่ใช่ชื่อระบบ. ใต้พาดหัวมีประโยคเดียวขยายความ แล้วปุ่มหลักหนึ่งปุ่ม. โครงสามชั้นนี้ใช้ได้กับทุกโจทย์.',
+ rule:{t:'เขียนพาดหัวยังไงให้ไม่พัง', d:'เอาชื่อโจทย์มาตั้งคำถามว่า "แล้วผู้ใช้ได้อะไร". <br>โจทย์ว่า "เว็บร้านอาหาร" ➝ พาดหัวห้ามเขียนว่า "เว็บไซต์ร้านอาหาร" ➝ เขียนว่า <b>"อาหารบ้านๆ ริมคลอง จองโต๊ะล่วงหน้าไม่ต้องรอคิว"</b>'},
+ css:`/* ===== 3. หัวเว็บ ===== */
+.hero{
+  padding:88px 0 64px;
+  background:radial-gradient(760px 340px at 15% 0%, var(--accent-soft), transparent 70%);
+}
+.hero .wrap{ display:flex; flex-direction:column; gap:20px; align-items:flex-start; }
+
+.eyebrow{
+  font-size:12.5px; font-weight:700; letter-spacing:1.6px; text-transform:uppercase;
+  color:var(--accent); background:var(--accent-soft);
+  padding:5px 13px; border-radius:99px;
+}
+.hero h1{
+  font-size:clamp(30px, 5.2vw, 46px);
+  line-height:1.12; letter-spacing:-1.4px; font-weight:800;
+  text-wrap:balance; max-width:16ch;
+}
+.hero .lede{ font-size:17.5px; color:var(--ink-2); max-width:54ch; }
+.hero .actions{ display:flex; gap:12px; flex-wrap:wrap; margin-top:4px; }
+
+.stats{
+  display:flex; gap:40px; flex-wrap:wrap;
+  margin-top:24px; padding-top:26px;
+  border-top:1px solid var(--line); width:100%;
+}
+.stats b{
+  display:block; font-size:27px; font-weight:800; letter-spacing:-.8px;
+  font-variant-numeric:tabular-nums;
+}
+.stats span{ font-size:13px; color:var(--ink-2); }`,
+ html:`<main id="top">
+  <section class="hero">
+    <div class="wrap">
+      <span class="eyebrow">เปิดทุกวัน 10:00 - 21:00</span>
+      <h1>อาหารบ้านๆ ริมคลอง จองโต๊ะล่วงหน้าไม่ต้องรอคิว</h1>
+      <p class="lede">ครัวชุมชนที่ใช้วัตถุดิบจากตลาดเช้าในย่านเดียวกัน
+         เลือกเมนู จองโต๊ะ และดูเวลาว่างได้จากหน้านี้หน้าเดียว</p>
+      <div class="actions">
+        <a class="btn" href="#menu">ดูเมนูทั้งหมด</a>
+        <a class="btn quiet" href="#book">จองโต๊ะเลย</a>
+      </div>
+      <div class="stats">
+        <div><b>38</b><span>เมนูในร้าน</span></div>
+        <div><b>4.7</b><span>คะแนนจากลูกค้า 260 คน</span></div>
+        <div><b>15 นาที</b><span>เวลารออาหารเฉลี่ย</span></div>
+      </div>
+    </div>
+  </section>
+</main>`,
+ cssLines:[
+  {c:'radial-gradient(760px 340px at 15% 0%, ...)', d:'วงกลมสีจางที่มุมซ้ายบน. <b>ให้ความลึกโดยไม่แย่งความสนใจจากตัวหนังสือ</b> — ดีกว่าใส่รูปพื้นหลังที่มักทำให้อ่านยาก'},
+  {c:'max-width: 16ch;', d:'จำกัดพาดหัวไม่ให้ยาวเกินไปต่อบรรทัด. <b>พาดหัวที่ยาวเต็มจอจะอ่านเป็นประโยคไม่ออก</b>'},
+  {c:'font-variant-numeric: tabular-nums;', d:'ทำให้ตัวเลขทุกตัวกว้างเท่ากัน <b>แถวตัวเลขจะเรียงตรงกันเป็นระเบียบ</b>'},
+  {c:'border-top + padding-top', d:'เส้นคั่นบางๆ กับที่ว่างเหนือแถวตัวเลข <b>บอกว่านี่คือข้อมูลอีกชั้นหนึ่ง</b>โดยไม่ต้องใส่หัวข้อ'}
+ ],
+ try:'ลองเปลี่ยนพาดหัวเป็น "ระบบจองโต๊ะออนไลน์" แล้วอ่านใหม่ — จะรู้สึกทันทีว่าพูดถึงตัวระบบ ไม่ได้พูดถึงคนที่จะใช้.'
+},
+/* ============ 4 ============ */
+{
+ t:'ส่วนหัวใจ: เตรียมข้อมูลก่อนวาดหน้าตา',
+ why:'ทุกโจทย์แข่งมีข้อมูลอยู่เบื้องหลัง — เมนูอาหาร สินค้า นักเรียน กิจกรรม. <b>เขียนเป็น array ของ object ก่อนเสมอ</b> แล้วค่อยให้ JavaScript สร้าง HTML ให้. ทำแบบนี้เพิ่มข้อมูลใหม่ใช้เวลา 5 วินาที ถ้าพิมพ์ HTML ทีละใบจะเสียเวลาสิบเท่า.',
+ rule:{t:'ทำไมต้องเป็น array of object', d:'เพราะทุกอย่างที่โจทย์จะขอต่อจากนี้ — <b>ค้นหา กรอง เรียง นับ รวมราคา</b> — ทำได้ในบรรทัดเดียวเมื่อข้อมูลอยู่ในรูปนี้. ถ้าพิมพ์ HTML ตายตัวไว้ จะทำอะไรไม่ได้เลยนอกจากรื้อใหม่.'},
+ css:`/* ===== 4. หัวข้อของแต่ละส่วน (ใช้ซ้ำทั้งเว็บ) ===== */
+.head{ margin-bottom:26px; }
+.head h2{ font-size:clamp(22px,3.4vw,30px); letter-spacing:-.9px; }
+.head p{ color:var(--ink-2); margin-top:6px; max-width:56ch; }
+
+/* ===== การ์ดเมนูอาหาร ===== */
+.menu-grid{
+  display:grid; gap:18px;
+  grid-template-columns:repeat(auto-fit, minmax(230px, 1fr));
+}
+.dish{
+  background:var(--panel); border:1px solid var(--line); border-radius:var(--r);
+  overflow:hidden; display:flex; flex-direction:column; transition:.18s;
+}
+.dish:hover{ transform:translateY(-3px); box-shadow:0 10px 24px rgba(0,0,0,.07); }
+.dish figure{ aspect-ratio:4/3; background:#f1ede6; }
+.dish figure img{ width:100%; height:100%; object-fit:cover; }
+.dish .in{ padding:16px; display:flex; flex-direction:column; gap:7px; flex:1; }
+.dish h3{ font-size:16px; line-height:1.35; }
+.dish .desc{ font-size:13.5px; color:var(--ink-2); }
+.dish .foot{
+  margin-top:auto; padding-top:12px; border-top:1px solid var(--line);
+  display:flex; align-items:center; justify-content:space-between; gap:10px;
+}
+.dish .price{ font-size:17px; font-weight:800; font-variant-numeric:tabular-nums; }
+.chip-cat{
+  align-self:flex-start; font-size:11.5px; font-weight:600;
+  color:var(--accent); background:var(--accent-soft);
+  padding:3px 9px; border-radius:99px;
+}`,
+ html:`<section id="menu">
+  <div class="wrap">
+    <div class="head">
+      <h2>เมนูประจำร้าน</h2>
+      <p>ทำสดทุกจาน วัตถุดิบรับจากตลาดเช้าในย่านเดียวกัน</p>
+    </div>
+    <div class="menu-grid" id="menuGrid"></div>
+  </div>
+</section>
+
+<script>
+/* ---------- ข้อมูล: แก้ตรงนี้ที่เดียว หน้าเว็บเปลี่ยนตามทันที ---------- */
+var dishes = [
+  {id:1, name:'แกงส้มชะอมกุ้ง',     cat:'แกง',    price:180, img:'https://picsum.photos/seed/soup1/500/380', desc:'เปรี้ยวนำ เผ็ดตาม ใช้กุ้งแม่น้ำสด'},
+  {id:2, name:'ผัดกะเพราหมูกรอบ',   cat:'ผัด',    price:120, img:'https://picsum.photos/seed/basil/500/380', desc:'กะเพราใบใหญ่จากสวนหลังร้าน'},
+  {id:3, name:'ปลาทับทิมนึ่งมะนาว', cat:'ปลา',    price:320, img:'https://picsum.photos/seed/fish1/500/380', desc:'ตัวละแปดขีด นึ่งสดหน้าร้าน'},
+  {id:4, name:'ต้มยำไก่บ้าน',       cat:'แกง',    price:160, img:'https://picsum.photos/seed/tomyum/500/380', desc:'น้ำใส ไก่บ้านเนื้อแน่น'},
+  {id:5, name:'ยำถั่วพูกุ้งสด',     cat:'ยำ',     price:150, img:'https://picsum.photos/seed/salad1/500/380', desc:'ถั่วพูกรอบ ราดน้ำพริกเผาคั่วเอง'},
+  {id:6, name:'ข้าวผัดปูก้อน',      cat:'ผัด',    price:220, img:'https://picsum.photos/seed/rice1/500/380', desc:'ปูก้อนเต็มคำ ไข่แดงเยิ้ม'},
+  {id:7, name:'ปลาสลิดทอดกรอบ',     cat:'ปลา',    price:140, img:'https://picsum.photos/seed/fish2/500/380', desc:'แดดเดียวจากบางบ่อ ทอดใหม่ทุกจาน'},
+  {id:8, name:'ยำมะม่วงปลาป่น',     cat:'ยำ',     price:110, img:'https://picsum.photos/seed/mango/500/380', desc:'มะม่วงเปรี้ยวซอย โรยปลาป่นคั่ว'},
+];
+
+/* ---------- ฟังก์ชันวาดรายการ: เรียกทุกครั้งที่ข้อมูลเปลี่ยน ---------- */
+var grid = document.querySelector('#menuGrid');
+
+function renderMenu(list){
+  grid.innerHTML = list.map(function(d){
+    return '<article class="dish">' +
+      '<figure><img src="' + d.img + '" alt="' + d.name + '" loading="lazy"></figure>' +
+      '<div class="in">' +
+        '<span class="chip-cat">' + d.cat + '</span>' +
+        '<h3>' + d.name + '</h3>' +
+        '<p class="desc">' + d.desc + '</p>' +
+        '<div class="foot"><span class="price">' + d.price + ' บาท</span>' +
+        '<button class="btn quiet pick" data-id="' + d.id + '">เลือก</button></div>' +
+      '</div></article>';
+  }).join('');
+}
+
+renderMenu(dishes);
+<\/script>`,
+ lines:[
+  {c:'var dishes = [ {...}, {...} ]', d:'<b>array ของ object</b> — วงเล็บเหลี่ยมคือรายการ ปีกกาคือของหนึ่งชิ้น. ทุกชิ้นต้องมีคีย์เหมือนกันหมด'},
+  {c:'id: 1', d:'เลขประจำตัวที่ไม่ซ้ำ. <b>จำเป็นตอนจะลบหรือแก้ไขรายการใดรายการหนึ่ง</b> ถ้าไม่มีจะอ้างถึงของชิ้นนั้นไม่ได้'},
+  {c:'list.map(function(d){ ... })', d:'<b>แปลงของทุกชิ้นเป็น HTML</b>. <code>d</code> คือของหนึ่งชิ้นในรอบนั้น เปลี่ยนชื่อเป็นอะไรก็ได้'},
+  {c:".join('')", d:'ต่อ HTML ทุกชิ้นเข้าด้วยกันเป็นข้อความเดียว. <b>ลืม join จะได้ลูกน้ำคั่นระหว่างการ์ดทุกใบ</b>'},
+  {c:'grid.innerHTML = ...', d:'ยัด HTML ที่สร้างเสร็จลงในกล่องว่างที่เตรียมไว้. <b>เขียนทับของเดิมทั้งหมด</b> จึงต้องส่งรายการที่ต้องการแสดงเข้าไปทุกครั้ง'},
+  {c:'loading="lazy"', d:'ให้เบราว์เซอร์โหลดรูปเมื่อเลื่อนถึงเท่านั้น. <b>หน้าเว็บเปิดเร็วขึ้นมากเมื่อมีรูปเยอะ</b>'},
+  {c:'data-id="..."', d:'เก็บค่าไว้กับปุ่ม เพื่อให้ JavaScript รู้ว่าปุ่มนี้เป็นของรายการไหน. อ่านค่าด้วย <code>btn.dataset.id</code>'}
+ ],
+ try:'เพิ่มเมนูใหม่หนึ่งบรรทัดใน array แล้วบันทึก — การ์ดใบใหม่จะโผล่มาเอง. <b>นี่คือเหตุผลที่ต้องเก็บข้อมูลแยกจากหน้าตา</b>.'
+},
+/* ============ 5 ============ */
+{
+ t:'ค้นหาและกรองหมวด — ฟีเจอร์ที่โจทย์ขอบ่อยที่สุด',
+ why:'ตอนนี้มีข้อมูลอยู่ในรูปที่ถูกต้องแล้ว การเพิ่มค้นหากับกรองจึงใช้โค้ดไม่กี่บรรทัด. <b>หลักคือ ไม่แก้ข้อมูลต้นฉบับ แต่สร้างรายการที่ผ่านเงื่อนไขขึ้นมาใหม่แล้ววาดใหม่</b>.',
+ rule:{t:'สูตรกรองที่ใช้ได้กับทุกโจทย์', d:'<code>ข้อมูลทั้งหมด.filter(เงื่อนไข).map(สร้าง HTML)</code><br><br>ถ้ามีหลายเงื่อนไขพร้อมกัน ใช้ <code>&&</code> เชื่อม. <b>เขียนฟังก์ชันเดียวที่รวมทุกเงื่อนไข แล้วให้ทั้งช่องค้นหาและปุ่มหมวดเรียกฟังก์ชันเดียวกันนี้</b> — ไม่งั้นกรองหมวดแล้วคำค้นจะหาย.'},
+ css:`/* ===== 5. แถบเครื่องมือค้นหาและกรอง ===== */
+.tools{ display:flex; gap:10px; flex-wrap:wrap; align-items:center; margin-bottom:18px; }
+.tools input{
+  flex:1; min-width:200px; height:44px; padding:0 14px;
+  border:1px solid var(--line); border-radius:10px; background:var(--panel);
+}
+.tools input:focus{
+  outline:none; border-color:var(--accent);
+  box-shadow:0 0 0 3px color-mix(in srgb, var(--accent) 16%, transparent);
+}
+.tools select{
+  height:44px; padding:0 12px;
+  border:1px solid var(--line); border-radius:10px; background:var(--panel);
+}
+
+.cats{ display:flex; gap:8px; flex-wrap:wrap; margin-bottom:20px; }
+.cat{
+  border:1px solid var(--line); background:var(--panel); color:var(--ink-2);
+  padding:7px 16px; border-radius:99px; cursor:pointer; font-size:14px; transition:.15s;
+}
+.cat:hover{ color:var(--ink); }
+.cat.on{ background:var(--accent); border-color:var(--accent); color:#fff; font-weight:600; }
+
+.count{ font-size:13.5px; color:var(--ink-2); margin-bottom:14px; }
+.empty{
+  grid-column:1 / -1; text-align:center; padding:52px 20px;
+  border:1px dashed var(--line); border-radius:var(--r); color:var(--ink-2);
+}
+.empty b{ display:block; color:var(--ink); font-size:16px; margin-bottom:4px; }`,
+ into:'#menu .wrap .head',
+ html:`<div class="tools" style="margin-top:20px">
+  <input id="search" type="search" placeholder="ค้นหาชื่อเมนู เช่น กะเพรา" aria-label="ค้นหาเมนู">
+  <select id="sort" aria-label="เรียงลำดับ">
+    <option value="default">เรียง: ตามร้านแนะนำ</option>
+    <option value="low">ราคา น้อยไปมาก</option>
+    <option value="high">ราคา มากไปน้อย</option>
+  </select>
+</div>
+<div class="cats" id="cats"></div>
+<p class="count" id="count"></p>`,
+ try:'ลองพิมพ์คำที่ไม่มีในเมนู เช่น "พิซซ่า" — ต้องเห็นกล่องสถานะว่าง ไม่ใช่หน้าจอเปล่า.'
+},
+/* ============ 6 ============ */
+{
+ t:'ต่อสายให้เครื่องมือทำงานจริง',
+ why:'สามส่วนนี้ต้องทำงานร่วมกัน: ช่องค้นหา ปุ่มหมวด และตัวเรียง. <b>ความลับคือให้ทุกอันเรียกฟังก์ชัน <code>apply()</code> เดียวกัน</b> ซึ่งอ่านค่าจากทั้งสามที่แล้วค่อยวาดใหม่. ถ้าแยกกันเขียนจะกัดกันเอง.',
+ rule:{t:'จังหวะการฟังเหตุการณ์', d:'<code>input</code> = ทุกตัวอักษรที่พิมพ์ (ใช้กับช่องค้นหา ได้ผลลัพธ์ทันที)<br><code>change</code> = เมื่อเลือกค่าเสร็จ (ใช้กับ select)<br><code>click</code> = คลิก (ใช้กับปุ่มหมวด)'},
+ html:`<script>
+/* ---------- สร้างปุ่มหมวดจากข้อมูล ไม่พิมพ์เอง ---------- */
+var cats = ['ทั้งหมด'];
+dishes.forEach(function(d){
+  if(cats.indexOf(d.cat) === -1) cats.push(d.cat);
+});
+
+var activeCat = 'ทั้งหมด';
+
+document.querySelector('#cats').innerHTML = cats.map(function(c){
+  return '<button class="cat' + (c === activeCat ? ' on' : '') + '" data-cat="' + c + '">' + c + '</button>';
+}).join('');
+
+/* ---------- ฟังก์ชันกลาง: อ่านทุกเงื่อนไขแล้ววาดใหม่ ---------- */
+function apply(){
+  var q = document.querySelector('#search').value.toLowerCase().trim();
+  var sort = document.querySelector('#sort').value;
+
+  var list = dishes.filter(function(d){
+    var matchWord = (d.name + d.desc).toLowerCase().indexOf(q) !== -1;
+    var matchCat  = (activeCat === 'ทั้งหมด') || (d.cat === activeCat);
+    return matchWord && matchCat;
+  });
+
+  if(sort === 'low')  list.sort(function(a,b){ return a.price - b.price; });
+  if(sort === 'high') list.sort(function(a,b){ return b.price - a.price; });
+
+  document.querySelector('#count').textContent = 'พบ ' + list.length + ' เมนู';
+
+  if(list.length === 0){
+    grid.innerHTML = '<div class="empty"><b>ไม่พบเมนูที่ค้นหา</b>' +
+                     'ลองใช้คำที่สั้นลง หรือกดหมวด "ทั้งหมด"</div>';
+    return;
+  }
+  renderMenu(list);
+}
+
+/* ---------- ต่อสายเหตุการณ์ ---------- */
+document.querySelector('#search').addEventListener('input', apply);
+document.querySelector('#sort').addEventListener('change', apply);
+
+document.querySelector('#cats').addEventListener('click', function(e){
+  if(!e.target.dataset.cat) return;
+  activeCat = e.target.dataset.cat;
+  document.querySelectorAll('.cat').forEach(function(b){
+    b.classList.toggle('on', b === e.target);
+  });
+  apply();
+});
+
+apply();
+<\/script>`,
+ lines:[
+  {c:"cats.indexOf(d.cat) === -1", d:'เช็คว่ายังไม่มีหมวดนี้ในรายการ. <b>สร้างปุ่มหมวดจากข้อมูลจริง</b> — เพิ่มเมนูหมวดใหม่แล้วปุ่มโผล่เอง ไม่ต้องแก้สองที่'},
+  {c:'(d.name + d.desc).toLowerCase()', d:'ต่อชื่อกับคำอธิบายแล้วค้นพร้อมกัน. <b>ทำให้ค้นเจอแม้พิมพ์คำที่อยู่ในคำบรรยาย</b> ซึ่งผู้ใช้มักทำ'},
+  {c:'.indexOf(q) !== -1', d:'"มีคำนี้อยู่ข้างในไหม" — ถ้าไม่เจอจะได้ค่า -1. เขียนสั้นกว่าได้ว่า <code>.includes(q)</code>'},
+  {c:'matchWord && matchCat', d:'<code>&&</code> = ต้องเป็นจริง<b>ทั้งสองอย่าง</b>. นี่คือวิธีรวมหลายเงื่อนไขเข้าด้วยกัน'},
+  {c:'if(sort === "low") list.sort(...)', d:'<b>เรียงหลังกรอง</b> ไม่ใช่ก่อน. และ sort ทำงานกับ <code>list</code> ที่เป็นสำเนา — <b>ข้อมูลต้นฉบับใน <code>dishes</code> ไม่ถูกแตะ</b>'},
+  {c:"addEventListener('click', ...) ที่กล่องพ่อ", d:'ผูกที่กล่องแม่ครั้งเดียว แทนการผูกทีละปุ่ม. <b>ปุ่มที่สร้างใหม่ทีหลังก็ยังทำงาน</b> — เทคนิคที่ช่วยได้มากเมื่อ HTML ถูกสร้างด้วย JavaScript'},
+  {c:'apply();', d:'เรียกครั้งแรกตอนโหลดหน้า <b>เพื่อให้ตัวนับจำนวนแสดงค่าตั้งแต่เริ่ม</b>'}
+ ],
+ try:'พิมพ์คำค้นก่อน แล้วค่อยกดหมวด — คำค้นต้องยังอยู่และผลลัพธ์กรองสองชั้นพร้อมกัน. <b>ถ้าคำค้นหายแปลว่าเขียนแยกฟังก์ชันกัน</b>.'
+},
+/* ============ 7 ============ */
+{
+ t:'ปุ่มเลือกเมนู กับตัวนับที่ไม่หายเมื่อรีเฟรช',
+ why:'ฟีเจอร์เล็กๆ ที่<b>ทำให้เว็บดูเป็นระบบจริง</b> และใช้เวลาแค่สิบนาที. เก็บลง <code>localStorage</code> แล้วกรรมการรีเฟรชหน้าเว็บ ข้อมูลยังอยู่ — เป็นจุดที่ได้คะแนนง่ายที่สุดจุดหนึ่ง.',
+ rule:{t:'localStorage เก็บได้แค่ข้อความ', d:'ต้องแปลงก่อนเสมอ:<br><code>JSON.stringify(ของ)</code> ตอน<b>เซฟ</b> (ของ ➝ ข้อความ)<br><code>JSON.parse(ข้อความ)</code> ตอน<b>โหลด</b> (ข้อความ ➝ ของ)<br><br>ตอนโหลดต้องมี <code>|| []</code> ต่อท้ายเสมอ กันกรณีที่ยังไม่เคยเซฟ ไม่งั้นจะได้ null แล้วพัง'},
+ css:`/* ===== 7. แถบสรุปรายการที่เลือก ===== */
+.picked{
+  position:sticky; bottom:0; z-index:40;
+  background:var(--panel); border-top:1px solid var(--line);
+  padding:12px 0; display:none;
+}
+.picked.show{ display:block; }
+.picked .wrap{ display:flex; align-items:center; gap:14px; flex-wrap:wrap; }
+.picked .sum{ font-size:14.5px; }
+.picked .sum b{ font-variant-numeric:tabular-nums; }
+.picked .right{ margin-left:auto; display:flex; gap:8px; }
+
+.dish .pick.added{ background:var(--accent); color:#fff; border-color:var(--accent); }`,
+ html:`<div class="picked" id="pickedBar">
+  <div class="wrap">
+    <span class="sum">เลือกไว้ <b id="pickCount">0</b> รายการ ·
+      รวม <b id="pickTotal">0</b> บาท</span>
+    <span class="right">
+      <button class="btn quiet" id="clearPick">ล้างทั้งหมด</button>
+      <a class="btn" href="#book">จองโต๊ะพร้อมสั่งล่วงหน้า</a>
+    </span>
+  </div>
+</div>
+
+<script>
+/* ---------- โหลดของที่เคยเลือกไว้ ---------- */
+var picked = JSON.parse(localStorage.getItem('picked')) || [];
+
+function savePicked(){
+  localStorage.setItem('picked', JSON.stringify(picked));
+}
+
+function renderPicked(){
+  var total = picked.reduce(function(sum, id){
+    var d = dishes.find(function(x){ return x.id === id; });
+    return sum + (d ? d.price : 0);
+  }, 0);
+
+  document.querySelector('#pickCount').textContent = picked.length;
+  document.querySelector('#pickTotal').textContent = total.toLocaleString('th-TH');
+  document.querySelector('#pickedBar').classList.toggle('show', picked.length > 0);
+
+  document.querySelectorAll('.pick').forEach(function(b){
+    var on = picked.indexOf(Number(b.dataset.id)) !== -1;
+    b.classList.toggle('added', on);
+    b.textContent = on ? 'เลือกแล้ว' : 'เลือก';
+  });
+}
+
+/* ---------- กดเลือก / ยกเลิก ---------- */
+grid.addEventListener('click', function(e){
+  if(!e.target.classList.contains('pick')) return;
+  var id = Number(e.target.dataset.id);
+  var at = picked.indexOf(id);
+  if(at === -1) picked.push(id);
+  else picked.splice(at, 1);
+  savePicked();
+  renderPicked();
+});
+
+document.querySelector('#clearPick').addEventListener('click', function(){
+  picked = [];
+  savePicked();
+  renderPicked();
+});
+
+/* ---------- วาดสถานะปุ่มใหม่ทุกครั้งที่รายการถูกวาดใหม่ ---------- */
+var _render = renderMenu;
+renderMenu = function(list){ _render(list); renderPicked(); };
+renderPicked();
+<\/script>`,
+ lines:[
+  {c:'JSON.parse(localStorage.getItem(...)) || []', d:'โหลดของที่เคยเซฟ. <b><code>|| []</code> คือค่าสำรองเมื่อยังไม่เคยเซฟ</b> ขาดแล้วจะได้ null และพังทันทีที่เรียก .length'},
+  {c:'picked.reduce(function(sum, id){...}, 0)', d:'<b>ยุบรายการทั้งหมดเหลือค่าเดียว</b> — ตรงนี้คือรวมราคา. เลข <code>0</code> ท้ายสุดคือค่าเริ่มต้นของ sum'},
+  {c:'dishes.find(function(x){ ... })', d:'หาของชิ้นแรกที่ตรงเงื่อนไข. <b>ใช้แปลง id กลับเป็นข้อมูลเต็ม</b> เพราะเราเก็บแค่ id ไว้'},
+  {c:'picked.splice(at, 1)', d:'ลบออกหนึ่งชิ้นที่ตำแหน่ง <code>at</code>. <b>ใช้ตอนกดซ้ำเพื่อยกเลิก</b>'},
+  {c:'classList.toggle("show", เงื่อนไข)', d:'ใส่ class เมื่อเงื่อนไขจริง เอาออกเมื่อเท็จ. <b>เขียนบรรทัดเดียวแทน if-else</b>'},
+  {c:'total.toLocaleString("th-TH")', d:'ใส่ลูกน้ำคั่นหลักพันให้อัตโนมัติ. <b>1234 กลายเป็น 1,234</b> — รายละเอียดเล็กที่ทำให้ตัวเลขดูเป็นมืออาชีพ'},
+  {c:'var _render = renderMenu; renderMenu = ...', d:'ห่อฟังก์ชันเดิมไว้ แล้ว<b>ให้วาดสถานะปุ่มตามหลังทุกครั้งที่รายการถูกวาดใหม่</b> ไม่งั้นกรองหมวดแล้วปุ่ม "เลือกแล้ว" จะกลับเป็นปกติ'}
+ ],
+ try:'กดเลือกสองสามเมนู แล้ว<b>รีเฟรชกระดาน</b> (สลับไปเป้าหมายแล้วกลับมา) — ของที่เลือกต้องยังอยู่. นี่คือสิ่งที่ควรโชว์กรรมการตอนนำเสนอ.'
+},
+/* ============ 8 ============ */
+{
+ t:'ฟอร์มจอง — ส่วนที่รับข้อมูลจากผู้ใช้',
+ why:'ทุกโจทย์ที่มีคำว่า "ลงทะเบียน จอง สมัคร สั่งซื้อ" ต้องการส่วนนี้. หลักคือ<b>ถามให้น้อยที่สุดเท่าที่จำเป็น</b> และทุกช่องต้องมีป้ายกำกับที่ผูกกับช่องจริง.',
+ rule:{t:'อย่าลืม novalidate', d:'ถ้าช่องมี <code>required</code> แต่แท็ก <code>&lt;form&gt;</code> ไม่มี <code>novalidate</code> เบราว์เซอร์จะบล็อกการส่งไว้เอง แล้ว<b>โค้ดตรวจสอบของเราจะไม่ทำงานเลย โดยไม่มี error แจ้ง</b>. เป็นกับดักที่กินเวลาเป็นชั่วโมง.'},
+ css:`/* ===== 8. ฟอร์มจอง ===== */
+#book{ background:var(--accent-soft); }
+
+.booking{
+  width:min(520px, 100%);
+  background:var(--panel);
+  border:1px solid var(--line); border-radius:16px;
+  padding:28px;
+}
+.field{ display:flex; flex-direction:column; gap:6px; margin-bottom:16px; }
+.field label{ font-size:13.5px; font-weight:600; }
+.field label .opt{ font-weight:400; color:var(--ink-2); }
+.field input, .field select{
+  height:46px; padding:0 13px;
+  border:1px solid var(--line); border-radius:9px; background:var(--panel);
+}
+.field input:focus, .field select:focus{
+  outline:none; border-color:var(--accent);
+  box-shadow:0 0 0 3px color-mix(in srgb, var(--accent) 16%, transparent);
+}
+.field .err{ display:none; font-size:12.5px; color:var(--bad); font-weight:500; }
+.field .err::before{ content:"! "; font-weight:800; }
+.field.bad input, .field.bad select{ border-color:var(--bad); background:#fff9f8; }
+.field.bad .err{ display:block; }
+.two{ display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+
+.done{
+  display:none; margin-top:18px; padding:16px;
+  border:1px solid var(--accent); background:var(--accent-soft);
+  border-radius:10px; font-size:14.5px;
+}
+.done.show{ display:block; }
+.done b{ display:block; margin-bottom:3px; }
+@media(max-width:520px){ .two{ grid-template-columns:1fr; } }`,
+ html:`<section id="book">
+  <div class="wrap">
+    <div class="head">
+      <h2>จองโต๊ะล่วงหน้า</h2>
+      <p>กรอกสี่ช่อง ใช้เวลาไม่ถึงหนึ่งนาที ทางร้านจะส่ง SMS ยืนยันภายใน 10 นาที</p>
+    </div>
+
+    <form class="booking" id="bookForm" novalidate>
+      <div class="field" id="f-bname">
+        <label for="bname">ชื่อผู้จอง</label>
+        <input id="bname" name="bname" required>
+        <span class="err">กรอกชื่อผู้จอง</span>
+      </div>
+
+      <div class="field" id="f-bphone">
+        <label for="bphone">เบอร์โทร</label>
+        <input id="bphone" name="bphone" type="tel" inputmode="numeric"
+               maxlength="10" placeholder="0812345678" required>
+        <span class="err">ต้องเป็นตัวเลข 10 หลัก ขึ้นต้นด้วย 0</span>
+      </div>
+
+      <div class="two">
+        <div class="field" id="f-bdate">
+          <label for="bdate">วันที่</label>
+          <input id="bdate" name="bdate" type="date" required>
+          <span class="err">เลือกวันที่</span>
+        </div>
+        <div class="field" id="f-bseat">
+          <label for="bseat">จำนวนคน</label>
+          <select id="bseat" name="bseat" required>
+            <option value="">เลือก</option>
+            <option>1-2 คน</option>
+            <option>3-4 คน</option>
+            <option>5-8 คน</option>
+            <option>มากกว่า 8 คน</option>
+          </select>
+          <span class="err">เลือกจำนวนคน</span>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="bnote">ข้อความถึงร้าน <span class="opt">(ไม่บังคับ)</span></label>
+        <input id="bnote" name="bnote" placeholder="เช่น ขอโต๊ะริมน้ำ หรือแพ้อาหารทะเล">
+      </div>
+
+      <button class="btn" type="submit" style="width:100%">ยืนยันการจอง</button>
+
+      <div class="done" id="bookDone"></div>
+    </form>
+  </div>
+</section>`,
+ try:'กดปุ่มยืนยันโดยยังไม่กรอกอะไร — ตอนนี้ยังไม่มีอะไรเกิดขึ้นเพราะยังไม่ได้เขียนโค้ดตรวจ. ขั้นถัดไปจะทำให้มันทำงาน.'
+},
+/* ============ 9 ============ */
+{
+ t:'ตรวจข้อมูลฟอร์ม และแสดงผลการจอง',
+ why:'โค้ดตรวจฟอร์มมีรูปแบบตายตัว จำได้อันเดียวใช้ได้ทุกงาน: <b>เก็บกฎไว้ในที่เดียว ➝ ตรวจตอนออกจากช่อง ➝ ลบคำเตือนเมื่อแก้ถูก ➝ ตอนกดส่งตรวจทั้งหมดแล้วพาไปช่องแรกที่ผิด</b>.',
+ rule:{t:'ข้อความผิดพลาดต้องบอกวิธีแก้', d:'"ข้อมูลไม่ถูกต้อง" ไม่ช่วยอะไรเลย. เขียนว่า <b>"ต้องเป็นตัวเลข 10 หลัก ขึ้นต้นด้วย 0"</b> แทน — ผู้ใช้รู้ทันทีว่าต้องทำอะไรต่อ. และต้องมีสัญลักษณ์ประกอบ ไม่ใช่ใช้สีแดงอย่างเดียว เพราะคนตาบอดสีมองไม่เห็น.'},
+ html:`<script>
+/* ---------- กฎการตรวจ: เพิ่มช่องใหม่ก็เพิ่มบรรทัดเดียว ---------- */
+var bookRules = {
+  bname : function(v){ return v.trim().length > 1; },
+  bphone: function(v){ return /^0\\d{9}$/.test(v); },
+  bdate : function(v){ return v !== ''; },
+  bseat : function(v){ return v !== ''; }
+};
+
+var bookForm = document.querySelector('#bookForm');
+
+/* ---------- ตรวจตอนออกจากช่อง / ลบคำเตือนเมื่อแก้ถูก ---------- */
+Object.keys(bookRules).forEach(function(id){
+  var el  = document.querySelector('#' + id);
+  var box = document.querySelector('#f-' + id);
+
+  el.addEventListener('blur', function(){
+    box.classList.toggle('bad', !bookRules[id](el.value));
+  });
+  el.addEventListener('input', function(){
+    if(bookRules[id](el.value)) box.classList.remove('bad');
+  });
+  el.addEventListener('change', function(){
+    if(bookRules[id](el.value)) box.classList.remove('bad');
+  });
+});
+
+/* ---------- ตอนกดส่ง ---------- */
+bookForm.addEventListener('submit', function(e){
+  e.preventDefault();
+
+  var firstBad = null;
+  Object.keys(bookRules).forEach(function(id){
+    var el  = document.querySelector('#' + id);
+    var bad = !bookRules[id](el.value);
+    document.querySelector('#f-' + id).classList.toggle('bad', bad);
+    if(bad && !firstBad) firstBad = el;
+  });
+
+  if(firstBad){ firstBad.focus(); return; }
+
+  /* สรุปรายการอาหารที่เลือกไว้ให้ด้วย */
+  var names = picked.map(function(id){
+    var d = dishes.find(function(x){ return x.id === id; });
+    return d ? d.name : '';
+  }).filter(Boolean);
+
+  var code = 'RC-' + String(Date.now()).slice(-4);
+
+  document.querySelector('#bookDone').innerHTML =
+    '<b>จองเรียบร้อย รหัสการจอง ' + code + '</b>' +
+    'คุณ' + document.querySelector('#bname').value + ' · ' +
+    document.querySelector('#bseat').value + ' · ' +
+    document.querySelector('#bdate').value +
+    (names.length ? '<br>สั่งล่วงหน้า: ' + names.join(', ') : '');
+
+  document.querySelector('#bookDone').classList.add('show');
+  bookForm.querySelector('button[type="submit"]').textContent = 'จองอีกครั้ง';
+});
+<\/script>`,
+ lines:[
+  {c:'/^0\\d{9}$/.test(v)', d:'<b>รูปแบบข้อความ (regular expression)</b>: <code>^</code> เริ่มต้นด้วย 0 · <code>\\d{9}</code> ตามด้วยตัวเลขอีก 9 ตัว · <code>$</code> จบเท่านั้น. จำสามอันนี้พอสำหรับการแข่ง'},
+  {c:'Object.keys(bookRules).forEach(...)', d:'วนทุกกฎที่ประกาศไว้. <b>เพิ่มช่องใหม่แค่เพิ่มกฎหนึ่งบรรทัด</b> ไม่ต้องแก้โค้ดส่วนอื่นเลย'},
+  {c:"el.addEventListener('blur', ...)", d:'ตรวจ<b>ตอนออกจากช่อง</b> ไม่ใช่ตอนกำลังพิมพ์ — เตือนตั้งแต่ตัวอักษรแรกจะกวนใจมาก'},
+  {c:'e.preventDefault();', d:'หยุดพฤติกรรมปกติของฟอร์มคือรีเฟรชหน้า. <b>ลืมบรรทัดนี้ ข้อมูลจะหายหมดทุกครั้งที่กดส่ง</b>'},
+  {c:'if(bad && !firstBad) firstBad = el;', d:'จำช่องแรกที่ผิดไว้ แล้ว <code>focus()</code> ไปที่นั่น. <b>ผู้ใช้ไม่ต้องไล่หาเองว่าผิดตรงไหน</b>'},
+  {c:'.filter(Boolean)', d:'คัดค่าว่างออกจากรายการ. <b>เขียนสั้นๆ แทนการเช็คทีละตัว</b>'},
+  {c:'String(Date.now()).slice(-4)', d:'เอาสี่ตัวท้ายของเวลาปัจจุบันมาทำรหัส. <b>วิธีสร้างเลขที่ไม่ซ้ำแบบเร็วที่สุด</b>ตอนแข่ง'}
+ ],
+ try:'กดยืนยันโดยไม่กรอก — เคอร์เซอร์ต้องกระโดดไปช่องแรกที่ผิดเอง. แล้วลองกรอกเบอร์ 9 หลักดูว่าขึ้นข้อความบอกวิธีแก้.'
+},
+/* ============ 10 ============ */
+{
+ t:'คำถามที่พบบ่อย และท้ายเว็บ',
+ why:'สองส่วนนี้ทำเร็วมากแต่<b>ทำให้เว็บดูครบถ้วน</b>. คำถามที่พบบ่อยใช้แท็ก <code>&lt;details&gt;</code> ของ HTML ซึ่งย่อ-ขยายได้เองโดยไม่ต้องเขียน JavaScript แม้แต่บรรทัดเดียว.',
+ rule:{t:'ท้ายเว็บต้องมีอะไรบ้าง', d:'ข้อมูลติดต่อจริง · เวลาทำการ · ลิงก์ไปส่วนสำคัญ · บรรทัดลิขสิทธิ์. <b>ท้ายเว็บที่มีแค่ "© 2026" อย่างเดียวดูเหมือนทำไม่เสร็จ</b> ส่วนท้ายเว็บที่มีข้อมูลครบทำให้ทั้งเว็บดูจริงจังขึ้นมาก.'},
+ css:`/* ===== 10. คำถามที่พบบ่อย ===== */
+.faq{
+  background:var(--panel); border:1px solid var(--line);
+  border-radius:var(--r); padding:16px 20px; margin-bottom:10px;
+}
+.faq summary{
+  cursor:pointer; font-weight:600; list-style:none;
+  display:flex; justify-content:space-between; gap:14px; align-items:center;
+}
+.faq summary::-webkit-details-marker{ display:none; }
+.faq summary::after{ content:"+"; color:var(--accent); font-size:20px; font-weight:400; }
+.faq[open] summary::after{ content:"−"; }
+.faq p{ color:var(--ink-2); margin-top:10px; font-size:14.5px; }
+.faq summary:focus-visible{ outline:2px solid var(--accent); outline-offset:4px; border-radius:4px; }
+
+/* ===== ท้ายเว็บ ===== */
+footer.site{
+  border-top:1px solid var(--line);
+  padding:40px 0 30px;
+  background:var(--panel);
+}
+footer.site .cols{
+  display:grid; gap:26px;
+  grid-template-columns:repeat(auto-fit, minmax(200px, 1fr));
+  margin-bottom:26px;
+}
+footer.site h3{ font-size:14px; margin-bottom:10px; }
+footer.site p, footer.site a{ color:var(--ink-2); font-size:14px; display:block; margin-bottom:5px; }
+footer.site a:hover{ color:var(--accent); }
+footer.site .base{
+  border-top:1px solid var(--line); padding-top:18px;
+  font-size:13px; color:var(--ink-2);
+}`,
+ html:`<section id="faq">
+  <div class="wrap">
+    <div class="head">
+      <h2>คำถามที่พบบ่อย</h2>
+      <p>ถ้าไม่เจอคำตอบ โทรถามได้ที่เบอร์ท้ายหน้า</p>
+    </div>
+
+    <details class="faq" open>
+      <summary>จองล่วงหน้าได้กี่วัน</summary>
+      <p>จองได้ล่วงหน้าสูงสุด 14 วัน สำหรับกลุ่มเกิน 8 คนแนะนำให้จองล่วงหน้าอย่างน้อย 2 วัน
+         เพื่อให้ทางร้านเตรียมโต๊ะยาวได้ทัน</p>
+    </details>
+    <details class="faq">
+      <summary>สั่งอาหารล่วงหน้าพร้อมจองโต๊ะได้ไหม</summary>
+      <p>ได้ เลือกเมนูที่ต้องการจากหน้าเมนูอาหารก่อน แล้วกดจองโต๊ะ
+         รายการที่เลือกไว้จะแนบไปกับการจองอัตโนมัติ</p>
+    </details>
+    <details class="faq">
+      <summary>มีที่จอดรถไหม</summary>
+      <p>มีลานจอดหน้าร้าน 12 คัน และจอดริมทางได้อีกฝั่งตรงข้ามในช่วงเย็น</p>
+    </details>
+    <details class="faq">
+      <summary>ยกเลิกการจองอย่างไร</summary>
+      <p>โทรแจ้งล่วงหน้าอย่างน้อย 2 ชั่วโมงก่อนเวลาจอง ไม่มีค่าใช้จ่ายในการยกเลิก</p>
+    </details>
+  </div>
+</section>
+
+<footer class="site" id="contact">
+  <div class="wrap">
+    <div class="cols">
+      <div>
+        <h3>ครัวริมคลอง</h3>
+        <p>ครัวชุมชนที่ใช้วัตถุดิบจากตลาดเช้าในย่านเดียวกัน เปิดมาตั้งแต่ปี 2562</p>
+      </div>
+      <div>
+        <h3>ติดต่อ</h3>
+        <p>โทร 02-123-4567</p>
+        <p>Line: @kruarimklong</p>
+        <p>128 ซอยริมคลอง เขตบางกอกน้อย กรุงเทพฯ</p>
+      </div>
+      <div>
+        <h3>เวลาทำการ</h3>
+        <p>จันทร์ - ศุกร์ 10:00 - 21:00</p>
+        <p>เสาร์ - อาทิตย์ 09:00 - 22:00</p>
+        <p>หยุดวันสงกรานต์ 13 - 15 เมษายน</p>
+      </div>
+      <div>
+        <h3>ทางลัด</h3>
+        <a href="#menu">เมนูอาหาร</a>
+        <a href="#book">จองโต๊ะ</a>
+        <a href="#faq">คำถามที่พบบ่อย</a>
+      </div>
+    </div>
+    <div class="base">© 2569 ครัวริมคลอง · หน้านี้เขียนด้วย HTML CSS JavaScript ล้วน ไม่ใช้ไลบรารีภายนอก</div>
+  </div>
+</footer>`,
+ lines:[
+  {c:'<details> + <summary>', d:'แท็กย่อ-ขยายของ HTML เอง. <b>ได้ฟรีทั้งการกดเปิดปิด รองรับคีย์บอร์ด และโปรแกรมอ่านหน้าจอ</b> โดยไม่ต้องเขียน JavaScript'},
+  {c:'open', d:'ใส่ที่ <code>&lt;details&gt;</code> อันแรกเพื่อ<b>ให้เปิดค้างไว้ตั้งแต่แรก</b> ผู้ใช้จะเข้าใจทันทีว่ากดเปิดอันอื่นได้'},
+  {c:'summary::-webkit-details-marker{ display:none }', d:'ซ่อนลูกศรสามเหลี่ยมเริ่มต้นของเบราว์เซอร์ <b>เพื่อใส่เครื่องหมาย + และ − ของเราเองแทน</b>'},
+  {c:'.faq[open] summary::after{ content:"−" }', d:'วงเล็บเหลี่ยมคือเลือกจาก attribute. <b>"เมื่อ details นี้เปิดอยู่ ให้เปลี่ยนเป็นเครื่องหมายลบ"</b>'},
+  {c:'id="contact" ที่ footer', d:'ทำให้ลิงก์ "ติดต่อ" บนแถบเมนูใช้งานได้ <b>โดยไม่ต้องสร้างส่วนใหม่</b>'}
+ ],
+ try:'กดลิงก์บนแถบเมนูทีละอัน — ตอนนี้ต้องเลื่อนไปถึงทุกส่วนแล้ว และหัวข้อต้องไม่ถูกแถบเมนูบัง (เพราะเราใส่ <code>scroll-margin-top</code> ไว้ตั้งแต่ขั้นแรก).'
+},
+/* ============ 11 ============ */
+{
+ t:'ทำให้ใช้ได้จริงบนมือถือ',
+ why:'กรรมการเปิดบนมือถือแน่นอน. สองอย่างที่ต้องทำ: <b>ซ่อนเมนูแล้วเปิดด้วยปุ่ม</b> และ<b>ลดระยะห่างลง</b>เพราะจอเล็กที่หายใจเยอะจะต้องเลื่อนนานเกินไป.',
+ rule:{t:'ตรวจมือถือยังไง', d:'กดปุ่ม <b>มือถือ</b> บนกระดาน หรือใน Chrome กด <kbd>F12</kbd> แล้ว <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>M</kbd>.<br><br><b>สิ่งที่ห้ามมี:</b> เลื่อนซ้ายขวาได้ · ตัวหนังสือเล็กกว่า 14px · ปุ่มเล็กกว่า 44px · ของทับกัน'},
+ css:`/* ===== 11. มือถือ ===== */
+.burger{
+  display:none;
+  width:44px; height:44px; margin-left:auto;
+  border:1px solid var(--line); background:transparent;
+  border-radius:10px; cursor:pointer; font-size:18px;
+}
+
+@media (max-width:820px){
+  .burger{ display:block; }
+
+  header.site .wrap{ position:relative; }
+
+  .site-nav{
+    display:none;
+    position:absolute; top:64px; left:0; right:0;
+    flex-direction:column; gap:0;
+    background:var(--panel);
+    border-bottom:1px solid var(--line);
+    padding:6px 18px 14px;
+  }
+  .site-nav.open{ display:flex; }
+  .site-nav a{ padding:13px 0; border-bottom:1px solid var(--line); }
+
+  header.site .btn{ display:none; }
+
+  section{ padding:52px 0; }
+  .hero{ padding:56px 0 44px; }
+  .hero .actions{ width:100%; }
+  .hero .actions .btn{ flex:1; text-align:center; }
+  .stats{ gap:22px; }
+  .booking{ padding:22px 18px; }
+  .picked .right{ width:100%; margin-left:0; }
+  .picked .right .btn{ flex:1; text-align:center; }
+}`,
+ into:'header.site .wrap',
+ html:`<button class="burger" id="burger" aria-label="เปิดเมนู" aria-expanded="false">☰</button>
+
+<script>
+var burger = document.querySelector('#burger');
+var siteNav = document.querySelector('#siteNav');
+
+burger.addEventListener('click', function(){
+  var open = siteNav.classList.toggle('open');
+  burger.setAttribute('aria-expanded', open ? 'true' : 'false');
+  burger.textContent = open ? '✕' : '☰';
+});
+
+/* ปิดเมนูอัตโนมัติเมื่อกดลิงก์ ไม่งั้นเมนูจะค้างบังเนื้อหา */
+siteNav.addEventListener('click', function(e){
+  if(e.target.tagName !== 'A') return;
+  siteNav.classList.remove('open');
+  burger.setAttribute('aria-expanded', 'false');
+  burger.textContent = '☰';
+});
+<\/script>`,
+ lines:[
+  {c:'width:44px; height:44px;', d:'<b>ขนาดขั้นต่ำที่นิ้วโป้งกดแม่น</b>. ปุ่มเล็กกว่านี้ผู้ใช้จะกดพลาดและกรรมการจะรู้สึกทันที'},
+  {c:'aria-label="เปิดเมนู"', d:'ปุ่มที่มีแต่สัญลักษณ์ ☰ โปรแกรมอ่านหน้าจออ่านไม่ออก. <b>บรรทัดนี้บอกว่าปุ่มนี้ทำอะไร</b>'},
+  {c:'aria-expanded="false"', d:'บอกว่าเมนูเปิดอยู่หรือไม่ <b>ต้องอัปเดตด้วย JavaScript ทุกครั้งที่สลับ</b> ไม่งั้นข้อมูลจะโกหก'},
+  {c:'position:absolute; top:64px;', d:'วางเมนูใต้แถบพอดี. <b>ต้องมี <code>position:relative</code> ที่กล่องพ่อ</b> ไม่งั้นจะไปเกาะขอบหน้าจอแทน'},
+  {c:'ปิดเมนูเมื่อกดลิงก์', d:'ในหน้าเดียวที่เลื่อนไปหาหัวข้อ <b>ถ้าไม่ปิดเมนูจะค้างบังเนื้อหาที่เพิ่งเลื่อนไปถึง</b> — จุดที่คนลืมกันเกือบทุกคน'}
+ ],
+ try:'กดปุ่ม <b>มือถือ</b> บนกระดาน แล้วกดปุ่มสามขีด กดลิงก์ในเมนู — เมนูต้องปิดเองแล้วเลื่อนไปยังส่วนนั้น.'
+},
+/* ============ 12 ============ */
+{
+ t:'ขัดเงาขั้นสุดท้าย: ไฮไลต์เมนูตามส่วนที่ดูอยู่',
+ why:'รายละเอียดที่<b>ทำให้เว็บดูเป็นงานที่คิดมาครบ</b>. เมื่อเลื่อนถึงส่วนไหน ลิงก์บนแถบเมนูของส่วนนั้นจะเน้นขึ้นมาเอง. ใช้เวลา 5 นาที แต่กรรมการสังเกตเห็น.',
+ rule:{t:'IntersectionObserver คืออะไร', d:'เครื่องมือที่คอย<b>ดูว่าของชิ้นไหนเข้ามาอยู่ในจอแล้ว</b> โดยไม่ต้องคำนวณตำแหน่งเอง. ใช้ได้ทั้งไฮไลต์เมนู เอฟเฟกต์ค่อยๆ ปรากฏ และโหลดข้อมูลเพิ่มเมื่อเลื่อนถึงท้ายหน้า.'},
+ css:`/* ===== 12. เอฟเฟกต์ค่อยๆ ปรากฏ ===== */
+.reveal{ opacity:0; transform:translateY(16px); transition:.55s ease; }
+.reveal.in{ opacity:1; transform:none; }
+
+/* เคารพผู้ใช้ที่ไม่ต้องการภาพเคลื่อนไหว */
+@media (prefers-reduced-motion:reduce){
+  *{ transition:none !important; animation:none !important; }
+  .reveal{ opacity:1; transform:none; }
+}`,
+ html:`<script>
+/* ---------- ไฮไลต์ลิงก์เมนูตามส่วนที่กำลังดู ---------- */
+var spy = new IntersectionObserver(function(entries){
+  entries.forEach(function(en){
+    if(!en.isIntersecting) return;
+    document.querySelectorAll('.site-nav a').forEach(function(a){
+      a.classList.toggle('on', a.getAttribute('href') === '#' + en.target.id);
+    });
+  });
+}, { rootMargin: '-45% 0px -50% 0px' });
+
+document.querySelectorAll('section[id], footer[id]').forEach(function(s){
+  spy.observe(s);
+});
+
+/* ---------- เอฟเฟกต์ค่อยๆ ปรากฏ ---------- */
+document.querySelectorAll('.head, .booking, .faq').forEach(function(el){
+  el.classList.add('reveal');
+});
+
+var revealer = new IntersectionObserver(function(entries){
+  entries.forEach(function(en){
+    if(en.isIntersecting){
+      en.target.classList.add('in');
+      revealer.unobserve(en.target);
+    }
+  });
+}, { threshold: 0.12 });
+
+document.querySelectorAll('.reveal').forEach(function(el){ revealer.observe(el); });
+<\/script>`,
+ lines:[
+  {c:'new IntersectionObserver(function(entries){...})', d:'สร้างตัวเฝ้าดู. ฟังก์ชันข้างในจะถูกเรียก<b>ทุกครั้งที่ของที่เฝ้าอยู่เข้าหรือออกจากจอ</b>'},
+  {c:'en.isIntersecting', d:'จริงเมื่อของชิ้นนั้น<b>อยู่ในจอแล้ว</b>. เป็นเงื่อนไขหลักที่ใช้เสมอ'},
+  {c:"rootMargin: '-45% 0px -50% 0px'", d:'<b>หดพื้นที่ตรวจจับให้เหลือแถบแคบๆ กลางจอ</b> — ทำให้ไฮไลต์เปลี่ยนตอนหัวข้ออยู่กลางจอพอดี ไม่ใช่ตอนเพิ่งโผล่ขอบล่าง'},
+  {c:'threshold: 0.12', d:'ให้ถือว่า "เห็นแล้ว" เมื่อโผล่เข้ามา 12%. <b>ค่าต่ำทำให้เอฟเฟกต์เริ่มเร็ว รู้สึกลื่นกว่า</b>'},
+  {c:'revealer.unobserve(en.target)', d:'<b>เลิกเฝ้าเมื่อแสดงแล้ว</b> ไม่งั้นเอฟเฟกต์จะเล่นซ้ำทุกครั้งที่เลื่อนผ่าน ซึ่งน่ารำคาญ'},
+  {c:'prefers-reduced-motion', d:'ผู้ใช้บางคนตั้งค่าเครื่องว่าภาพเคลื่อนไหวทำให้เวียนหัว. <b>สามบรรทัดนี้คือการเคารพเขา และเป็นคะแนน accessibility</b>'}
+ ],
+ try:'เลื่อนกระดานขึ้นลงช้าๆ แล้วดูลิงก์บนแถบเมนู — ต้องเปลี่ยนไฮไลต์ตามส่วนที่กำลังดูอยู่.'
+},
+/* ============ 13 ============ */
+{
+ t:'ตรวจงานก่อนส่ง และสิ่งที่ต้องพูดตอนนำเสนอ',
+ why:'เว็บเสร็จแล้ว. ขั้นนี้<b>ไม่เพิ่มโค้ด</b> แต่เป็นสิ่งที่แยกงานที่ได้คะแนนเต็มออกจากงานที่พลาดเรื่องเล็กๆ.',
+ rule:{t:'เช็กลิสต์ก่อนส่ง 10 ข้อ', d:'1) กด <kbd>F12</kbd> ดู Console ไม่มีตัวแดง<br>2) กดทุกปุ่มทุกลิงก์ ไม่มีอันไหนกดแล้วเงียบ<br>3) กด <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>M</kbd> ดูมือถือ ไม่มีของล้น<br>4) กด <kbd>Tab</kbd> รัวๆ เห็นกรอบโฟกัสครบทุกปุ่ม<br>5) ทุก <code>&lt;img&gt;</code> มี <code>alt</code><br>6) ทุก <code>&lt;input&gt;</code> มี <code>&lt;label for&gt;</code> ที่ตรงกับ id<br>7) <code>&lt;title&gt;</code> เป็นชื่องานจริง<br>8) ไม่มีคำว่า test, Lorem, ชื่อเว็บ หลงเหลือ<br>9) กด <kbd>Shift</kbd>+<kbd>Alt</kbd>+<kbd>F</kbd> จัดโค้ดให้สวย<br>10) รีเฟรชหน้าใหม่หมด แล้วลองใช้งานตั้งแต่ต้นอีกรอบ'},
+ css:`/* ===== 13. ขัดเงาสุดท้าย ===== */
+
+/* ให้ทุกอย่างที่กดได้มีสถานะโฟกัสที่มองเห็น */
+a:focus-visible, button:focus-visible, summary:focus-visible{
+  outline:3px solid var(--accent);
+  outline-offset:3px;
+  border-radius:4px;
+}
+
+/* กันข้อความยาวผิดปกติทำให้หน้าเว็บล้นออกด้านข้าง */
+body{ overflow-x:hidden; }
+h1,h2,h3,p{ overflow-wrap:break-word; }
+
+/* พิมพ์หน้าเว็บออกกระดาษ: ซ่อนของที่ไม่จำเป็น */
+@media print{
+  header.site, .picked, .tools, .cats{ display:none; }
+  body{ background:#fff; }
+}`,
+ do:[
+  'ไล่เช็กลิสต์ 10 ข้อในกล่องด้านบนให้ครบ',
+  'กด <kbd>Shift</kbd>+<kbd>Alt</kbd>+<kbd>F</kbd> จัดโค้ดให้สวยก่อนส่ง',
+  'บันทึกสำเนาไฟล์ไว้อีกที่หนึ่งก่อนส่ง เผื่อไฟล์หลักมีปัญหา',
+  'ซ้อมพูดนำเสนอหนึ่งรอบตามหัวข้อด้านล่าง'
+ ],
+ try:'<b>สคริปต์นำเสนอ 60 วินาที:</b><br>1) "เว็บนี้แก้ปัญหา___ ให้___" (ไม่ใช่ "ผมทำหน้าแรก หน้าสอง")<br>2) สาธิตของจริง — ค้นหาเมนู กดกรองหมวด เลือกอาหาร<br>3) "ข้อมูลเก็บใน localStorage รีเฟรชแล้วไม่หาย" แล้ว<b>รีเฟรชให้ดู</b><br>4) กรอกฟอร์มผิดให้ดูว่ามีข้อความบอกวิธีแก้<br>5) ย่อหน้าต่างให้ดูว่าใช้บนมือถือได้<br>6) "ใช้ตัวแปร CSS เป็น design system เปลี่ยนธีมทั้งเว็บได้จากจุดเดียว" แล้วแก้ <code>--accent</code> ให้ดูสดๆ'
+},
+]
+};
+</script>
+<script src="lab.js"></script>
+</body>
+</html>

@@ -1,0 +1,282 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ฝึกตาออกแบบ — Studio</title>
+<link rel="stylesheet" href="studio.css">
+<style>
+.pair{border:1px solid var(--rule);border-radius:var(--r);overflow:hidden;margin:16px 0;
+  background:var(--paper)}
+.pair-h{padding:14px 18px;border-bottom:1px solid var(--rule)}
+.pair-h .n{font-family:var(--mono);font-size:11px;letter-spacing:2px;color:var(--mark)}
+.pair-h h3{font-size:18px;margin:4px 0 6px;letter-spacing:-.3px}
+.pair-h p{color:var(--ink-2);font-size:14.5px;max-width:70ch}
+.two{display:grid;grid-template-columns:1fr 1fr}
+.side{min-width:0}
+.side+.side{border-left:1px solid var(--rule)}
+.side .cap{padding:7px 14px;font-family:var(--mono);font-size:10.5px;letter-spacing:1.8px;
+  text-transform:uppercase;background:var(--paper-2);border-bottom:1px solid var(--rule)}
+.side.no .cap{color:var(--bad)}
+.side.yes .cap{color:var(--good)}
+.side iframe{width:100%;height:220px;border:0;background:#fff;display:block}
+.fix{padding:12px 18px;border-top:1px solid var(--rule);font-size:14px;color:var(--ink-2)}
+.fix b{color:var(--mark);font-family:var(--mono);font-size:11px;letter-spacing:1.6px;
+  text-transform:uppercase;display:block;margin-bottom:3px}
+.ref{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));margin:20px 0}
+.ref-card{background:var(--paper);border:1px solid var(--rule);border-radius:var(--r);padding:18px}
+.ref-card h4{font-size:14px;margin-bottom:10px}
+.ref-card code{font-family:var(--mono);font-size:12.5px;color:var(--mark);display:block;
+  line-height:1.9}
+.swatches{display:flex;gap:6px;margin-top:10px;flex-wrap:wrap}
+.sw{width:34px;height:34px;border-radius:6px;border:1px solid var(--rule-2)}
+@media(max-width:820px){ .two{grid-template-columns:1fr} .side+.side{border-left:0;border-top:1px solid var(--rule)} }
+</style>
+</head>
+<body>
+
+<div class="bar"><div class="bar-in">
+  <div class="mark">WEB <b>STUDIO</b></div>
+  <nav>
+    <a href="index.html">ห้องปฏิบัติการ</a>
+    <a href="design-eye.html" class="on">ฝึกตาออกแบบ</a>
+    <a href="../index.html">คลังความรู้</a>
+  </nav>
+</div></div>
+
+<div class="wrap">
+  <div class="hero-s">
+    <div class="kicker">ฝึกตา · ดูก่อน อ่านทีหลัง</div>
+    <h1>งานสองชิ้นนี้ใช้เนื้อหาเดียวกัน<br>ทำไมชิ้นขวาถึงดูแพงกว่า</h1>
+    <p>ทุกคู่ข้างล่างต่างกันแค่จุดเดียว. <b>ดูภาพก่อนแล้วเดาว่าต่างตรงไหน</b> ค่อยอ่านคำเฉลย —
+       การฝึกแบบนี้สร้างสัญชาตญาณได้เร็วกว่าท่องกฎมาก เพราะตาจะจำความรู้สึก ไม่ใช่จำตัวหนังสือ.</p>
+  </div>
+
+  <div id="pairs"></div>
+
+  <h2 class="sec">ชุดค่าที่หยิบไปใช้ได้เลย</h2>
+  <p class="sec-sub">จำสามอย่างนี้แล้วไม่ต้องตัดสินใจซ้ำอีกตลอดการแข่ง</p>
+  <div class="ref">
+    <div class="ref-card">
+      <h4>สเกลระยะห่าง</h4>
+      <code>4px&nbsp;&nbsp;ชิดกันมาก (ไอคอนกับคำ)
+8px&nbsp;&nbsp;ในกล่องเดียวกัน
+16px&nbsp;ระหว่างของในกลุ่ม
+24px&nbsp;ระหว่างกลุ่ม
+40px&nbsp;ระหว่างส่วน
+64px&nbsp;ระหว่างหัวข้อใหญ่</code>
+    </div>
+    <div class="ref-card">
+      <h4>สเกลตัวอักษร</h4>
+      <code>48px / 800  พาดหัวหลัก
+24px / 700  หัวข้อ
+16px / 400  เนื้อหา
+13px / 500  ป้ายกำกับ</code>
+      <p style="color:var(--ink-2);font-size:13px;margin-top:10px">
+        เว้นช่วงให้ห่างพอ. 16 กับ 18 ตาแยกไม่ออก จะกลายเป็นแค่รก.</p>
+    </div>
+    <div class="ref-card">
+      <h4>สูตรเลือกสีใน 60 วินาที</h4>
+      <code>พื้น&nbsp;&nbsp;&nbsp;เกือบขาว/เกือบดำ
+ตัวอักษร&nbsp;เข้ม + จาง
+เส้น&nbsp;&nbsp;&nbsp;ระหว่างพื้นกับตัวจาง
+เน้น&nbsp;&nbsp;&nbsp;1 สี ใช้ 2-3 ที่</code>
+      <div class="swatches">
+        <div class="sw" style="background:#faf9f7"></div>
+        <div class="sw" style="background:#15181d"></div>
+        <div class="sw" style="background:#5f6b78"></div>
+        <div class="sw" style="background:#e3e0da"></div>
+        <div class="sw" style="background:#0f5c4a"></div>
+      </div>
+      <p style="color:var(--ink-2);font-size:13px;margin-top:10px">
+        เทาที่เอียงไปทางสีเน้นนิดหน่อยจะดูตั้งใจเลือก เทากลางๆ ดูเหมือนค่าเริ่มต้น.</p>
+    </div>
+  </div>
+
+  <h2 class="sec">ตรวจงานตัวเอง 60 วินาทีก่อนส่ง</h2>
+  <p class="sec-sub">ไล่จากบนลงล่าง เจอข้อไหนตอบไม่ได้ให้กลับไปแก้</p>
+  <div class="ref">
+    <div class="ref-card"><h4>หรี่ตามอง</h4>
+      <p style="color:var(--ink-2);font-size:14px">หรี่ตาจนภาพเบลอ. สิ่งที่ยังเห็นเป็นก้อนเด่นที่สุดควรเป็นสิ่งสำคัญที่สุดจริงๆ ถ้าไม่ใช่ แปลว่าลำดับผิด.</p></div>
+    <div class="ref-card"><h4>วัดระยะทุกช่อง</h4>
+      <p style="color:var(--ink-2);font-size:14px">ทุกค่าต้องอยู่ใน 4/8/16/24/40/64. เจอ 18 หรือ 22 แปลว่าเผลอเดา ไม่ได้เลือก.</p></div>
+    <div class="ref-card"><h4>นับสีเน้น</h4>
+      <p style="color:var(--ink-2);font-size:14px">สีเน้นควรปรากฏ 2-3 ที่ในหนึ่งหน้าจอ. เกินห้าที่เมื่อไหร่ มันเลิกเน้นแล้ว.</p></div>
+    <div class="ref-card"><h4>กด Tab รัวๆ</h4>
+      <p style="color:var(--ink-2);font-size:14px">ต้องเห็นกรอบโฟกัสวิ่งไปทุกปุ่มทุกลิงก์. มองไม่เห็น = เสียคะแนน accessibility ฟรีๆ.</p></div>
+    <div class="ref-card"><h4>ย่อจอเหลือ 390px</h4>
+      <p style="color:var(--ink-2);font-size:14px">หน้าเว็บต้องไม่เลื่อนซ้ายขวาได้. ถ้าเลื่อนได้ แปลว่ามีของล้น ต้องตามหาให้เจอ.</p></div>
+    <div class="ref-card"><h4>อ่านข้อความออกเสียง</h4>
+      <p style="color:var(--ink-2);font-size:14px">ปุ่มบอกสิ่งที่จะเกิดขึ้นไหม. ข้อความผิดพลาดบอกวิธีแก้ไหม. ไม่มีคำว่า "ทดสอบ" หรือ Lorem หลงเหลือ.</p></div>
+  </div>
+
+  <div class="prevnext" style="display:flex;justify-content:space-between;gap:16px;margin:50px 0 0;
+       padding-top:26px;border-top:1px solid var(--rule)">
+    <a class="tool" href="index.html">กลับห้องปฏิบัติการ</a>
+    <a class="tool" href="lab-01-hero.html" style="border-color:var(--mark);color:var(--mark)">เริ่ม LAB 01</a>
+  </div>
+</div>
+
+<footer class="s"><div class="wrap">Web Studio · ฝึกตาออกแบบ</div></footer>
+
+<script>
+const BASE = `<style>
+*,*::before,*::after{box-sizing:border-box}*{margin:0}
+body{font-family:system-ui,"Segoe UI","Noto Sans Thai",sans-serif;
+  padding:18px;background:#fff;color:#16181c;font-size:14px;line-height:1.55}
+</style>`;
+
+const PAIRS = [
+{
+ t:'ระยะห่างที่เดาเอา กับ ระยะห่างที่มาจากสเกล',
+ d:'สองฝั่งใช้ข้อความเดียวกัน ต่างกันแค่ตัวเลขระยะห่าง. ฝั่งซ้ายใช้ 7, 13, 22, 9 (เดาเอาทีละที่) ฝั่งขวาใช้ 8, 16, 24 ทั้งหมด.',
+ fix:'เลือกระยะจากชุด 4/8/16/24/40/64 เท่านั้น. สมองคนจับจังหวะที่ซ้ำกันได้ แม้จะบอกไม่ถูกว่าเพราะอะไร.',
+ no:`<div style="border:1px solid #e2e2e2;border-radius:10px;padding:13px">
+  <h3 style="font-size:17px;margin-bottom:7px">แพ็กเกจดูแลสวน</h3>
+  <p style="color:#6b7280;margin-bottom:22px">ตัดหญ้า เก็บใบไม้ ให้ปุ๋ยตามรอบ</p>
+  <div style="font-size:21px;font-weight:800;margin-bottom:9px">1,200 บาท/เดือน</div>
+  <button style="background:#1f6f4f;color:#fff;border:0;padding:9px 17px;border-radius:7px">จองคิว</button>
+</div>`,
+ yes:`<div style="border:1px solid #e2e2e2;border-radius:10px;padding:16px;
+   display:flex;flex-direction:column;gap:8px;align-items:flex-start">
+  <h3 style="font-size:17px">แพ็กเกจดูแลสวน</h3>
+  <p style="color:#6b7280">ตัดหญ้า เก็บใบไม้ ให้ปุ๋ยตามรอบ</p>
+  <div style="font-size:21px;font-weight:800;margin-top:8px">1,200 บาท/เดือน</div>
+  <button style="background:#1f6f4f;color:#fff;border:0;padding:10px 18px;border-radius:8px;margin-top:8px">จองคิว</button>
+</div>`
+},
+{
+ t:'สีเน้นทุกที่ กับ สีเน้นที่เดียว',
+ d:'ฝั่งซ้ายใช้สีเน้นกับหัวข้อ ราคา ป้าย และปุ่ม. ฝั่งขวาใช้กับปุ่มอย่างเดียว ที่เหลือเป็นเทาดำ.',
+ fix:'สีเน้นคือการชี้นิ้ว. ชี้พร้อมกันสี่ทิศเท่ากับไม่ได้ชี้อะไรเลย. เลือกของสำคัญที่สุดหนึ่งอย่างต่อหน้าจอ.',
+ no:`<div style="display:flex;flex-direction:column;gap:8px;align-items:flex-start">
+  <span style="color:#c2410c;font-size:12px;font-weight:700">ที่นั่งเหลือน้อย</span>
+  <h3 style="font-size:19px;color:#c2410c">คอร์สทำขนมปังสำหรับมือใหม่</h3>
+  <p style="color:#c2410c">เรียนสองวัน ได้สูตรกลับบ้าน 6 สูตร</p>
+  <div style="font-size:20px;font-weight:800;color:#c2410c">2,900 บาท</div>
+  <button style="background:#c2410c;color:#fff;border:0;padding:10px 18px;border-radius:8px">สมัครเรียน</button>
+</div>`,
+ yes:`<div style="display:flex;flex-direction:column;gap:8px;align-items:flex-start">
+  <span style="color:#c2410c;font-size:12px;font-weight:700">ที่นั่งเหลือน้อย</span>
+  <h3 style="font-size:19px">คอร์สทำขนมปังสำหรับมือใหม่</h3>
+  <p style="color:#6b7280">เรียนสองวัน ได้สูตรกลับบ้าน 6 สูตร</p>
+  <div style="font-size:20px;font-weight:800">2,900 บาท</div>
+  <button style="background:#c2410c;color:#fff;border:0;padding:10px 18px;border-radius:8px">สมัครเรียน</button>
+</div>`
+},
+{
+ t:'ขนาดตัวอักษรใกล้กันเกิน กับ สเกลที่ห่างพอ',
+ d:'ซ้ายใช้ 20 / 17 / 15 / 14 — ต่างกันนิดเดียว. ขวาใช้ 26 / 16 / 13 ซึ่งตาแยกออกทันทีว่าอันไหนสำคัญกว่า.',
+ fix:'ระดับที่ต่างกันไม่ถึง 25% ตาจะแยกไม่ออก แล้วกลายเป็นความรกแทนที่จะเป็นลำดับ. ตัดให้เหลือ 3-4 ระดับที่ห่างกันชัด.',
+ no:`<div>
+  <div style="font-size:14px;color:#6b7280">รายงานประจำเดือน</div>
+  <h3 style="font-size:20px;margin:4px 0">ยอดบริจาคกองทุนอาหารกลางวัน</h3>
+  <p style="font-size:17px;margin-bottom:8px">เดือนนี้ได้รับบริจาครวม 184,500 บาท</p>
+  <p style="font-size:15px;color:#6b7280">จากผู้บริจาค 412 คน ครอบคลุม 9 โรงเรียน</p>
+</div>`,
+ yes:`<div>
+  <div style="font-size:12px;color:#6b7280;letter-spacing:1.4px;text-transform:uppercase">รายงานประจำเดือน</div>
+  <h3 style="font-size:26px;margin:6px 0;letter-spacing:-.7px;line-height:1.2">ยอดบริจาคกองทุนอาหารกลางวัน</h3>
+  <p style="font-size:16px;margin-bottom:6px">เดือนนี้ได้รับบริจาครวม 184,500 บาท</p>
+  <p style="font-size:13px;color:#6b7280">จากผู้บริจาค 412 คน ครอบคลุม 9 โรงเรียน</p>
+</div>`
+},
+{
+ t:'บรรทัดยาวเต็มจอ กับ บรรทัดที่จำกัดความกว้าง',
+ d:'เนื้อหาเดียวกัน ต่างแค่ฝั่งขวาใส่ max-width 60ch.',
+ fix:'บรรทัดยาวเกิน 65 ตัวอักษร ตาจะหาจุดขึ้นบรรทัดใหม่ไม่เจอ อ่านแล้วเหนื่อยโดยไม่รู้ตัว. ใส่ max-width ให้ทุกย่อหน้ายาว.',
+ no:`<p style="color:#33383f">ศูนย์การเรียนรู้เปิดให้ประชาชนทั่วไปเข้าใช้ห้องสมุดและห้องปฏิบัติการได้ทุกวันอังคารถึงวันอาทิตย์ ตั้งแต่เก้าโมงเช้าถึงหกโมงเย็น โดยไม่เสียค่าใช้จ่าย ผู้ที่ต้องการใช้ห้องปฏิบัติการต้องลงทะเบียนล่วงหน้าอย่างน้อยหนึ่งวันเพื่อให้เจ้าหน้าที่เตรียมอุปกรณ์ให้พร้อม</p>`,
+ yes:`<p style="color:#33383f;max-width:60ch">ศูนย์การเรียนรู้เปิดให้ประชาชนทั่วไปเข้าใช้ห้องสมุดและห้องปฏิบัติการได้ทุกวันอังคารถึงวันอาทิตย์ ตั้งแต่เก้าโมงเช้าถึงหกโมงเย็น โดยไม่เสียค่าใช้จ่าย ผู้ที่ต้องการใช้ห้องปฏิบัติการต้องลงทะเบียนล่วงหน้าอย่างน้อยหนึ่งวันเพื่อให้เจ้าหน้าที่เตรียมอุปกรณ์ให้พร้อม</p>`
+},
+{
+ t:'จัดกลางทุกอย่าง กับ จัดชิดซ้ายเป็นหลัก',
+ d:'การจัดกลางเหมาะกับข้อความสั้น 1-2 บรรทัด. พอเนื้อหายาวขึ้น ขอบซ้ายที่ไม่ตรงกันจะทำให้ตาต้องหาจุดเริ่มใหม่ทุกบรรทัด.',
+ fix:'จัดกลางได้เฉพาะพาดหัวสั้นๆ กับปุ่มเดี่ยว. รายการ ย่อหน้า และฟอร์ม ให้ชิดซ้ายเสมอ.',
+ no:`<div style="text-align:center">
+  <h3 style="font-size:19px">อาสาสมัครที่เราต้องการ</h3>
+  <p style="color:#6b7280;margin:8px 0">งานที่เปิดรับตอนนี้มีสามด้าน</p>
+  <ul style="list-style:none;padding:0;color:#33383f;line-height:2">
+    <li>สอนการบ้านเด็กประถมหลังเลิกเรียน</li>
+    <li>ช่วยจัดของบริจาคที่คลังกลาง</li>
+    <li>ถ่ายภาพกิจกรรมและเขียนสรุป</li>
+  </ul>
+</div>`,
+ yes:`<div>
+  <h3 style="font-size:19px">อาสาสมัครที่เราต้องการ</h3>
+  <p style="color:#6b7280;margin:8px 0">งานที่เปิดรับตอนนี้มีสามด้าน</p>
+  <ul style="list-style:none;padding:0;color:#33383f;line-height:2">
+    <li>สอนการบ้านเด็กประถมหลังเลิกเรียน</li>
+    <li>ช่วยจัดของบริจาคที่คลังกลาง</li>
+    <li>ถ่ายภาพกิจกรรมและเขียนสรุป</li>
+  </ul>
+</div>`
+},
+{
+ t:'ตัวเลขชิดซ้าย กับ ตัวเลขชิดขวา',
+ d:'ตารางเดียวกัน ต่างแค่การจัดแนวคอลัมน์ตัวเลข.',
+ fix:'ตัวเลขชิดขวาเสมอ แล้วหลักหน่วย สิบ ร้อย จะเรียงตรงกัน เทียบค่ามาก-น้อยได้ด้วยการกวาดตาครั้งเดียว. เพิ่ม tabular-nums ให้ความกว้างตัวเลขเท่ากันทุกตัว.',
+ no:`<table style="width:100%;border-collapse:collapse;font-size:13.5px">
+<tr style="border-bottom:1px solid #e5e5e5"><th style="text-align:left;padding:7px;color:#6b7280">รายการ</th><th style="text-align:left;padding:7px;color:#6b7280">จำนวน</th></tr>
+<tr style="border-bottom:1px solid #f0f0f0"><td style="padding:7px">ค่าวัสดุก่อสร้าง</td><td style="padding:7px">128,400</td></tr>
+<tr style="border-bottom:1px solid #f0f0f0"><td style="padding:7px">ค่าแรงช่าง</td><td style="padding:7px">64,000</td></tr>
+<tr style="border-bottom:1px solid #f0f0f0"><td style="padding:7px">ค่าขนส่ง</td><td style="padding:7px">7,250</td></tr>
+<tr><td style="padding:7px">ค่าดำเนินการ</td><td style="padding:7px">980</td></tr>
+</table>`,
+ yes:`<table style="width:100%;border-collapse:collapse;font-size:13.5px;font-variant-numeric:tabular-nums">
+<tr style="border-bottom:1px solid #e5e5e5"><th style="text-align:left;padding:7px;color:#6b7280">รายการ</th><th style="text-align:right;padding:7px;color:#6b7280">จำนวน</th></tr>
+<tr style="border-bottom:1px solid #f0f0f0"><td style="padding:7px">ค่าวัสดุก่อสร้าง</td><td style="padding:7px;text-align:right">128,400</td></tr>
+<tr style="border-bottom:1px solid #f0f0f0"><td style="padding:7px">ค่าแรงช่าง</td><td style="padding:7px;text-align:right">64,000</td></tr>
+<tr style="border-bottom:1px solid #f0f0f0"><td style="padding:7px">ค่าขนส่ง</td><td style="padding:7px;text-align:right">7,250</td></tr>
+<tr><td style="padding:7px">ค่าดำเนินการ</td><td style="padding:7px;text-align:right">980</td></tr>
+</table>`
+},
+{
+ t:'ตัวอักษรจางเกินไป กับ คอนทราสต์ที่พอ',
+ d:'ฝั่งซ้ายใช้เทา #adb3ba บนขาว ซึ่งดูสะอาดตาบนจอที่สว่างมาก แต่บนโปรเจกเตอร์ห้องประชุมจะอ่านแทบไม่ออก.',
+ fix:'ข้อความเนื้อหาต้องมีอัตราคอนทราสต์อย่างน้อย 4.5 ต่อ 1. ถ้าอยากได้ความรู้สึกจาง ให้ลดขนาดหรือใช้น้ำหนักบางแทน อย่าลดความเข้มของสี.',
+ no:`<div>
+  <h3 style="font-size:18px;color:#9aa0a8">ขั้นตอนการยื่นคำร้อง</h3>
+  <p style="color:#adb3ba;margin-top:8px">กรอกแบบฟอร์มออนไลน์ แนบสำเนาบัตรประชาชน แล้วรอเจ้าหน้าที่ติดต่อกลับภายในสามวันทำการ</p>
+  <p style="color:#c3c8ce;font-size:13px;margin-top:10px">หากเกินกำหนดกรุณาโทร 1234</p>
+</div>`,
+ yes:`<div>
+  <h3 style="font-size:18px;color:#16181c">ขั้นตอนการยื่นคำร้อง</h3>
+  <p style="color:#4a525c;margin-top:8px">กรอกแบบฟอร์มออนไลน์ แนบสำเนาบัตรประชาชน แล้วรอเจ้าหน้าที่ติดต่อกลับภายในสามวันทำการ</p>
+  <p style="color:#6b7280;font-size:13px;margin-top:10px">หากเกินกำหนดกรุณาโทร 1234</p>
+</div>`
+},
+{
+ t:'ข้อความผิดพลาดที่กำกวม กับ ที่บอกวิธีแก้',
+ d:'งานออกแบบไม่ได้จบที่ภาพ. ถ้อยคำคือวัสดุอย่างหนึ่งเหมือนสีและระยะห่าง.',
+ fix:'ข้อความผิดพลาดต้องตอบสองข้อ: ผิดตรงไหน และต้องทำอะไรต่อ. ห้ามขอโทษ ห้ามใช้ศัพท์ระบบ.',
+ no:`<div style="border:1px solid #e2e2e2;border-radius:10px;padding:16px;max-width:340px">
+  <label style="font-size:13px;font-weight:600;display:block;margin-bottom:6px">รหัสผ่าน</label>
+  <input value="12345" style="width:100%;height:42px;padding:0 12px;border:1px solid #d33;border-radius:8px;background:#fff8f7">
+  <p style="color:#d33;font-size:12.5px;margin-top:6px">ข้อมูลไม่ถูกต้อง กรุณาลองใหม่</p>
+</div>`,
+ yes:`<div style="border:1px solid #e2e2e2;border-radius:10px;padding:16px;max-width:340px">
+  <label style="font-size:13px;font-weight:600;display:block;margin-bottom:6px">รหัสผ่าน</label>
+  <input value="12345" style="width:100%;height:42px;padding:0 12px;border:1px solid #d33;border-radius:8px;background:#fff8f7">
+  <p style="color:#d33;font-size:12.5px;margin-top:6px"><b>!</b> รหัสผ่านสั้นไป 3 ตัว ต้องมีอย่างน้อย 8 ตัวอักษร และมีตัวเลขอย่างน้อยหนึ่งตัว</p>
+</div>`
+},
+];
+
+document.querySelector('#pairs').innerHTML = PAIRS.map((p, i) => `
+  <section class="pair">
+    <div class="pair-h">
+      <div class="n">คู่ที่ ${String(i+1).padStart(2,'0')}</div>
+      <h3>${p.t}</h3>
+      <p>${p.d}</p>
+    </div>
+    <div class="two">
+      <div class="side no"><div class="cap">แบบที่พบบ่อย</div>
+        <iframe title="ตัวอย่างที่ควรเลี่ยง" srcdoc='${(BASE + p.no).replace(/'/g, "&apos;")}'></iframe></div>
+      <div class="side yes"><div class="cap">แบบที่ดูตั้งใจทำ</div>
+        <iframe title="ตัวอย่างที่ดี" srcdoc='${(BASE + p.yes).replace(/'/g, "&apos;")}'></iframe></div>
+    </div>
+    <div class="fix"><b>สิ่งที่ต่างกัน</b>${p.fix}</div>
+  </section>`).join('');
+</script>
+</body>
+</html>

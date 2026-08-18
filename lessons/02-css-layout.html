@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="th"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>02 · CSS ที่ใช้จริง</title>
+<link rel="stylesheet" href="../css/style.css"></head>
+<body>
+<header class="site"><div class="wrap">
+  <div class="logo">WEB <span>SPEEDRUN</span></div>
+  <nav class="top"><a href="../index.html">หน้าแรก</a><a href="01-structure.html">01</a>
+  <a href="02-css-layout.html" class="active">02</a><a href="03-js-core.html">03</a>
+  <a href="04-battle-plan.html">04</a><a href="05-lookup.html">05</a><a href="06-vscode.html">06</a>
+  <a href="../templates/index.html">เทมเพลต</a></nav></div></header>
+
+<div class="wrap lesson">
+<div class="hero"><span class="tag">LESSON 02</span>
+<h1>CSS: 20% ที่ครอบ 80% ของงาน</h1>
+<p class="lead">CSS มี property เป็นพันตัว. ตอนแข่งคุณใช้จริงประมาณ 25 ตัว. นี่คือ 25 ตัวนั้น.</p></div>
+
+<h2>1. เขียน CSS ยังไงไม่ให้มั่ว — เขียนตามลำดับนี้เสมอ</h2>
+<pre><code>1) tokens   :root{ --สี --ระยะ }
+2) reset    *{box-sizing:border-box} *{margin:0}
+3) base     body, a, h1..h6
+4) layout   .wrap .grid .flex-row
+5) component .card .btn .nav .form
+6) responsive @media</code></pre>
+<p>เขียนสลับลำดับ = ทับกันเอง = เสียเวลาไล่หา. ท่องลำดับนี้.</p>
+
+<h2>2. Reset 5 บรรทัด (พิมพ์ก่อนเสมอ)</h2>
+<pre><code>*,*::before,*::after{ box-sizing: border-box; }
+*{ margin: 0; }
+body{ min-height: 100vh; line-height: 1.6; }
+img,svg,video{ display: block; max-width: 100%; }
+input,button,select,textarea{ font: inherit; }</code></pre>
+<div class="note"><b><code>box-sizing:border-box</code> คืออะไร:</b> ปกติกำหนด <code>width:200px</code> แล้วใส่ padding 20px
+กล่องจะกลายเป็น 240px (บวกเพิ่ม!). ใส่บรรทัดนี้ปุ๊บ กล่องเป็น 200px เป๊ะตามที่สั่ง padding อยู่ข้างใน.
+<b>นี่คือสาเหตุอันดับ 1 ที่ layout มือใหม่พัง.</b></div>
+
+<h2>3. ตัวแปร CSS = อาวุธลับความเร็ว</h2>
+<pre><code>:root{
+  --brand:#4f8cff;  --bg:#0f1115;  --text:#e8eaed;  --muted:#9aa4b2;
+  --line:#2a2f3a;   --r:12px;      --sp:16px;
+}
+.btn{ background: var(--brand); border-radius: var(--r); }
+.card{ border: 1px solid var(--line); padding: var(--sp); }</code></pre>
+<p>อยากเปลี่ยนธีมทั้งเว็บ? แก้ที่ <code>:root</code> บรรทัดเดียว. ตอนแข่งกรรมการบอก "อยากได้โทนเขียว" คุณแก้ 3 วินาที ทีมอื่นไล่แก้ 40 จุด.</p>
+
+<h2>4. Flexbox — ใช้กับ "ของเรียงแถวเดียว"</h2>
+<pre><code>.row{ display:flex; align-items:center; gap:16px; }</code></pre>
+<table>
+<tr><th>เขียน</th><th>ได้อะไร</th></tr>
+<tr><td><code>display:flex</code></td><td>ลูกๆ เรียงเป็นแถวนอน</td></tr>
+<tr><td><code>gap:16px</code></td><td>ระยะห่างระหว่างลูก (ใช้อันนี้ อย่าใช้ margin)</td></tr>
+<tr><td><code>align-items:center</code></td><td>จัดกลางแนวตั้ง — โลโก้กับเมนูตรงกันพอดี</td></tr>
+<tr><td><code>justify-content:space-between</code></td><td>ดันซ้ายสุด-ขวาสุด (header คลาสสิก)</td></tr>
+<tr><td><code>margin-left:auto</code></td><td>ดันตัวนี้ไปขวาสุดตัวเดียว</td></tr>
+<tr><td><code>flex-wrap:wrap</code></td><td>ล้นแล้วขึ้นบรรทัดใหม่ (กันพังบนมือถือ)</td></tr>
+<tr><td><code>flex:1</code></td><td>ตัวนี้ยืดกินที่ว่างที่เหลือ</td></tr>
+<tr><td><code>flex-direction:column</code></td><td>เรียงลงแนวตั้งแทน</td></tr>
+</table>
+<div class="note ok"><b>สูตรจัดกลางกลางจอ:</b>
+<pre><code>display:flex; align-items:center; justify-content:center; min-height:100vh;</code></pre>
+ใช้ทำหน้า login ได้เลย.</div>
+
+<h2>5. Grid — ใช้กับ "ตารางของหลายแถว"</h2>
+<p>สูตรเดียวที่ต้องจำ (การ์ดสินค้า, แกลเลอรี, dashboard):</p>
+<pre><code>.grid{
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 16px;
+}</code></pre>
+<p>แปลว่า: "ยัดการ์ดให้ได้มากที่สุด แต่ละใบห้ามแคบกว่า 240px ที่เหลือแบ่งเท่าๆ กัน".
+<b>อันนี้ responsive อัตโนมัติ ไม่ต้องเขียน media query เลย.</b> จอใหญ่ได้ 4 คอลัมน์ มือถือเหลือ 1 เอง.</p>
+
+<p>Layout dashboard (sidebar + เนื้อหา):</p>
+<pre><code>.app{ display:grid; grid-template-columns: 240px 1fr; min-height:100vh; }</code></pre>
+
+<h2>6. ทำให้ดู "แพง" ใน 6 บรรทัด</h2>
+<pre><code>.card{
+  background:#171a21;
+  border:1px solid #2a2f3a;      /* เส้นขอบบางๆ = คมขึ้นเยอะ */
+  border-radius:12px;             /* มุมมน */
+  padding:24px;                   /* ที่หายใจ */
+  box-shadow:0 6px 24px rgba(0,0,0,.35);
+  transition:.18s;                /* ทุกอย่างนุ่มขึ้น */
+}
+.card:hover{ transform:translateY(-2px); border-color:var(--brand); }</code></pre>
+<div class="note ok"><b>3 อย่างที่ทำให้งานมือใหม่ดูโปรทันที:</b> <code>border-radius</code> + <code>transition</code> + <code>gap</code> ที่สม่ำเสมอ. ใส่ทุกที่.</div>
+
+<h2>7. Responsive แบบขี้เกียจแต่ได้ผล</h2>
+<p>ลำดับความสำคัญ — ทำ 3 อย่างนี้ก่อน แล้วเว็บจะรอดมือถือ 90%:</p>
+<pre><code>/* 1. wrapper กันชนขอบ */
+.wrap{ width: min(1080px, 100% - 32px); margin-inline: auto; }
+
+/* 2. ตัวหนังสือย่อ-ขยายเอง */
+h1{ font-size: clamp(28px, 5vw, 46px); }
+/*        เล็กสุด, ยืดหยุ่น, ใหญ่สุด */
+
+/* 3. grid auto-fit (ข้อ 5) */</code></pre>
+<p>ถ้ายังต้องแก้เพิ่ม ใช้ media query จุดเดียวพอ:</p>
+<pre><code>@media (max-width: 768px){
+  .app{ grid-template-columns: 1fr; }   /* sidebar หล่นลงล่าง */
+  nav.top{ display:none; }
+}</code></pre>
+
+<h2>8. position — รู้ 3 อย่างพอ</h2>
+<table>
+<tr><th>ค่า</th><th>ใช้เมื่อ</th></tr>
+<tr><td><code>position:sticky; top:0;</code></td><td>header ติดบนตอนเลื่อน (ต้องมี top ด้วยเสมอ)</td></tr>
+<tr><td><code>position:fixed;</code></td><td>Modal, ปุ่มลอย, toast — ลอยเหนือทุกอย่าง</td></tr>
+<tr><td><code>position:relative;</code> ที่พ่อ + <code>absolute</code> ที่ลูก</td><td>วางป้าย "ลด 50%" มุมรูป</td></tr>
+</table>
+<pre><code>.badge-wrap{ position:relative; }
+.badge{ position:absolute; top:8px; right:8px; }</code></pre>
+
+<h2>9. ตารางแก้ปัญหาที่เจอบ่อยที่สุด</h2>
+<table>
+<tr><th>อาการ</th><th>สาเหตุ</th><th>แก้</th></tr>
+<tr><td>กล่องล้นออกนอกจอ / เลื่อนซ้ายขวาได้</td><td>ลืม border-box หรือใช้ width:100% + padding</td><td>ใส่ reset, ใช้ <code>max-width:100%</code></td></tr>
+<tr><td>จัดกลางไม่ได้</td><td>ใช้ text-align กับกล่อง</td><td>flex + <code>justify-content:center</code></td></tr>
+<tr><td>รูปยืดผิดสัดส่วน</td><td>กำหนดทั้ง w และ h</td><td><code>object-fit:cover</code></td></tr>
+<tr><td>CSS ไม่ทำงาน</td><td>ชื่อ class พิมพ์ผิด / เขียนทับกัน</td><td>F12 ดู Elements ว่า class ติดไหม</td></tr>
+<tr><td>ของทับกันมั่ว</td><td>z-index</td><td>ให้ header <code>z-index:50</code>, modal <code>z-index:100</code></td></tr>
+<tr><td>เมนูมือถือพัง</td><td>ไม่มี flex-wrap</td><td>ใส่ <code>flex-wrap:wrap</code></td></tr>
+</table>
+
+<h2>10. แบบฝึกหัด (30 นาที)</h2>
+<div class="note">
+1) สร้างไฟล์เปล่า <code>practice.html</code> พิมพ์โครง html จากบท 01 (ใช้ Emmet: พิมพ์ <code>!</code> แล้วกด Tab)<br>
+2) ทำ header ที่มีโลโก้ซ้าย เมนูขวา — ใช้ flex + <code>margin-left:auto</code><br>
+3) ทำการ์ด 6 ใบด้วย grid auto-fit — ย่อหน้าต่างเบราว์เซอร์ดู ต้องยุบเองได้<br>
+4) ทำปุ่มที่ hover แล้วขยับขึ้น<br>
+<b>ทำได้ 4 ข้อนี้โดยไม่เปิดดูเฉลย = พร้อมแข่ง 60% แล้ว.</b>
+</div>
+
+<div class="prevnext"><a class="btn ghost" href="01-structure.html">← 01</a>
+<a class="btn" href="03-js-core.html">03 · JavaScript →</a></div>
+</div>
+<footer class="site"><div class="wrap">Web Speedrun</div></footer>
+</body></html>

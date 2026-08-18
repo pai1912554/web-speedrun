@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="th"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>04 · แผนรบ 3 ชั่วโมง</title>
+<link rel="stylesheet" href="../css/style.css"></head>
+<body>
+<header class="site"><div class="wrap">
+  <div class="logo">WEB <span>SPEEDRUN</span></div>
+  <nav class="top"><a href="../index.html">หน้าแรก</a><a href="01-structure.html">01</a>
+  <a href="02-css-layout.html">02</a><a href="03-js-core.html">03</a>
+  <a href="04-battle-plan.html" class="active">04</a><a href="05-lookup.html">05</a><a href="06-vscode.html">06</a>
+  <a href="../templates/index.html">เทมเพลต</a></nav></div></header>
+
+<div class="wrap lesson">
+<div class="hero"><span class="tag">LESSON 04</span>
+<h1>แผนรบ 3 ชั่วโมง — นาทีต่อนาที</h1>
+<p class="lead">พิมพ์หน้านี้ออกมา หรือเปิดคาไว้อีกจอ. ดูนาฬิกาทุก 15 นาที.</p></div>
+
+<h2>ตารางเวลา</h2>
+<table>
+<tr><th>เวลา</th><th>ทำอะไร</th><th>เสร็จแล้วต้องได้</th></tr>
+<tr><td><b>0–10</b><br><span class="tag">วางแผน</span></td>
+<td>อ่านโจทย์ 2 รอบ. เขียนใส่กระดาษ: หน้ากี่หน้า, ฟีเจอร์อะไรบ้าง, อะไรคือ "ของที่กรรมการจะกด".
+วงกลม <b>ฟีเจอร์เดียว</b> ที่เป็นหัวใจ. เลือกเทมเพลตจากคลัง.</td>
+<td>รายการฟีเจอร์เรียงลำดับความสำคัญ 1-2-3</td></tr>
+
+<tr><td><b>10–25</b><br><span class="tag">โครง</span></td>
+<td>copy เทมเพลตมาตั้งชื่อ <code>index.html</code>. แก้ tokens ใน <code>:root</code> (สีตามธีมโจทย์),
+แก้ชื่อเว็บ/โลโก้/เมนู. เปิด Live Server.</td>
+<td>เว็บเปิดได้ มีสีธีมของงาน มี header/footer</td></tr>
+
+<tr><td><b>25–55</b><br><span class="tag">หน้าตา</span></td>
+<td>ใส่เนื้อหาจริงลง Hero + section หลัก. ยังไม่ต้องเขียน JS.
+ข้อความจริง รูปจริง (ใช้ <code>picsum.photos</code> ถ้าไม่มีรูป).</td>
+<td><b>หน้าเว็บดูเสร็จแล้ว 1 หน้า</b> ถ้าหมดเวลาตรงนี้ก็ยังส่งได้</td></tr>
+
+<tr><td><b>55–70</b><br><span class="tag">เซฟตัว</span></td>
+<td><b>หยุด. บันทึกสำเนา</b> <code>backup-1.html</code>. นี่คือจุดปลอดภัย.</td>
+<td>มีของที่ส่งได้แน่ๆ อยู่ในมือ</td></tr>
+
+<tr><td><b>70–130</b><br><span class="tag">ฟีเจอร์หลัก</span></td>
+<td>เขียน JS ฟีเจอร์ที่วงกลมไว้ ให้<b>สมบูรณ์อันเดียว</b>: data + render + event.
+ทดสอบทุก 10 นาที.</td>
+<td>ฟีเจอร์หัวใจกดแล้วทำงานจริง ไม่มี error แดงใน Console</td></tr>
+
+<tr><td><b>130–150</b><br><span class="tag">เพิ่มแต้ม</span></td>
+<td>เลือก 2 อย่างจาก: localStorage (ข้อมูลไม่หาย) · ช่องค้นหา · dark mode toggle ·
+ตัวนับ/สรุปยอด · animation ตอน scroll. เลือกที่<b>ทำเสร็จใน 10 นาที</b>เท่านั้น.</td>
+<td>ดูมีของมากกว่าที่โจทย์ขอ</td></tr>
+
+<tr><td><b>150–165</b><br><span class="tag">มือถือ</span></td>
+<td>F12 กด Ctrl+Shift+M ดูมือถือ. แก้เฉพาะที่ล้น/ทับ. อย่าเพิ่งจัดสวย เอาแค่ไม่พัง.</td>
+<td>มือถือไม่มีของล้นออกนอกจอ</td></tr>
+
+<tr><td><b>165–180</b><br><span class="tag">ส่ง</span></td>
+<td>Checklist ข้างล่าง. ห้ามเขียนโค้ดใหม่ในช่วงนี้เด็ดขาด.</td>
+<td>ส่งทัน</td></tr>
+</table>
+
+<div class="note warn"><b>กฎเหล็ก:</b> นาทีที่ 150 <b>หยุดเพิ่มฟีเจอร์ทุกกรณี</b>.
+คนแพ้ส่วนใหญ่ไม่ได้แพ้เพราะทำน้อย แต่แพ้เพราะเพิ่มของนาทีที่ 170 แล้วพังยกเว็บ.</div>
+
+<h2>Checklist 15 นาทีสุดท้าย</h2>
+<div class="lesson">
+<ol>
+<li>เปิดเว็บใหม่หมดจาก URL — โหลดขึ้นไหม</li>
+<li>F12 Console — มีตัวแดงไหม (มี = แก้ หรือคอมเมนต์ทิ้ง)</li>
+<li>กดทุกปุ่มทีละปุ่ม — ไม่มีปุ่มไหนกดแล้วเงียบ</li>
+<li>ลิงก์เมนูทุกอันไปถึงที่</li>
+<li>รูปขึ้นครบ ไม่มีไอคอนรูปแตก</li>
+<li>มือถือ (Ctrl+Shift+M) ไม่ล้น</li>
+<li>ไม่มีคำว่า "Lorem ipsum" / "ชื่อเว็บ" / "test" หลงเหลือ</li>
+<li><code>&lt;title&gt;</code> เป็นชื่องานจริง</li>
+<li>ทุก <code>img</code> มี <code>alt</code></li>
+<li>ตั้งชื่อไฟล์ให้ถูกตามที่โจทย์กำหนด แล้วส่ง</li>
+</ol>
+</div>
+
+<h2>ลำดับความสำคัญตอนเวลาไม่พอ (ตัดอะไรก่อน)</h2>
+<table>
+<tr><th>ตัดได้ทันที</th><th>ห้ามตัด</th></tr>
+<tr><td>Animation, ธีมมืด, หน้ารอง, ฟอร์มติดต่อที่ส่งจริง, API จริง</td>
+<td>หน้าแรกดูดี, ฟีเจอร์หัวใจทำงาน, ไม่มี error, มือถือไม่พัง</td></tr>
+</table>
+
+<h2>คำถามที่ต้องถามตัวเองตอนได้โจทย์</h2>
+<div class="lesson">
+<ol>
+<li><b>กรรมการจะกดอะไร?</b> สิ่งนั้นต้องทำงาน 100%</li>
+<li><b>ข้อมูลของโจทย์คืออะไร?</b> สินค้า? นักเรียน? อีเวนต์? เขียนเป็น array of object ทันที</li>
+<li><b>ต้องมีกี่หน้าจริงๆ?</b> ส่วนใหญ่หน้าเดียวเลื่อนลงพอ (one-page) แล้วดูดีกว่าหลายหน้าที่ทำไม่เสร็จ</li>
+<li><b>เทมเพลตไหนใกล้ที่สุด?</b> เปิดจากคลัง อย่าเริ่มจากไฟล์เปล่า</li>
+</ol>
+</div>
+
+<h2>เตรียมก่อนวันแข่ง (ทำคืนก่อน 20 นาที)</h2>
+<div class="lesson">
+<ul>
+<li>ติดตั้ง VS Code + ส่วนขยาย Live Server (ดูบท 06)</li>
+<li>copy โฟลเดอร์ <code>web-speedrun</code> ใส่ USB / คลาวด์ เผื่อคอมงาน</li>
+<li>เปิด <code>templates/</code> ทุกไฟล์ดูสัก 1 รอบ ให้จำได้ว่าอันไหนหน้าตายังไง</li>
+<li>ซ้อมจับเวลา: หยิบเทมเพลต landing แล้วแปลงเป็นเว็บร้านกาแฟ ให้เสร็จใน 45 นาที</li>
+<li>นอน. สมองล้า = พิมพ์ผิดเยอะ = เสียเวลา debug มากกว่าที่อ่านเพิ่มได้</li>
+</ul>
+</div>
+
+<div class="prevnext"><a class="btn ghost" href="03-js-core.html">&larr; 03</a>
+<a class="btn" href="05-lookup.html">05 · ได้โจทย์แล้วค้นอะไร &rarr;</a></div>
+</div>
+<footer class="site"><div class="wrap">Web Speedrun</div></footer>
+</body></html>

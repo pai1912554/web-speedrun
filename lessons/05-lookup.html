@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="th"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>05 · ได้โจทย์แล้วค้นอะไร</title>
+<link rel="stylesheet" href="../css/style.css"></head>
+<body>
+<header class="site"><div class="wrap">
+  <div class="logo">WEB <span>SPEEDRUN</span></div>
+  <nav class="top"><a href="../index.html">หน้าแรก</a><a href="01-structure.html">01</a>
+  <a href="02-css-layout.html">02</a><a href="03-js-core.html">03</a>
+  <a href="04-battle-plan.html">04</a><a href="05-lookup.html" class="active">05</a><a href="06-vscode.html">06</a>
+  <a href="../templates/index.html">เทมเพลต</a></nav></div></header>
+
+<div class="wrap lesson">
+<div class="hero"><span class="tag">LESSON 05</span>
+<h1>ได้โจทย์มาแล้ว — ค้นอะไร ที่ไหน</h1>
+<p class="lead">คนมีประสบการณ์ไม่ได้จำโค้ดได้หมด. เขาแค่<b>รู้ว่าต้องค้นคำว่าอะไร</b>. นี่คือพจนานุกรมนั้น.</p></div>
+
+<h2>1. ตารางแปลโจทย์เป็นเทคนิค (สำคัญที่สุดในหน้านี้)</h2>
+<table>
+<tr><th>โจทย์เขียนว่า</th><th>แปลว่าต้องใช้</th><th>เปิดไฟล์ไหนในคลัง</th></tr>
+<tr><td>"แสดงรายการสินค้า/ข่าว/สมาชิก"</td><td>array of object + <code>.map()</code> + grid</td><td>templates/gallery.html</td></tr>
+<tr><td>"ค้นหา / กรอง / จัดหมวด"</td><td><code>.filter()</code> + <code>input</code> event</td><td>templates/crud-table.html</td></tr>
+<tr><td>"เพิ่ม / แก้ไข / ลบ ข้อมูล"</td><td>CRUD: push / find / filter + render</td><td>templates/crud-table.html</td></tr>
+<tr><td>"ตะกร้าสินค้า / คิดเงินรวม"</td><td><code>.reduce()</code> + localStorage</td><td>snippets (cart) + crud-table</td></tr>
+<tr><td>"ล็อกอิน / สมัครสมาชิก"</td><td>form + validate + localStorage (ปลอมได้ ไม่ต้องมี server)</td><td>templates/login.html</td></tr>
+<tr><td>"แบบสอบถาม / ลงทะเบียน"</td><td>form + required + สรุปผลลง localStorage</td><td>templates/form.html</td></tr>
+<tr><td>"แดชบอร์ด / สรุปสถิติ / กราฟ"</td><td>grid การ์ดตัวเลข + กราฟแท่งด้วย CSS (ไม่ต้องใช้ library)</td><td>templates/dashboard.html</td></tr>
+<tr><td>"หน้าแนะนำสินค้า/บริการ/ทีม"</td><td>Hero + section + การ์ด</td><td>templates/landing.html</td></tr>
+<tr><td>"บทความ / บล็อก / ข่าวสาร"</td><td>list หน้าแรก + หน้าอ่าน</td><td>templates/blog.html</td></tr>
+<tr><td>"แนะนำตัว / ผลงาน"</td><td>portfolio one-page</td><td>templates/portfolio.html</td></tr>
+<tr><td>"ดึงข้อมูลจากภายนอก / API"</td><td><code>fetch</code> + <code>async/await</code></td><td>lessons/03 ท่า 5</td></tr>
+<tr><td>"ข้อมูลต้องไม่หายเมื่อปิดหน้าเว็บ"</td><td>localStorage</td><td>lessons/03 ท่า 6</td></tr>
+<tr><td>"ใช้งานได้บนมือถือ / responsive"</td><td>grid auto-fit + clamp + media query 1 จุด</td><td>lessons/02 ข้อ 7</td></tr>
+<tr><td>"เข้าถึงได้สำหรับทุกคน / accessibility"</td><td>semantic tag + <code>alt</code> + <code>label for</code> + คอนทราสต์สี</td><td>ดูข้อ 4 หน้านี้</td></tr>
+<tr><td>"มีธีมสว่าง/มืด"</td><td>ตัวแปร CSS + <code>classList.toggle</code> บน <code>body</code></td><td>snippets (dark mode)</td></tr>
+<tr><td>"มีเมนูแบบเลื่อนไปยังหัวข้อ"</td><td><code>href="#id"</code> + <code>scroll-behavior:smooth</code></td><td>templates/landing.html</td></tr>
+<tr><td>"นับถอยหลัง / เวลาจริง"</td><td><code>setInterval</code> + <code>Date</code></td><td>snippets (countdown)</td></tr>
+</table>
+
+<h2>2. ค้นที่ไหน (เรียงตามความคุ้ม)</h2>
+<table>
+<tr><th>ที่</th><th>ใช้ตอน</th><th>วิธีค้น</th></tr>
+<tr><td><b>คลังของเว็บนี้</b></td><td>ก่อนอื่นเสมอ</td><td>เปิด templates/ + snippets/ ดูก่อน 30 วินาที</td></tr>
+<tr><td><b>MDN</b> (developer.mozilla.org)</td><td>ไม่แน่ใจว่า property/method ใช้ยังไง</td><td>Google: <code>mdn flexbox</code> · <code>mdn array filter</code></td></tr>
+<tr><td><b>CSS-Tricks</b></td><td>อยากได้ตัวอย่าง layout ครบๆ</td><td><code>css tricks flexbox guide</code></td></tr>
+<tr><td><b>Stack Overflow</b></td><td>เจอ error แปลกๆ</td><td>copy บรรทัด error ไปวางใน Google ทั้งบรรทัด</td></tr>
+<tr><td><b>CodePen</b></td><td>อยากเห็นเอฟเฟกต์แล้วขโมยโค้ด</td><td><code>codepen pricing card</code></td></tr>
+<tr><td><b>DevTools (F12)</b></td><td>ทุกครั้งที่หน้าตาไม่ตรงใจ</td><td>คลิกขวาที่ของนั้น &gt; Inspect แล้วแก้ CSS สดๆ ก่อน copy กลับ</td></tr>
+</table>
+<div class="note ok"><b>เทคนิคค้นให้เจอเร็ว:</b> ใช้ภาษาอังกฤษ + คำว่า <code>css</code> หรือ <code>javascript</code> นำหน้า
+เช่น <code>css center div vertically</code>, <code>javascript filter array by input</code>.
+อย่าค้นภาษาไทย ผลลัพธ์แย่กว่ามาก.</div>
+
+<h2>3. เจอ error ทำยังไง (30 วินาทีรู้เรื่อง)</h2>
+<table>
+<tr><th>ข้อความ error</th><th>แปลว่า</th><th>แก้</th></tr>
+<tr><td><code>Cannot read properties of null</code></td><td>querySelector หาไม่เจอ ได้ null มา</td><td>เช็คว่าพิมพ์ชื่อ id/class ถูกไหม และ <code>&lt;script&gt;</code> อยู่ล่างสุดของ body</td></tr>
+<tr><td><code>X is not defined</code></td><td>ตัวแปร/ฟังก์ชันสะกดผิด หรือยังไม่ประกาศ</td><td>เช็คตัวพิมพ์เล็กใหญ่</td></tr>
+<tr><td><code>X is not a function</code></td><td>เรียกเมธอดผิดชนิด เช่น <code>.map()</code> บน object</td><td><code>console.log(x)</code> ดูว่ามันคืออะไร</td></tr>
+<tr><td><code>Unexpected token</code></td><td>วงเล็บ/ปีกกาไม่ครบ</td><td>ดูบรรทัดที่บอก แล้วไล่ขึ้นไป 2-3 บรรทัด</td></tr>
+<tr><td><code>CORS policy</code> / fetch พัง</td><td>เปิดไฟล์แบบ file:// หรือ API ไม่อนุญาต</td><td>ใช้ Live Server; ถ้ายังพัง เปลี่ยนไปใช้ข้อมูลปลอม</td></tr>
+<tr><td>ไม่มี error แต่หน้าเปล่า</td><td>render ไม่ถูกเรียก</td><td>ใส่ <code>console.log('render', data)</code> ในฟังก์ชัน</td></tr>
+</table>
+<div class="note warn"><b>วิธี debug ที่เร็วที่สุดในโลก:</b> <code>console.log()</code> ใส่ไปเลย 5 จุด
+ดูว่ามันวิ่งถึงจุดไหน แล้วค่าเป็นอะไร. อย่านั่งจ้องโค้ดเดา.</div>
+
+<h2>4. เช็กลิสต์ "ได้คะแนนฟรี" ที่คนอื่นมักลืม</h2>
+<div class="lesson">
+<ul>
+<li><code>&lt;html lang="th"&gt;</code></li>
+<li><code>&lt;title&gt;</code> ตรงกับงาน + <code>&lt;meta name="description"&gt;</code></li>
+<li>ทุกรูปมี <code>alt</code> ที่สื่อความหมาย</li>
+<li>ทุก input มี <code>&lt;label for="id"&gt;</code> คู่กับ <code>id</code></li>
+<li>ใช้ <code>header main section footer nav</code> แทน div ล้วน</li>
+<li>ปุ่มใช้ <code>&lt;button&gt;</code> ลิงก์ใช้ <code>&lt;a&gt;</code> (กด Tab เลื่อนได้ = accessibility)</li>
+<li>ตัวหนังสือกับพื้นหลังคอนทราสต์พอ (อย่าเทาอ่อนบนขาว)</li>
+<li>โค้ดจัดย่อหน้าสวย (VS Code: <code>Shift+Alt+F</code>)</li>
+<li>ใส่คอมเมนต์หัวข้อในไฟล์ <code>/* ===== HEADER ===== */</code> กรรมการอ่านโค้ดแล้วชอบ</li>
+</ul>
+</div>
+
+<h2>5. ประโยคที่ควรพูดตอนนำเสนอ</h2>
+<div class="lesson">
+<ol>
+<li>"เว็บนี้แก้ปัญหา___ ให้กลุ่ม___" (ไม่ใช่ "ผมทำหน้าแรก หน้าสอง...")</li>
+<li>สาธิตของจริง: กดปุ่ม เพิ่มข้อมูล ค้นหา ให้เห็นว่าทำงาน</li>
+<li>"ผมใช้ตัวแปร CSS ทำ design system เปลี่ยนธีมทั้งเว็บได้จากจุดเดียว" (โชว์เลย)</li>
+<li>"ข้อมูลเก็บใน localStorage รีเฟรชแล้วไม่หาย" (รีเฟรชให้ดู)</li>
+<li>"responsive ครับ" แล้วย่อหน้าต่างให้ดู</li>
+</ol>
+</div>
+
+<div class="prevnext"><a class="btn ghost" href="04-battle-plan.html">&larr; 04</a>
+<a class="btn" href="06-vscode.html">06 · ตั้ง VS Code &rarr;</a></div>
+</div>
+<footer class="site"><div class="wrap">Web Speedrun</div></footer>
+</body></html>

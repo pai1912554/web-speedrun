@@ -1,0 +1,213 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Web Studio — ห้องปฏิบัติการออกแบบและสร้างเว็บ</title>
+<meta name="description" content="ดูภาพเป้าหมาย แล้วลงมือสร้างทีละส่วน ฝึกตาออกแบบไปพร้อมกัน">
+<link rel="stylesheet" href="studio.css">
+<style>
+.method{display:grid;gap:16px;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));margin-top:22px}
+.m{background:var(--paper);border:1px solid var(--rule);border-radius:var(--r);padding:20px}
+.m .s{font-family:var(--mono);font-size:11px;letter-spacing:2px;color:var(--mark)}
+.m h3{font-size:16px;margin:6px 0 7px}
+.m p{color:var(--ink-2);font-size:14px}
+.route{border:1px solid var(--rule);border-radius:var(--r);overflow:hidden;margin-top:20px}
+.route div{display:flex;gap:14px;padding:13px 18px;border-bottom:1px solid var(--rule);
+  align-items:baseline;font-size:14.5px}
+.route div:last-child{border-bottom:0}
+.route .tm{font-family:var(--mono);font-size:12px;color:var(--mark);min-width:64px}
+.route b{color:var(--ink)}
+.route span.d{color:var(--ink-2)}
+</style>
+</head>
+<body>
+
+<div class="bar"><div class="bar-in">
+  <div class="mark">WEB <b>STUDIO</b></div>
+  <nav>
+    <a href="index.html" class="on">ห้องปฏิบัติการ</a>
+    <a href="design-eye.html">ฝึกตาออกแบบ</a>
+    <a href="../index.html">คลังความรู้</a>
+  </nav>
+</div></div>
+
+<div class="wrap">
+  <div class="hero-s">
+    <div class="kicker">ดูภาพก่อน · ลงมือทันที · ไม่ต้องท่อง</div>
+    <h1>เห็นแบบที่ต้องทำอยู่ขวามือ<br>แล้วสร้างมันทีละชั้นด้วยมือตัวเอง</h1>
+    <p>แต่ละห้องปฏิบัติการมีกระดานงานอยู่ด้านขวาที่แสดงผลทันทีทุกขั้น
+       และมีปุ่ม <b>เส้นบอกระยะ</b> ที่กดแล้วเห็นเลยว่าช่องไฟ 24px ขนาดตัวอักษร 48px
+       อยู่ตรงไหนของแบบ — ฝึกตาไปพร้อมกับฝึกมือ ไม่ใช่อ่านแล้วจำ.</p>
+    <p style="margin-top:24px;display:flex;gap:10px;flex-wrap:wrap">
+      <a class="tool on" href="lab-01-hero.html">เริ่มที่ LAB 01</a>
+      <a class="tool" href="design-eye.html">ฝึกตาออกแบบก่อน</a>
+    </p>
+  </div>
+
+  <h2 class="sec">ห้องปฏิบัติการ</h2>
+  <p class="sec-sub">ทำตามลำดับ. แต่ละห้องจบในตัว และของที่ได้เอาไปประกอบเป็นเว็บจริงได้เลย</p>
+
+  <div class="cards">
+    <a class="lab-card" href="lab-01-hero.html">
+      <div class="no">LAB 01 · 25 นาที</div>
+      <h3>หัวเว็บ (Hero)</h3>
+      <p>ลำดับสายตา สเกลระยะห่าง สเกลตัวอักษร และกฎจุดเน้นเดียว — พื้นฐานที่ใช้ต่อในทุกห้องถัดไป</p>
+      <div class="mini"><svg viewBox="0 0 300 112" xmlns="http://www.w3.org/2000/svg">
+        <rect width="300" height="112" fill="#faf9f7"/>
+        <rect x="24" y="18" width="46" height="6" rx="3" fill="#0f5c4a"/>
+        <rect x="24" y="32" width="176" height="13" rx="3" fill="#15181d"/>
+        <rect x="24" y="50" width="124" height="13" rx="3" fill="#15181d"/>
+        <rect x="24" y="71" width="200" height="5" rx="2.5" fill="#c9ccd1"/>
+        <rect x="24" y="81" width="150" height="5" rx="2.5" fill="#c9ccd1"/>
+        <rect x="24" y="94" width="58" height="11" rx="4" fill="#0f5c4a"/>
+        <rect x="88" y="94" width="52" height="11" rx="4" fill="none" stroke="#ddd9d2"/>
+      </svg></div>
+    </a>
+
+    <a class="lab-card" href="lab-02-cards.html">
+      <div class="no">LAB 02 · 25 นาที</div>
+      <h3>ตารางการ์ด</h3>
+      <p>Grid ที่ responsive เอง กายวิภาคการ์ด สัดส่วนรูป และสถานะว่าง — โครงที่โจทย์ขอบ่อยที่สุด</p>
+      <div class="mini"><svg viewBox="0 0 300 112" xmlns="http://www.w3.org/2000/svg">
+        <rect width="300" height="112" fill="#f7f7f5"/>
+        <g fill="#fff" stroke="#e5e3df">
+          <rect x="14" y="14" width="84" height="84" rx="7"/>
+          <rect x="108" y="14" width="84" height="84" rx="7"/>
+          <rect x="202" y="14" width="84" height="84" rx="7"/>
+        </g>
+        <g fill="#eceae6">
+          <rect x="14" y="14" width="84" height="38"/><rect x="108" y="14" width="84" height="38"/>
+          <rect x="202" y="14" width="84" height="38"/>
+        </g>
+        <g fill="#1a1a1a">
+          <rect x="22" y="60" width="56" height="6" rx="3"/><rect x="116" y="60" width="62" height="6" rx="3"/>
+          <rect x="210" y="60" width="50" height="6" rx="3"/>
+        </g>
+        <g fill="#c2410c">
+          <rect x="22" y="82" width="30" height="7" rx="3"/><rect x="116" y="82" width="30" height="7" rx="3"/>
+          <rect x="210" y="82" width="30" height="7" rx="3"/>
+        </g>
+      </svg></div>
+    </a>
+
+    <a class="lab-card" href="lab-03-nav.html">
+      <div class="no">LAB 03 · 20 นาที</div>
+      <h3>แถบเมนู</h3>
+      <p>Flexbox การจัดแนว สถานะหน้าปัจจุบัน แถบติดบน และเมนูมือถือที่กดเปิดได้จริง</p>
+      <div class="mini"><svg viewBox="0 0 300 112" xmlns="http://www.w3.org/2000/svg">
+        <rect width="300" height="112" fill="#fff"/>
+        <rect x="0" y="0" width="300" height="30" fill="#fbfcfd"/>
+        <line x1="0" y1="30" x2="300" y2="30" stroke="#e8eaee"/>
+        <rect x="16" y="11" width="38" height="8" rx="3" fill="#101418"/>
+        <g fill="#697585">
+          <rect x="140" y="12" width="26" height="6" rx="3"/><rect x="174" y="12" width="26" height="6" rx="3"/>
+          <rect x="208" y="12" width="20" height="6" rx="3"/>
+        </g>
+        <rect x="140" y="12" width="26" height="6" rx="3" fill="#101418"/>
+        <rect x="140" y="27" width="26" height="2" fill="#1d4ed8"/>
+        <rect x="240" y="8" width="44" height="15" rx="5" fill="#1d4ed8"/>
+        <rect x="16" y="46" width="150" height="10" rx="4" fill="#101418"/>
+        <rect x="16" y="64" width="220" height="5" rx="2.5" fill="#d6dae0"/>
+      </svg></div>
+    </a>
+
+    <a class="lab-card" href="lab-04-form.html">
+      <div class="no">LAB 04 · 22 นาที</div>
+      <h3>ฟอร์ม</h3>
+      <p>จัดกลุ่มด้วยช่องว่าง ป้ายกำกับที่ผูกกับช่อง สถานะโฟกัส และข้อความผิดพลาดที่บอกวิธีแก้</p>
+      <div class="mini"><svg viewBox="0 0 300 112" xmlns="http://www.w3.org/2000/svg">
+        <rect width="300" height="112" fill="#f6f7f9"/>
+        <rect x="70" y="8" width="160" height="98" rx="8" fill="#fff" stroke="#dfe3e8"/>
+        <rect x="84" y="20" width="66" height="8" rx="3" fill="#111418"/>
+        <rect x="84" y="38" width="34" height="5" rx="2.5" fill="#68727e"/>
+        <rect x="84" y="47" width="132" height="14" rx="4" fill="#fff" stroke="#dfe3e8"/>
+        <rect x="84" y="66" width="40" height="5" rx="2.5" fill="#68727e"/>
+        <rect x="84" y="75" width="132" height="14" rx="4" fill="#fff" stroke="#0d7a5f"/>
+        <rect x="82" y="73" width="136" height="18" rx="6" fill="none" stroke="#0d7a5f" opacity=".25"/>
+        <rect x="84" y="94" width="132" height="8" rx="4" fill="#0d7a5f"/>
+      </svg></div>
+    </a>
+
+    <a class="lab-card" href="lab-05-dashboard.html">
+      <div class="no">LAB 05 · 28 นาที</div>
+      <h3>แดชบอร์ด</h3>
+      <p>ออกแบบข้อมูล สีเชิงความหมาย กราฟจาก CSS ล้วน และตารางที่กวาดตาอ่านได้</p>
+      <div class="mini"><svg viewBox="0 0 300 112" xmlns="http://www.w3.org/2000/svg">
+        <rect width="300" height="112" fill="#0f1216"/>
+        <g fill="#171b21" stroke="#262d36">
+          <rect x="12" y="12" width="64" height="30" rx="5"/><rect x="82" y="12" width="64" height="30" rx="5"/>
+          <rect x="152" y="12" width="64" height="30" rx="5"/><rect x="222" y="12" width="64" height="30" rx="5"/>
+          <rect x="12" y="50" width="160" height="50" rx="5"/><rect x="180" y="50" width="106" height="50" rx="5"/>
+        </g>
+        <g fill="#e9edf2">
+          <rect x="20" y="24" width="22" height="9" rx="2"/><rect x="90" y="24" width="18" height="9" rx="2"/>
+          <rect x="160" y="24" width="14" height="9" rx="2"/><rect x="230" y="24" width="18" height="9" rx="2"/>
+        </g>
+        <g fill="#5b8cff">
+          <rect x="24" y="80" width="14" height="12" rx="2"/><rect x="44" y="72" width="14" height="20" rx="2"/>
+          <rect x="64" y="76" width="14" height="16" rx="2"/><rect x="84" y="66" width="14" height="26" rx="2"/>
+          <rect x="104" y="74" width="14" height="18" rx="2"/><rect x="124" y="78" width="14" height="14" rx="2"/>
+        </g>
+        <rect x="144" y="60" width="14" height="32" rx="2" fill="#e0605e"/>
+        <g fill="#3a434f"><rect x="190" y="62" width="86" height="4" rx="2"/><rect x="190" y="74" width="72" height="4" rx="2"/>
+          <rect x="190" y="86" width="80" height="4" rx="2"/></g>
+      </svg></div>
+    </a>
+
+    <a class="lab-card" href="design-eye.html">
+      <div class="no">ฝึกตา · 20 นาที</div>
+      <h3>ตาออกแบบ: 8 คู่เปรียบเทียบ</h3>
+      <p>เนื้อหาเดียวกัน ต่างกันจุดเดียว. ดูก่อนแล้วเดา ค่อยอ่านเฉลย — สร้างสัญชาตญาณได้เร็วกว่าท่องกฎ</p>
+      <div class="mini"><svg viewBox="0 0 300 112" xmlns="http://www.w3.org/2000/svg">
+        <rect width="300" height="112" fill="#fff"/>
+        <line x1="150" y1="0" x2="150" y2="112" stroke="#e5e5e5"/>
+        <g fill="#111"><rect x="18" y="20" width="70" height="9" rx="3"/></g>
+        <g fill="#cfd3d8"><rect x="18" y="37" width="110" height="5" rx="2.5"/><rect x="18" y="49" width="96" height="5" rx="2.5"/>
+          <rect x="18" y="63" width="104" height="5" rx="2.5"/></g>
+        <rect x="18" y="78" width="46" height="13" rx="4" fill="#e0605e"/>
+        <g fill="#111"><rect x="168" y="18" width="82" height="11" rx="3"/></g>
+        <g fill="#9aa2ab"><rect x="168" y="40" width="104" height="5" rx="2.5"/><rect x="168" y="52" width="88" height="5" rx="2.5"/></g>
+        <rect x="168" y="72" width="52" height="14" rx="5" fill="#3fbf7f"/>
+      </svg></div>
+    </a>
+  </div>
+
+  <h2 class="sec">วิธีใช้ห้องปฏิบัติการ</h2>
+  <p class="sec-sub">เครื่องมือบนกระดานขวามือมีสี่อย่าง ใช้ให้ครบแล้วจะได้ผลต่างกันมาก</p>
+  <div class="method">
+    <div class="m"><div class="s">เครื่องมือ 1</div><h3>สลับ "ที่กำลังทำ" กับ "เป้าหมาย"</h3>
+      <p>ดูปลายทางก่อนเริ่ม แล้วสลับกลับมาดูว่าตอนนี้ยังขาดชั้นไหน</p></div>
+    <div class="m"><div class="s">เครื่องมือ 2</div><h3>เส้นบอกระยะ</h3>
+      <p>กดแล้วเห็นค่าจริงทับบนแบบ — ช่องไฟเท่าไหร่ ตัวอักษรกี่พิกเซล นี่คือสิ่งที่ทำให้ตาเริ่มวัดเป็น</p></div>
+    <div class="m"><div class="s">เครื่องมือ 3</div><h3>ปุ่มมือถือ</h3>
+      <p>สลับดูจอ 390px ได้ทุกขั้น ไม่ต้องรอตรวจตอนท้ายแล้วมาแก้ยกชุด</p></div>
+    <div class="m"><div class="s">เครื่องมือ 4</div><h3>กล่อง "ลองเอง"</h3>
+      <p>ทุกขั้นมีค่าให้ลองแก้แล้วดูว่าพังยังไง. <b>การเห็นของที่พังคือวิธีจำที่ได้ผลที่สุด</b></p></div>
+  </div>
+
+  <h2 class="sec">เส้นทางเตรียมตัว 3 ชั่วโมงก่อนวันแข่ง</h2>
+  <p class="sec-sub">ถ้ามีเวลาจำกัด ทำตามลำดับนี้</p>
+  <div class="route">
+    <div><span class="tm">0:00</span><span><b>ฝึกตาออกแบบ</b> <span class="d">— ดู 8 คู่เปรียบเทียบ ให้ตาเริ่มจับความต่างได้ก่อนลงมือ</span></span></div>
+    <div><span class="tm">0:20</span><span><b>LAB 01 หัวเว็บ</b> <span class="d">— หลักลำดับสายตาและสเกล ใช้ต่อในทุกห้อง</span></span></div>
+    <div><span class="tm">0:45</span><span><b>LAB 02 ตารางการ์ด</b> <span class="d">— โครงที่โจทย์แข่งขอบ่อยที่สุด</span></span></div>
+    <div><span class="tm">1:10</span><span><b>LAB 03 แถบเมนู</b> <span class="d">— รวมถึงเมนูมือถือ ซึ่งเป็นจุดที่คนอื่นมักทำไม่ทัน</span></span></div>
+    <div><span class="tm">1:30</span><span><b>LAB 04 ฟอร์ม</b> <span class="d">— ถ้าโจทย์เป็นระบบลงทะเบียนหรือจอง ห้องนี้คือหัวใจ</span></span></div>
+    <div><span class="tm">1:55</span><span><b>LAB 05 แดชบอร์ด</b> <span class="d">— ถ้าโจทย์เป็นระบบจัดการหรือรายงาน ห้องนี้คือหัวใจ</span></span></div>
+    <div><span class="tm">2:25</span><span><b>ซ้อมจับเวลา</b> <span class="d">— ประกอบ LAB 01+02+03 เป็นหน้าเดียวให้เสร็จใน 35 นาทีโดยไม่เปิดเฉลย</span></span></div>
+  </div>
+
+  <div style="border:1px solid var(--rule);border-left:2px solid var(--mark);background:var(--paper);
+       border-radius:0 var(--r) var(--r) 0;padding:18px 22px;margin-top:26px">
+    <div style="font-family:var(--mono);font-size:10.5px;letter-spacing:2px;text-transform:uppercase;
+         color:var(--mark);margin-bottom:6px">ข้อควรรู้</div>
+    <p style="color:var(--ink-2)">ห้องปฏิบัติการสอน<b>วิธีตัดสินใจ</b> ส่วน
+      <a href="../templates/index.html" style="color:var(--mark)">คลังเทมเพลต</a> คือ<b>ของสำเร็จรูปไว้ใช้ตอนแข่ง</b>.
+      เรียนจากห้องปฏิบัติการก่อน แล้วตอนแข่งค่อยหยิบเทมเพลตมาแก้ — จะแก้ได้เร็วเพราะเข้าใจว่าทุกค่ามาจากไหน.</p>
+  </div>
+</div>
+
+<footer class="s"><div class="wrap">Web Studio · เปิดโฟลเดอร์นี้ใน VS Code แล้วกด Live Server</div></footer>
+</body>
+</html>

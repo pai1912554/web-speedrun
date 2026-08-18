@@ -1,0 +1,255 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ระบบจัดการสินค้า — CRUD</title>
+<style>
+/* ===== 1. TOKENS ===== */
+:root{
+  --bg:#0f1115;--surface:#171a21;--surface-2:#1e222b;
+  --text:#e8eaed;--muted:#9aa4b2;--line:#2a2f3a;
+  --brand:#4f8cff;--ok:#3ddc97;--warn:#ffb020;--bad:#ff5c5c;
+  --r:12px;
+}
+/* ===== 2. RESET ===== */
+*,*::before,*::after{box-sizing:border-box}*{margin:0}
+input,button,select,textarea{font:inherit;color:inherit}
+body{background:var(--bg);color:var(--text);line-height:1.6;
+  font-family:system-ui,"Segoe UI","Noto Sans Thai",sans-serif}
+/* ===== 3. LAYOUT ===== */
+.wrap{width:min(1100px,100% - 32px);margin-inline:auto;padding:32px 0}
+h1{font-size:26px;letter-spacing:-.5px}
+.sub{color:var(--muted);font-size:14px;margin-top:4px}
+/* ===== 4. COMPONENTS ===== */
+.stats{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));margin:24px 0}
+.stat{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:18px}
+.stat b{display:block;font-size:24px}
+.stat span{font-size:12.5px;color:var(--muted)}
+
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);
+  padding:20px;margin-bottom:20px}
+
+.toolbar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:16px}
+.toolbar .grow{flex:1;min-width:180px}
+input,select{background:var(--bg);border:1px solid var(--line);color:var(--text);
+  padding:10px 12px;border-radius:9px;width:100%}
+input:focus,select:focus{outline:2px solid var(--brand);outline-offset:-1px}
+label{display:block;font-size:13px;color:var(--muted);margin-bottom:5px}
+
+.btn{background:var(--brand);color:#fff;border:0;padding:10px 18px;border-radius:9px;
+  cursor:pointer;font-weight:600;white-space:nowrap}
+.btn:hover{filter:brightness(1.12)}
+.btn.ghost{background:transparent;border:1px solid var(--line);color:var(--text)}
+.btn.sm{padding:6px 12px;font-size:13px}
+.btn.danger{background:var(--bad)}
+
+table{width:100%;border-collapse:collapse;font-size:14.5px}
+th,td{padding:11px 12px;text-align:left;border-bottom:1px solid var(--line)}
+th{color:var(--muted);font-size:12.5px;text-transform:uppercase;letter-spacing:.6px;
+  cursor:pointer;user-select:none;white-space:nowrap}
+th:hover{color:var(--text)}
+tbody tr:hover{background:var(--surface-2)}
+.right{text-align:right}
+.pill{font-size:12px;padding:3px 10px;border-radius:99px;background:var(--surface-2);
+  border:1px solid var(--line);color:var(--muted)}
+.pill.low{color:var(--bad);border-color:var(--bad)}
+.pill.ok{color:var(--ok);border-color:var(--ok)}
+.empty{text-align:center;color:var(--muted);padding:40px 0}
+
+.form-grid{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));
+  align-items:end}
+@media(max-width:640px){ th.hide,td.hide{display:none} }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <h1>ระบบจัดการสินค้า</h1>
+  <p class="sub">เพิ่ม แก้ไข ลบ ค้นหา เรียง — ข้อมูลถูกบันทึกอัตโนมัติ รีเฟรชแล้วไม่หาย</p>
+
+  <!-- สรุปตัวเลข -->
+  <div class="stats" id="stats"></div>
+
+  <!-- ฟอร์มเพิ่ม/แก้ไข -->
+  <div class="panel">
+    <form id="form" class="form-grid">
+      <input type="hidden" id="editId">
+      <div><label for="name">ชื่อสินค้า</label>
+        <input id="name" required placeholder="เช่น กาแฟคั่วกลาง"></div>
+      <div><label for="cat">หมวด</label>
+        <select id="cat"><option>เครื่องดื่ม</option><option>อาหาร</option>
+          <option>ของใช้</option><option>อื่นๆ</option></select></div>
+      <div><label for="price">ราคา (บาท)</label>
+        <input id="price" type="number" min="0" required placeholder="0"></div>
+      <div><label for="qty">จำนวนคงเหลือ</label>
+        <input id="qty" type="number" min="0" required placeholder="0"></div>
+      <div style="display:flex;gap:8px">
+        <button class="btn" type="submit" id="submitBtn">เพิ่มสินค้า</button>
+        <button class="btn ghost" type="button" id="cancelBtn" style="display:none">ยกเลิก</button>
+      </div>
+    </form>
+  </div>
+
+  <!-- ตาราง -->
+  <div class="panel">
+    <div class="toolbar">
+      <div class="grow"><input id="search" placeholder="ค้นหาชื่อสินค้า..."></div>
+      <select id="filterCat" style="width:auto">
+        <option value="">ทุกหมวด</option><option>เครื่องดื่ม</option>
+        <option>อาหาร</option><option>ของใช้</option><option>อื่นๆ</option>
+      </select>
+      <button class="btn ghost" id="resetBtn">ล้างข้อมูลทั้งหมด</button>
+    </div>
+
+    <table>
+      <thead>
+        <tr>
+          <th data-sort="name">ชื่อสินค้า</th>
+          <th data-sort="cat" class="hide">หมวด</th>
+          <th data-sort="price" class="right">ราคา</th>
+          <th data-sort="qty" class="right">คงเหลือ</th>
+          <th class="right hide">มูลค่ารวม</th>
+          <th class="right">จัดการ</th>
+        </tr>
+      </thead>
+      <tbody id="tbody"></tbody>
+    </table>
+    <div class="empty" id="empty" style="display:none">ไม่พบข้อมูล</div>
+  </div>
+
+</div>
+
+<script>
+/* ================= 1. DATA ================= */
+const SEED = [
+  {id:1, name:'กาแฟคั่วกลาง 250g', cat:'เครื่องดื่ม', price:250, qty:12},
+  {id:2, name:'ชาเขียวมัทฉะ',       cat:'เครื่องดื่ม', price:320, qty:4},
+  {id:3, name:'ขนมปังโฮลวีต',       cat:'อาหาร',      price:65,  qty:20},
+  {id:4, name:'แก้วเซรามิก',        cat:'ของใช้',     price:180, qty:7},
+  {id:5, name:'คุกกี้ช็อกโกแลต',     cat:'อาหาร',      price:95,  qty:2},
+];
+let items = JSON.parse(localStorage.getItem('products')) || SEED;
+let sortKey = 'name', sortAsc = true;
+
+/* ================= 2. ELEMENTS ================= */
+const tbody = document.querySelector('#tbody');
+const form  = document.querySelector('#form');
+const search= document.querySelector('#search');
+const filterCat = document.querySelector('#filterCat');
+
+/* ================= 3. HELPERS ================= */
+const save  = () => localStorage.setItem('products', JSON.stringify(items));
+const money = n => n.toLocaleString('th-TH');
+
+function visible(){
+  const q = search.value.toLowerCase().trim();
+  const c = filterCat.value;
+  let out = items.filter(it =>
+    it.name.toLowerCase().includes(q) && (c === '' || it.cat === c)
+  );
+  out.sort((a,b) => {
+    const A = a[sortKey], B = b[sortKey];
+    const cmp = typeof A === 'number' ? A - B : String(A).localeCompare(String(B),'th');
+    return sortAsc ? cmp : -cmp;
+  });
+  return out;
+}
+
+/* ================= 4. RENDER ================= */
+function render(){
+  const data = visible();
+
+  tbody.innerHTML = data.map(it => `
+    <tr>
+      <td>${it.name}</td>
+      <td class="hide"><span class="pill">${it.cat}</span></td>
+      <td class="right">${money(it.price)}</td>
+      <td class="right"><span class="pill ${it.qty < 5 ? 'low':'ok'}">${it.qty}</span></td>
+      <td class="right hide">${money(it.price * it.qty)}</td>
+      <td class="right" style="white-space:nowrap">
+        <button class="btn ghost sm" onclick="startEdit(${it.id})">แก้ไข</button>
+        <button class="btn danger sm" onclick="remove(${it.id})">ลบ</button>
+      </td>
+    </tr>`).join('');
+
+  document.querySelector('#empty').style.display = data.length ? 'none' : 'block';
+
+  // สรุปตัวเลข
+  const totalValue = items.reduce((s,it) => s + it.price*it.qty, 0);
+  const lowStock   = items.filter(it => it.qty < 5).length;
+  document.querySelector('#stats').innerHTML = `
+    <div class="stat"><b>${items.length}</b><span>รายการสินค้า</span></div>
+    <div class="stat"><b>${money(totalValue)}</b><span>มูลค่าคงคลัง (บาท)</span></div>
+    <div class="stat"><b style="color:${lowStock?'var(--bad)':'var(--ok)'}">${lowStock}</b><span>ใกล้หมด (น้อยกว่า 5)</span></div>
+    <div class="stat"><b>${data.length}</b><span>ที่แสดงอยู่</span></div>`;
+}
+
+/* ================= 5. ACTIONS ================= */
+form.addEventListener('submit', e => {
+  e.preventDefault();
+  const id = document.querySelector('#editId').value;
+  const obj = {
+    name : document.querySelector('#name').value.trim(),
+    cat  : document.querySelector('#cat').value,
+    price: Number(document.querySelector('#price').value),
+    qty  : Number(document.querySelector('#qty').value),
+  };
+  if(!obj.name) return;
+
+  if(id){                                   // แก้ไข
+    const it = items.find(x => x.id === Number(id));
+    Object.assign(it, obj);
+    cancelEdit();
+  }else{                                    // เพิ่มใหม่
+    items.push({ id: Date.now(), ...obj });
+    form.reset();
+  }
+  save(); render();
+});
+
+function startEdit(id){
+  const it = items.find(x => x.id === id);
+  document.querySelector('#editId').value = it.id;
+  document.querySelector('#name').value   = it.name;
+  document.querySelector('#cat').value    = it.cat;
+  document.querySelector('#price').value  = it.price;
+  document.querySelector('#qty').value    = it.qty;
+  document.querySelector('#submitBtn').textContent = 'บันทึกการแก้ไข';
+  document.querySelector('#cancelBtn').style.display = 'inline-block';
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+function cancelEdit(){
+  form.reset();
+  document.querySelector('#editId').value = '';
+  document.querySelector('#submitBtn').textContent = 'เพิ่มสินค้า';
+  document.querySelector('#cancelBtn').style.display = 'none';
+}
+function remove(id){
+  if(!confirm('ลบรายการนี้?')) return;
+  items = items.filter(it => it.id !== id);
+  save(); render();
+}
+
+/* ================= 6. EVENTS ================= */
+search.addEventListener('input', render);
+filterCat.addEventListener('change', render);
+document.querySelector('#cancelBtn').addEventListener('click', cancelEdit);
+document.querySelector('#resetBtn').addEventListener('click', () => {
+  if(!confirm('คืนค่าข้อมูลตั้งต้นทั้งหมด?')) return;
+  items = [...SEED]; save(); render();
+});
+document.querySelectorAll('th[data-sort]').forEach(th => {
+  th.addEventListener('click', () => {
+    const k = th.dataset.sort;
+    sortAsc = (k === sortKey) ? !sortAsc : true;
+    sortKey = k;
+    render();
+  });
+});
+
+/* ================= 7. START ================= */
+render();
+</script>
+</body>
+</html>

@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="th"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>01 · โครงสร้าง &amp; หลักออกแบบ</title>
+<link rel="stylesheet" href="../css/style.css"></head>
+<body>
+<header class="site"><div class="wrap">
+  <div class="logo">WEB <span>SPEEDRUN</span></div>
+  <nav class="top">
+    <a href="../index.html">หน้าแรก</a><a href="01-structure.html" class="active">01</a>
+    <a href="02-css-layout.html">02</a><a href="03-js-core.html">03</a>
+    <a href="04-battle-plan.html">04</a><a href="05-lookup.html">05</a><a href="06-vscode.html">06</a>
+    <a href="../templates/index.html">เทมเพลต</a>
+  </nav></div></header>
+
+<div class="wrap lesson">
+<div class="hero"><span class="tag">LESSON 01</span>
+<h1>โครงสร้าง HTML &amp; หลักออกแบบ</h1>
+<p class="lead">เป้าหมายบทนี้: มองหน้าเว็บไหนก็ได้แล้ว "แตกเป็นกล่อง" ได้ในหัวภายใน 30 วินาที.</p></div>
+
+<h2>1. ความจริงข้อเดียวที่ต้องเข้าใจ</h2>
+<p>HTML ไม่ใช่ภาษาโปรแกรม. มันคือ<b>การใส่กล่องซ้อนกล่อง</b>. ทุกแท็กคือกล่อง 1 ใบ. จบ.</p>
+<p>เว็บสวยๆ ทุกเว็บในโลก = กล่องที่จัดเรียงดี + ระยะห่างสม่ำเสมอ + สีไม่มั่ว. ไม่ได้ยากกว่านั้น.</p>
+
+<h2>2. โครงกระดูกที่ใช้ได้กับทุกโจทย์</h2>
+<p>จำโครงนี้อันเดียว ใช้ได้ 90% ของงานแข่ง:</p>
+<pre><code>&lt;!doctype html&gt;
+&lt;html lang="th"&gt;
+&lt;head&gt;
+  &lt;meta charset="utf-8"&gt;
+  &lt;meta name="viewport" content="width=device-width,initial-scale=1"&gt;
+  &lt;title&gt;ชื่อเว็บ&lt;/title&gt;
+  &lt;style&gt; /* CSS ทั้งหมดอยู่ตรงนี้ */ &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;header&gt;  โลโก้ + เมนู        &lt;/header&gt;
+  &lt;main&gt;
+     &lt;section&gt; Hero: พาดหัวใหญ่ + ปุ่ม &lt;/section&gt;
+     &lt;section&gt; เนื้อหา/การ์ด/ตาราง      &lt;/section&gt;
+     &lt;section&gt; ฟอร์ม/ติดต่อ            &lt;/section&gt;
+  &lt;/main&gt;
+  &lt;footer&gt;  ลิขสิทธิ์ + ลิงก์      &lt;/footer&gt;
+  &lt;script&gt; /* JS ทั้งหมดอยู่ตรงนี้ */ &lt;/script&gt;
+&lt;/body&gt;&lt;/html&gt;</code></pre>
+<div class="note ok"><b>เทคนิคแข่ง:</b> ไฟล์เดียว — CSS ใน <code>&lt;style&gt;</code>, JS ใน <code>&lt;script&gt;</code>.
+ไม่ต้องสลับไฟล์ ไม่ต้องกังวล path พัง. ส่งงานง่าย. แยกไฟล์ทีหลังถ้าโจทย์บังคับ.</div>
+
+<h2>3. แท็กที่ต้องรู้จริง (มีแค่นี้)</h2>
+<table>
+<tr><th>แท็ก</th><th>ใช้ทำอะไร</th><th>จำสั้นๆ</th></tr>
+<tr><td><code>div</code></td><td>กล่องเปล่า ไม่มีความหมาย</td><td>ใช้ตอนอยากจัด layout</td></tr>
+<tr><td><code>section</code> <code>header</code> <code>main</code> <code>footer</code> <code>nav</code></td><td>กล่องเปล่าที่<b>มีความหมาย</b></td><td>เหมือน div แต่กรรมการชอบ (semantic)</td></tr>
+<tr><td><code>h1</code>–<code>h6</code></td><td>หัวข้อ</td><td>h1 มีอันเดียวต่อหน้า</td></tr>
+<tr><td><code>p</code></td><td>ย่อหน้าข้อความ</td><td></td></tr>
+<tr><td><code>a href</code></td><td>ลิงก์</td><td><code>href="#id"</code> = เลื่อนในหน้า</td></tr>
+<tr><td><code>img src alt</code></td><td>รูป</td><td>ลืม alt = เสียคะแนน accessibility</td></tr>
+<tr><td><code>ul &gt; li</code></td><td>รายการ</td><td>เมนู, list ทุกอย่าง</td></tr>
+<tr><td><code>button</code></td><td>ปุ่มกดทำอะไร</td><td>อย่าใช้ div ทำปุ่ม</td></tr>
+<tr><td><code>form input label select textarea</code></td><td>รับข้อมูล</td><td>ดูบท 03</td></tr>
+<tr><td><code>table tr th td</code></td><td>ตารางข้อมูล</td><td>ใช้กับข้อมูลจริงเท่านั้น ไม่ใช่ layout</td></tr>
+<tr><td><code>span</code></td><td>กล่องเล็กในบรรทัด</td><td>ไว้ทำสีคำเดียว</td></tr>
+</table>
+<p>แค่นี้ครับ. 12 อย่าง. คนที่เขียนเว็บมา 5 ปีก็ใช้ประมาณนี้.</p>
+
+<h2>4. class คือหัวใจ — id แทบไม่ใช้</h2>
+<pre><code>&lt;div class="card"&gt;...&lt;/div&gt;   →  CSS เขียน  .card { }
+&lt;div id="total"&gt;...&lt;/div&gt;     →  JS เขียน   document.getElementById('total')</code></pre>
+<p>กฎง่าย: <b>class = ไว้แต่งสี · id = ไว้ให้ JS จับ</b>. ตั้งชื่อ class เป็นภาษาอังกฤษสื่อความหมาย เช่น
+<code>card</code>, <code>btn</code>, <code>nav</code>, <code>hero</code>, <code>grid</code>. อย่าตั้งว่า <code>red-big-text</code> — วันหลังเปลี่ยนสีแล้วชื่อโกหก.</p>
+
+<h2>5. หลักออกแบบ 5 ข้อ (อันนี้แหละที่ทำให้ชนะ)</h2>
+
+<h3>5.1 ระยะห่าง สำคัญกว่าสี</h3>
+<p>งานมือใหม่ดู "ไม่โปร" เพราะระยะห่างมั่ว. แก้ด้วยการใช้ระยะแค่ 6 ค่า ห้ามใช้ค่าอื่น:</p>
+<pre><code>4px · 8px · 16px · 24px · 40px · 64px</code></pre>
+<p>อยากห่าง? เลือกจาก 6 ค่านี้เท่านั้น. ห้าม 13px ห้าม 27px. แค่นี้งานจะดูเป็นระบบทันที.</p>
+
+<h3>5.2 สี ใช้ 3 กลุ่มพอ</h3>
+<pre><code>พื้นหลัง 1 สี  +  ตัวอักษร 2 สี (เข้ม/จาง)  +  สีแบรนด์ 1 สี
+ที่เหลือ: เขียว=สำเร็จ เหลือง=เตือน แดง=ผิดพลาด</code></pre>
+<p>สีแบรนด์ใช้เฉพาะของสำคัญ: ปุ่มหลัก, ลิงก์, ตัวเลขเด่น. ถ้าทุกอย่างเด่น = ไม่มีอะไรเด่น.</p>
+
+<h3>5.3 ขนาดตัวอักษร ใช้ 4 ระดับ</h3>
+<pre><code>32–48px หัวเรื่องใหญ่ (h1)
+20–24px หัวข้อ (h2)
+16px    เนื้อหา
+13–14px ข้อความรอง/ป้ายกำกับ</code></pre>
+<p>และตั้ง <code>line-height:1.6</code> ให้ข้อความ — มือใหม่ลืมข้อนี้ งานเลยดูอึดอัด.</p>
+
+<h3>5.4 ความกว้างต้องมีขอบเขต</h3>
+<p>ข้อความยาวเต็มจอ 27 นิ้ว = อ่านไม่ไหว. ครอบด้วย wrapper เสมอ:</p>
+<pre><code>.wrap{ width: min(1080px, 100% - 32px); margin-inline: auto; }</code></pre>
+<p>บรรทัดเดียวนี้จัดกลาง + กันชนขอบจอมือถือ + จำกัดความกว้าง ครบในตัว. <b>ท่องให้ได้.</b></p>
+
+<h3>5.5 ลำดับสายตา (visual hierarchy)</h3>
+<p>คนดูหน้าเว็บ 3 วินาทีแรกต้องรู้ว่า "เว็บนี้คืออะไร ให้กดตรงไหน". จัดลำดับ:</p>
+<ol>
+<li>พาดหัวใหญ่บอกว่าเว็บนี้ทำอะไร (ไม่ใช่ชื่อทีม)</li>
+<li>ประโยคเดียวขยายความ สีจางกว่า</li>
+<li>ปุ่มหลัก 1 ปุ่ม สีแบรนด์เด่น</li>
+<li>ที่เหลือค่อยไล่ลงไป</li>
+</ol>
+
+<h2>6. แบบฝึกหัด (ทำเลย 15 นาที)</h2>
+<div class="note">
+<b>โจทย์:</b> เปิด <code>templates/landing.html</code> ใน VS Code. อย่าเพิ่งอ่านโค้ดหมด.<br>
+1) เปิดในเบราว์เซอร์ ดูหน้าตาก่อน<br>
+2) กลับมาที่โค้ด หา <code>&lt;header&gt;</code> <code>&lt;section&gt;</code> <code>&lt;footer&gt;</code> — จับคู่กับสิ่งที่เห็นบนจอ<br>
+3) เปลี่ยนข้อความใน <code>h1</code> แล้ว save ดูผล<br>
+4) เปลี่ยนค่า <code>--brand</code> ใน <code>:root</code> เป็น <code>#ff6b35</code> — สังเกตว่าทั้งเว็บเปลี่ยนสีพร้อมกัน<br>
+<b>เข้าใจข้อ 4 = คุณเข้าใจ design system แล้ว.</b>
+</div>
+
+<div class="prevnext"><a class="btn ghost" href="../index.html">← หน้าแรก</a>
+<a class="btn" href="02-css-layout.html">02 · CSS ที่ใช้จริง →</a></div>
+</div>
+<footer class="site"><div class="wrap">Web Speedrun</div></footer>
+</body></html>

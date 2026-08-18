@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="th"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>06 · ตั้ง VS Code ให้เร็วขึ้น 2 เท่า</title>
+<link rel="stylesheet" href="../css/style.css"></head>
+<body>
+<header class="site"><div class="wrap">
+  <div class="logo">WEB <span>SPEEDRUN</span></div>
+  <nav class="top"><a href="../index.html">หน้าแรก</a><a href="01-structure.html">01</a>
+  <a href="02-css-layout.html">02</a><a href="03-js-core.html">03</a>
+  <a href="04-battle-plan.html">04</a><a href="05-lookup.html">05</a><a href="06-vscode.html" class="active">06</a>
+  <a href="../templates/index.html">เทมเพลต</a></nav></div></header>
+
+<div class="wrap lesson">
+<div class="hero"><span class="tag">LESSON 06</span>
+<h1>ตั้ง VS Code ให้เร็วขึ้น 2 เท่า</h1>
+<p class="lead">นี่คือช่องว่างที่แท้จริงระหว่างคุณกับคนมีประสบการณ์. เขาพิมพ์ 3 ตัวได้ 10 บรรทัด. เรียนรู้ได้ใน 15 นาที.</p></div>
+
+<h2>1. ส่วนขยายที่ต้องมี (ติดตั้งคืนนี้เลย)</h2>
+<table>
+<tr><th>ชื่อ</th><th>ทำอะไร</th><th>จำเป็น</th></tr>
+<tr><td><b>Live Server</b> (Ritwick Dey)</td><td>คลิกขวา &gt; Open with Live Server = เว็บรีเฟรชเองทุกครั้งที่ save</td><td>ต้องมี</td></tr>
+<tr><td><b>Auto Rename Tag</b></td><td>แก้ <code>&lt;div&gt;</code> เป็น <code>&lt;section&gt;</code> ปิดท้ายเปลี่ยนตาม</td><td>ต้องมี</td></tr>
+<tr><td><b>Prettier</b></td><td>จัดโค้ดสวยอัตโนมัติ</td><td>ควรมี</td></tr>
+<tr><td><b>Error Lens</b></td><td>โชว์ error ท้ายบรรทัดเลย ไม่ต้องเลื่อนหา</td><td>ควรมี</td></tr>
+<tr><td><b>Thai Language Pack</b></td><td>เมนูภาษาไทย</td><td>ตามชอบ</td></tr>
+</table>
+<p>ติดตั้ง: กด <code>Ctrl+Shift+X</code> พิมพ์ชื่อ กด Install.</p>
+
+<h2>2. Emmet — อาวุธหลัก (มีมาให้ในตัวแล้ว)</h2>
+<p>พิมพ์ย่อ แล้วกด <b>Tab</b>. ได้ HTML เต็มทันที.</p>
+<table>
+<tr><th>พิมพ์</th><th>กด Tab แล้วได้</th></tr>
+<tr><td><code>!</code></td><td>โครง HTML ทั้งหน้า (doctype, head, meta viewport ครบ)</td></tr>
+<tr><td><code>div.card</code></td><td><code>&lt;div class="card"&gt;&lt;/div&gt;</code></td></tr>
+<tr><td><code>div#app</code></td><td><code>&lt;div id="app"&gt;&lt;/div&gt;</code></td></tr>
+<tr><td><code>ul&gt;li*5</code></td><td>ul พร้อม li 5 อัน</td></tr>
+<tr><td><code>ul&gt;li*3&gt;a{เมนู $}</code></td><td>li 3 อัน แต่ละอันมีลิงก์ "เมนู 1/2/3"</td></tr>
+<tr><td><code>section.hero&gt;h1+p+a.btn</code></td><td>section ที่มี h1, p, ปุ่ม เรียงกัน</td></tr>
+<tr><td><code>.card*6</code></td><td>div.card 6 ใบ (ละ div ได้เลย)</td></tr>
+<tr><td><code>header&gt;.wrap&gt;.logo+nav&gt;a*4</code></td><td>header ทั้งชุดในบรรทัดเดียว</td></tr>
+<tr><td><code>lorem20</code></td><td>ข้อความหลอก 20 คำ</td></tr>
+<tr><td><code>table&gt;tr*3&gt;td*4</code></td><td>ตาราง 3x4</td></tr>
+</table>
+<div class="note ok">จำ 4 สัญลักษณ์นี้พอ: <code>.</code>=class · <code>#</code>=id · <code>&gt;</code>=ลูก · <code>+</code>=พี่น้อง · <code>*</code>=ทำซ้ำ · <code>{}</code>=ข้อความ</div>
+
+<h2>3. คีย์ลัดที่ประหยัดเวลาที่สุด</h2>
+<table>
+<tr><th>ปุ่ม</th><th>ทำอะไร</th><th>ใช้ตอน</th></tr>
+<tr><td><code>Alt+Shift+↓</code></td><td>ก๊อปบรรทัดลงล่าง</td><td>ทำการ์ดใบที่ 2-3-4</td></tr>
+<tr><td><code>Alt+↑/↓</code></td><td>ย้ายบรรทัดขึ้นลง</td><td>สลับลำดับ section</td></tr>
+<tr><td><code>Ctrl+D</code></td><td>เลือกคำเดียวกันตัวถัดไป (กดซ้ำได้)</td><td>เปลี่ยนชื่อ class ทุกที่พร้อมกัน</td></tr>
+<tr><td><code>Alt+คลิก</code></td><td>วางเคอร์เซอร์หลายจุด</td><td>พิมพ์พร้อมกันหลายบรรทัด</td></tr>
+<tr><td><code>Ctrl+/</code></td><td>คอมเมนต์/ยกเลิก</td><td>ปิดโค้ดที่พังชั่วคราวก่อนส่ง</td></tr>
+<tr><td><code>Shift+Alt+F</code></td><td>จัดย่อหน้าโค้ดสวย</td><td>ก่อนส่งงาน ทำทุกครั้ง</td></tr>
+<tr><td><code>Ctrl+P</code></td><td>เปิดไฟล์ด้วยการพิมพ์ชื่อ</td><td>สลับไฟล์เร็ว</td></tr>
+<tr><td><code>Ctrl+F</code> / <code>Ctrl+H</code></td><td>หา / หาและแทนที่</td><td>เปลี่ยนชื่อทั้งไฟล์</td></tr>
+<tr><td><code>Ctrl+B</code></td><td>ซ่อนแถบข้าง</td><td>จอเล็ก</td></tr>
+<tr><td><code>Ctrl+\</code></td><td>แบ่งจอ 2 ฝั่ง</td><td>ดู HTML กับ CSS พร้อมกัน</td></tr>
+<tr><td><code>Ctrl+Space</code></td><td>เรียก autocomplete</td><td>ลืมชื่อ property</td></tr>
+</table>
+
+<h2>4. Snippet ของตัวเอง (ทำครั้งเดียว ใช้ตลอด)</h2>
+<p>ให้พิมพ์ <code>!!</code> แล้วได้โครงเว็บพร้อม design tokens ทันที:</p>
+<ol>
+<li>กด <code>Ctrl+Shift+P</code> พิมพ์ <code>Configure User Snippets</code></li>
+<li>เลือก <code>html.json</code></li>
+<li>วางโค้ดข้างล่าง แล้ว save</li>
+</ol>
+<pre><code>{
+  "Speedrun base": {
+    "prefix": "!!",
+    "body": [
+      "&lt;!doctype html&gt;",
+      "&lt;html lang=\"th\"&gt;&lt;head&gt;&lt;meta charset=\"utf-8\"&gt;",
+      "&lt;meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"&gt;",
+      "&lt;title&gt;$1&lt;/title&gt;",
+      "&lt;style&gt;",
+      ":root{--bg:#0f1115;--surface:#171a21;--text:#e8eaed;--muted:#9aa4b2;",
+      "--line:#2a2f3a;--brand:#4f8cff;--r:12px;}",
+      "*,*::before,*::after{box-sizing:border-box}*{margin:0}",
+      "img{display:block;max-width:100%}input,button{font:inherit}",
+      "body{background:var(--bg);color:var(--text);line-height:1.7;",
+      "font-family:system-ui,'Noto Sans Thai',sans-serif}",
+      ".wrap{width:min(1080px,100% - 32px);margin-inline:auto}",
+      ".grid{display:grid;gap:16px;grid-template-columns:repeat(auto-fit,minmax(240px,1fr))}",
+      ".card{background:var(--surface);border:1px solid var(--line);",
+      "border-radius:var(--r);padding:24px;transition:.18s}",
+      ".btn{background:var(--brand);color:#fff;border:0;padding:10px 18px;",
+      "border-radius:8px;cursor:pointer}",
+      "&lt;/style&gt;&lt;/head&gt;&lt;body&gt;",
+      "$0",
+      "&lt;script&gt;&lt;/script&gt;&lt;/body&gt;&lt;/html&gt;"
+    ]
+  }
+}</code></pre>
+<div class="note ok"><b>ผลลัพธ์:</b> นาทีที่ 0 ของการแข่ง คุณพิมพ์ <code>!!</code> Tab แล้วมี design system พร้อมทันที.
+คนอื่นยังพิมพ์ <code>&lt;!doctype&gt;</code> อยู่.</div>
+
+<h2>5. DevTools (F12) — 3 แท็บที่ต้องใช้</h2>
+<table>
+<tr><th>แท็บ</th><th>ใช้ทำอะไร</th></tr>
+<tr><td><b>Console</b></td><td>ดู error แดง + ทดลองรันโค้ด JS สดๆ</td></tr>
+<tr><td><b>Elements</b></td><td>คลิกขวาที่ของบนเว็บ &gt; Inspect. แก้ CSS สดๆ ทางขวา เห็นผลทันที แล้วค่อย copy กลับไปใส่ไฟล์ <b>เร็วกว่าแก้ในโค้ดแล้วเซฟดูเยอะ</b></td></tr>
+<tr><td><b>Application &gt; Local Storage</b></td><td>ดูว่าข้อมูลที่เซฟไปหน้าตาเป็นยังไง / กดลบตอนเทสต์</td></tr>
+</table>
+<p><code>Ctrl+Shift+M</code> = สลับโหมดมือถือ. เช็คทุกครั้งก่อนส่ง.</p>
+
+<h2>6. วิธีเปิดโฟลเดอร์นี้</h2>
+<pre><code>VS Code &gt; File &gt; Open Folder &gt; C:\Users\hp\web-speedrun
+คลิกขวาที่ index.html &gt; Open with Live Server</code></pre>
+
+<div class="prevnext"><a class="btn ghost" href="05-lookup.html">&larr; 05</a>
+<a class="btn" href="../templates/index.html">ไปคลังเทมเพลต &rarr;</a></div>
+</div>
+<footer class="site"><div class="wrap">Web Speedrun</div></footer>
+</body></html>

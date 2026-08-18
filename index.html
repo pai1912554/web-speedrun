@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Web Speedrun — เรียนสร้างเว็บจาก 0 ให้ทันแข่ง 3 ชม.</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<header class="site">
+  <div class="wrap">
+    <div class="logo">WEB <span>SPEEDRUN</span></div>
+    <nav class="top">
+      <a href="index.html" class="active">หน้าแรก</a>
+      <a href="studio/index.html">ห้องปฏิบัติการ</a>
+      <a href="lessons/01-structure.html">บทเรียน</a>
+      <a href="templates/index.html">เทมเพลต</a>
+      <a href="snippets/index.html">Snippet</a>
+      <a href="lessons/05-lookup.html">ค้นหายังไง</a>
+      <a href="lessons/04-battle-plan.html">แผน 3 ชม.</a>
+    </nav>
+  </div>
+</header>
+
+<div class="wrap">
+
+<div class="hero">
+  <span class="tag">โหมด: คนเดียว vs ทีม 3 คน · เวลา 3 ชั่วโมง</span>
+  <h1>คุณไม่ได้แข่งเรื่อง "รู้เยอะ"<br>คุณแข่งเรื่อง "หยิบของที่รู้มาใช้ได้เร็ว"</h1>
+  <p class="lead">
+    เว็บนี้ไม่ใช่ตำรา. เป็นคลังของที่ copy ไปใช้จริงตอนแข่ง + วิธีคิดโครงสร้าง
+    ที่ทำให้คุณเริ่มเขียนได้ภายใน 5 นาทีหลังได้โจทย์ ขณะที่ทีมอื่นยังประชุมกันอยู่.
+  </p>
+  <p style="margin-top:24px">
+    <a class="btn" href="studio/index.html">เข้าห้องปฏิบัติการ (แนะนำให้เริ่มที่นี่)</a>
+    <a class="btn ghost" href="lessons/04-battle-plan.html">แผน 3 ชั่วโมง</a>
+  </p>
+</div>
+
+<section>
+  <h2 class="sec">เริ่มตรงไหนดี</h2>
+  <div class="grid c3">
+    <a class="card" href="studio/index.html" style="border-color:var(--brand)">
+      <div class="num">เริ่มที่นี่ · ลงมือทำ</div>
+      <h3>ห้องปฏิบัติการ (Studio)</h3>
+      <p>เห็นแบบที่ต้องทำอยู่ขวามือ แล้วสร้างทีละชั้น มีปุ่มเส้นบอกระยะให้กดดูว่าช่องไฟกับขนาดตัวอักษรจริงเป็นเท่าไหร่ — ฝึกตาออกแบบไปพร้อมกับฝึกมือ</p></a>
+    <a class="card" href="lessons/01-structure.html">
+      <div class="num">อ้างอิง · เมื่อสงสัย</div>
+      <h3>บทเรียน 6 บท</h3>
+      <p>คำอธิบายเชิงลึกของทุกอย่างที่ใช้ในห้องปฏิบัติการ เปิดดูเมื่ออยากรู้ว่าทำไม</p></a>
+    <a class="card" href="templates/index.html">
+      <div class="num">ตอนแข่ง · หยิบใช้</div>
+      <h3>เทมเพลตและ Snippet</h3>
+      <p>ของสำเร็จรูปพร้อมคัดลอก ใช้ตอนจับเวลาจริง ไม่ใช่ตอนเรียน</p></a>
+  </div>
+</section>
+
+<section>
+  <h2 class="sec">ข้อได้เปรียบของคนเดียว (อ่านก่อน)</h2>
+  <div class="grid c3">
+    <div class="card"><h3>ไม่มี merge conflict</h3><p>ทีม 3 คนเสียเวลา 20–40 นาทีกับ git, ตกลงชื่อไฟล์, รอกัน. คุณเขียนไฟล์เดียวรวดเดียว จบ.</p></div>
+    <div class="card"><h3>ตัดสินใจทันที</h3><p>ไม่ต้องถกสี ไม่ต้องถกโครงสร้าง. แต่แปลว่าคุณต้อง<b>เตรียมการตัดสินใจไว้ล่วงหน้า</b> = เว็บนี้.</p></div>
+    <div class="card"><h3>ในหัวรู้ทุกบรรทัด</h3><p>ตอน debug นาทีที่ 150 คุณรู้ว่าโค้ดอยู่ตรงไหน ทีมอื่นต้องไล่โค้ดเพื่อนก่อน.</p></div>
+  </div>
+  <div class="note warn" style="margin-top:16px">
+    <b>จุดตายของคุณ:</b> ปริมาณงาน. แก้ด้วยข้อเดียว — <b>ห้ามเขียนอะไรจากศูนย์</b>.
+    เปิดเทมเพลตในเว็บนี้ copy แล้วแก้. เวลาที่ประหยัดคือเวลาที่เอาไปทำฟีเจอร์ที่ได้คะแนน.
+  </div>
+</section>
+
+<section>
+  <h2 class="sec">เส้นทางเรียน (ใช้เวลารวม ~4 ชม. ก่อนวันแข่ง)</h2>
+  <div class="grid c2">
+    <a class="card" href="lessons/01-structure.html"><div class="num">LESSON 01 · 45 นาที</div>
+      <h3>โครงสร้าง HTML &amp; หลักออกแบบ</h3>
+      <p>เว็บทุกหน้าคือกล่อง 4 ชั้นเหมือนกันหมด. เห็นภาพนี้แล้วคุณจะ "อ่านหน้าเว็บออก" ทุกหน้า.</p></a>
+
+    <a class="card" href="lessons/02-css-layout.html"><div class="num">LESSON 02 · 60 นาที</div>
+      <h3>CSS ที่ใช้จริง 20% ที่ครอบ 80%</h3>
+      <p>Flexbox, Grid, ตัวแปร, responsive แบบไม่ต้องเขียน media query เยอะ.</p></a>
+
+    <a class="card" href="lessons/03-js-core.html"><div class="num">LESSON 03 · 60 นาที</div>
+      <h3>JavaScript 6 อย่างที่ตอบโจทย์แข่งได้ 90%</h3>
+      <p>เลือก element, event, render list, form, fetch, localStorage. แค่นี้พอชนะ.</p></a>
+
+    <a class="card" href="lessons/04-battle-plan.html"><div class="num">LESSON 04 · 20 นาที</div>
+      <h3>แผนรบ 3 ชั่วโมง นาทีต่อนาที</h3>
+      <p>ตารางเวลา, สิ่งที่ทำก่อน-หลัง, จุดที่ต้องยอมตัดทิ้ง, checklist 15 นาทีสุดท้าย.</p></a>
+
+    <a class="card" href="lessons/05-lookup.html"><div class="num">LESSON 05 · 20 นาที</div>
+      <h3>ได้โจทย์แล้วค้นอะไร ที่ไหน</h3>
+      <p>ตารางแปล "โจทย์พูดแบบนี้" → "แปลว่าต้องใช้เทคนิคนี้" → "ค้นคำนี้".</p></a>
+
+    <a class="card" href="lessons/06-vscode.html"><div class="num">LESSON 06 · 15 นาที</div>
+      <h3>ตั้ง VS Code ให้เร็วขึ้น 2 เท่า</h3>
+      <p>Emmet, Live Server, shortcut, multi-cursor. อันนี้คือของที่คนมีประสบการณ์ได้เปรียบ.</p></a>
+  </div>
+</section>
+
+<section>
+  <h2 class="sec">คลังของ (เปิดตอนแข่ง)</h2>
+  <div class="grid c2">
+    <a class="card" href="templates/index.html"><h3>เทมเพลต 8 หน้า พร้อมใช้</h3>
+      <p>Landing, Dashboard, Form, Login, Table CRUD, Gallery, Blog, Portfolio — ไฟล์เดียวจบทุกอัน copy ไปวางได้เลย.</p></a>
+    <a class="card" href="snippets/index.html"><h3>Snippet กดปุ่มคัดลอก</h3>
+      <p>Modal, Tab, Accordion, Search filter, Dark mode, Toast, Countdown, Chart, Validation.</p></a>
+  </div>
+</section>
+
+<section>
+  <h2 class="sec">กฎ 5 ข้อ ท่องให้ขึ้นใจ</h2>
+  <div class="lesson">
+  <ol>
+    <li><b>ทำให้ "เห็นภาพ" ก่อนทำให้ "ทำงาน"</b> — กรรมการเห็นหน้าจอก่อนเห็นโค้ด. หน้าเปล่าที่สวย > ระบบเทพที่รันไม่ขึ้น.</li>
+    <li><b>ห้ามติดตั้งอะไรตอนแข่ง</b> — ไม่ npm ไม่ framework. HTML+CSS+JS ล้วน เปิดไฟล์ก็รัน.</li>
+    <li><b>ข้อมูลปลอมก่อนเสมอ</b> — เขียน array ของ object ไว้บนสุดของไฟล์ แล้ว render. ค่อยต่อ API ทีหลังถ้ามีเวลา.</li>
+    <li><b>ทำงานได้ 1 อย่างสมบูรณ์ ดีกว่า 5 อย่างครึ่งๆ</b> — กรรมการกดปุ่มแล้วพัง = ตายทันที.</li>
+    <li><b>Save + เปิดดูในเบราว์เซอร์ทุก 10 นาที</b> — อย่าเขียนยาว 40 บรรทัดแล้วค่อยดู. พังแล้วหาไม่เจอ.</li>
+  </ol>
+  </div>
+</section>
+
+</div>
+
+<footer class="site"><div class="wrap">Web Speedrun · เปิดโฟลเดอร์นี้ใน VS Code แล้วกด Live Server ที่ index.html</div></footer>
+</body>
+</html>

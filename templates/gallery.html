@@ -1,0 +1,258 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ร้านค้า — แกลเลอรีสินค้า + ตะกร้า</title>
+<style>
+:root{
+  --bg:#0f1115;--surface:#171a21;--surface-2:#1e222b;
+  --text:#e8eaed;--muted:#9aa4b2;--line:#2a2f3a;
+  --brand:#ff8a3d;--ok:#3ddc97;--r:14px;
+}
+*,*::before,*::after{box-sizing:border-box}*{margin:0}
+img{display:block;max-width:100%}
+input,button,select{font:inherit;color:inherit}
+body{background:var(--bg);color:var(--text);line-height:1.6;
+  font-family:system-ui,"Segoe UI","Noto Sans Thai",sans-serif}
+a{color:inherit;text-decoration:none}
+.wrap{width:min(1140px,100% - 32px);margin-inline:auto}
+
+header{position:sticky;top:0;z-index:40;background:rgba(15,17,21,.88);
+  backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+header .wrap{display:flex;align-items:center;gap:16px;height:66px}
+.logo{font-weight:800;font-size:19px}.logo i{color:var(--brand);font-style:normal}
+.cartBtn{margin-left:auto;background:var(--surface);border:1px solid var(--line);
+  padding:9px 16px;border-radius:10px;cursor:pointer;position:relative}
+.cartBtn b{background:var(--brand);color:#1a0d02;font-size:11.5px;padding:1px 7px;
+  border-radius:99px;margin-left:6px}
+
+.tools{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin:26px 0 18px}
+.tools input,.tools select{background:var(--surface);border:1px solid var(--line);
+  padding:10px 13px;border-radius:10px}
+.tools input{flex:1;min-width:200px}
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:22px}
+.chip{background:var(--surface);border:1px solid var(--line);color:var(--muted);
+  padding:7px 15px;border-radius:99px;cursor:pointer;font-size:14px;transition:.15s}
+.chip:hover{color:var(--text)}
+.chip.active{background:var(--brand);border-color:var(--brand);color:#1a0d02;font-weight:600}
+
+/* ===== grid สินค้า: responsive อัตโนมัติ ===== */
+.grid{display:grid;gap:18px;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));
+  padding-bottom:60px}
+.item{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);
+  overflow:hidden;transition:.2s;display:flex;flex-direction:column}
+.item:hover{transform:translateY(-4px);border-color:var(--brand)}
+.thumb{position:relative;aspect-ratio:4/3;background:var(--surface-2);cursor:zoom-in}
+.thumb img{width:100%;height:100%;object-fit:cover}
+.tagCat{position:absolute;top:10px;left:10px;background:rgba(0,0,0,.65);
+  font-size:11.5px;padding:3px 10px;border-radius:99px;backdrop-filter:blur(4px)}
+.body{padding:15px;display:flex;flex-direction:column;gap:8px;flex:1}
+.body h3{font-size:15.5px;line-height:1.35}
+.body .price{font-size:19px;font-weight:800;color:var(--brand);margin-top:auto}
+.body .rate{font-size:12.5px;color:var(--muted)}
+.add{background:var(--brand);color:#1a0d02;border:0;padding:9px;border-radius:9px;
+  font-weight:700;cursor:pointer;width:100%}
+.add:hover{filter:brightness(1.08)}
+.empty{grid-column:1/-1;text-align:center;color:var(--muted);padding:60px 0}
+
+/* ===== MODAL (ใช้ได้ทั้งดูรูปใหญ่และตะกร้า) ===== */
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.72);display:none;
+  align-items:center;justify-content:center;z-index:100;padding:20px}
+.overlay.open{display:flex}
+.modal{background:var(--surface);border:1px solid var(--line);border-radius:18px;
+  width:min(460px,100%);max-height:86vh;overflow:auto;padding:24px}
+.modal h2{font-size:18px;margin-bottom:16px}
+.close{position:absolute;top:18px;right:22px;background:transparent;border:0;
+  color:#fff;font-size:26px;cursor:pointer}
+.line{display:flex;align-items:center;gap:12px;padding:11px 0;border-bottom:1px solid var(--line)}
+.line img{width:50px;height:50px;object-fit:cover;border-radius:9px}
+.line .n{flex:1;font-size:14px}
+.qty{display:flex;align-items:center;gap:6px}
+.qty button{width:26px;height:26px;border-radius:7px;background:var(--surface-2);
+  border:1px solid var(--line);cursor:pointer}
+.total{display:flex;justify-content:space-between;font-size:19px;font-weight:800;margin:18px 0}
+.checkout{width:100%;background:var(--brand);color:#1a0d02;border:0;padding:13px;
+  border-radius:11px;font-weight:700;cursor:pointer}
+.lightbox img{width:100%;border-radius:12px}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <div class="logo">Craft<i>Store</i></div>
+    <button class="cartBtn" id="cartBtn">🛒 ตะกร้า <b id="cartCount">0</b></button>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="tools">
+    <input id="search" placeholder="ค้นหาสินค้า...">
+    <select id="sort">
+      <option value="default">เรียงตาม: แนะนำ</option>
+      <option value="low">ราคา น้อยไปมาก</option>
+      <option value="high">ราคา มากไปน้อย</option>
+      <option value="rate">คะแนนสูงสุด</option>
+    </select>
+  </div>
+
+  <div class="chips" id="chips"></div>
+  <div class="grid" id="grid"></div>
+</div>
+
+<!-- ตะกร้า -->
+<div class="overlay" id="cartOverlay">
+  <div class="modal">
+    <button class="close" data-close>&times;</button>
+    <h2>ตะกร้าสินค้า</h2>
+    <div id="cartList"></div>
+    <div class="total"><span>รวมทั้งหมด</span><span id="cartTotal">฿0</span></div>
+    <button class="checkout" id="checkout">สั่งซื้อ</button>
+  </div>
+</div>
+
+<!-- ดูรูปใหญ่ -->
+<div class="overlay" id="lbOverlay">
+  <div class="modal lightbox">
+    <button class="close" data-close>&times;</button>
+    <img id="lbImg" alt="">
+    <h2 id="lbTitle" style="margin-top:14px"></h2>
+    <p id="lbDesc" style="color:var(--muted);font-size:14.5px"></p>
+  </div>
+</div>
+
+<script>
+/* ================= DATA ================= */
+const products = [
+  {id:1, name:'แจกันเซรามิกทำมือ',  cat:'ของตกแต่ง', price:890,  rate:4.8, img:'https://picsum.photos/seed/vase/500/380',  desc:'ปั้นมือทีละใบ ไม่มีใบไหนเหมือนกัน'},
+  {id:2, name:'แก้วกาแฟดินเผา',     cat:'ของใช้',    price:320,  rate:4.6, img:'https://picsum.photos/seed/mug/500/380',   desc:'เก็บความร้อนได้นาน จับถนัดมือ'},
+  {id:3, name:'ผ้าคลุมทอมือ',       cat:'ผ้า',       price:1250, rate:4.9, img:'https://picsum.photos/seed/cloth/500/380', desc:'ฝ้ายแท้ 100% ย้อมสีธรรมชาติ'},
+  {id:4, name:'ตะกร้าสานหวาย',      cat:'ของใช้',    price:540,  rate:4.4, img:'https://picsum.photos/seed/basket/500/380',desc:'สานจากหวายแท้ ทนทานหลายปี'},
+  {id:5, name:'เทียนหอมถั่วเหลือง',  cat:'ของตกแต่ง', price:280,  rate:4.7, img:'https://picsum.photos/seed/candle/500/380',desc:'กลิ่นมะลิ จุดได้ 40 ชั่วโมง'},
+  {id:6, name:'กระเป๋าผ้าดิบ',      cat:'ผ้า',       price:390,  rate:4.3, img:'https://picsum.photos/seed/bag/500/380',   desc:'ซักได้ ใช้ซ้ำ ลดถุงพลาสติก'},
+  {id:7, name:'จานไม้สัก',          cat:'ของใช้',    price:650,  rate:4.5, img:'https://picsum.photos/seed/plate/500/380', desc:'ไม้สักแท้ เคลือบน้ำมันปลอดภัย'},
+  {id:8, name:'โคมไฟกระดาษสา',      cat:'ของตกแต่ง', price:1100, rate:4.9, img:'https://picsum.photos/seed/lamp/500/380',  desc:'แสงนวลอบอุ่น ทำจากกระดาษสาแท้'},
+];
+let cart = JSON.parse(localStorage.getItem('cart')) || [];
+let activeCat = 'ทั้งหมด';
+
+/* ================= ELEMENTS ================= */
+const grid = document.querySelector('#grid');
+const search = document.querySelector('#search');
+const sortSel = document.querySelector('#sort');
+
+/* ================= CHIPS หมวด ================= */
+const cats = ['ทั้งหมด', ...new Set(products.map(p => p.cat))];
+document.querySelector('#chips').innerHTML = cats.map(c =>
+  `<button class="chip ${c===activeCat?'active':''}" data-cat="${c}">${c}</button>`).join('');
+
+/* ================= RENDER ================= */
+function visible(){
+  const q = search.value.toLowerCase().trim();
+  let out = products.filter(p =>
+    p.name.toLowerCase().includes(q) &&
+    (activeCat === 'ทั้งหมด' || p.cat === activeCat));
+
+  const s = sortSel.value;
+  if(s === 'low')  out.sort((a,b) => a.price - b.price);
+  if(s === 'high') out.sort((a,b) => b.price - a.price);
+  if(s === 'rate') out.sort((a,b) => b.rate - a.rate);
+  return out;
+}
+
+function render(){
+  const data = visible();
+  grid.innerHTML = data.length ? data.map(p => `
+    <article class="item">
+      <div class="thumb" onclick="openLightbox(${p.id})">
+        <img src="${p.img}" alt="${p.name}" loading="lazy">
+        <span class="tagCat">${p.cat}</span>
+      </div>
+      <div class="body">
+        <h3>${p.name}</h3>
+        <div class="rate">★ ${p.rate}</div>
+        <div class="price">฿${p.price.toLocaleString('th-TH')}</div>
+        <button class="add" onclick="addToCart(${p.id})">ใส่ตะกร้า</button>
+      </div>
+    </article>`).join('')
+    : '<div class="empty">ไม่พบสินค้าที่ค้นหา</div>';
+}
+
+/* ================= CART ================= */
+const saveCart = () => localStorage.setItem('cart', JSON.stringify(cart));
+
+function addToCart(id){
+  const line = cart.find(c => c.id === id);
+  if(line) line.qty++;
+  else cart.push({ id, qty:1 });
+  saveCart(); renderCart();
+}
+function changeQty(id, d){
+  const line = cart.find(c => c.id === id);
+  line.qty += d;
+  if(line.qty <= 0) cart = cart.filter(c => c.id !== id);
+  saveCart(); renderCart();
+}
+function renderCart(){
+  const count = cart.reduce((s,c) => s + c.qty, 0);
+  document.querySelector('#cartCount').textContent = count;
+
+  document.querySelector('#cartList').innerHTML = cart.length ? cart.map(c => {
+    const p = products.find(x => x.id === c.id);
+    return `<div class="line">
+      <img src="${p.img}" alt="">
+      <div class="n">${p.name}<br><small style="color:var(--muted)">฿${p.price.toLocaleString('th-TH')}</small></div>
+      <div class="qty">
+        <button onclick="changeQty(${p.id},-1)">−</button>
+        <span>${c.qty}</span>
+        <button onclick="changeQty(${p.id},1)">+</button>
+      </div>
+    </div>`;
+  }).join('') : '<p style="color:var(--muted);padding:20px 0">ตะกร้าว่างเปล่า</p>';
+
+  const total = cart.reduce((s,c) =>
+    s + c.qty * products.find(p => p.id === c.id).price, 0);
+  document.querySelector('#cartTotal').textContent = '฿' + total.toLocaleString('th-TH');
+}
+
+/* ================= LIGHTBOX ================= */
+function openLightbox(id){
+  const p = products.find(x => x.id === id);
+  document.querySelector('#lbImg').src = p.img;
+  document.querySelector('#lbImg').alt = p.name;
+  document.querySelector('#lbTitle').textContent = p.name;
+  document.querySelector('#lbDesc').textContent = p.desc;
+  document.querySelector('#lbOverlay').classList.add('open');
+}
+
+/* ================= EVENTS ================= */
+search.addEventListener('input', render);
+sortSel.addEventListener('change', render);
+document.querySelector('#chips').addEventListener('click', e => {
+  if(!e.target.dataset.cat) return;
+  activeCat = e.target.dataset.cat;
+  document.querySelectorAll('.chip').forEach(c => c.classList.toggle('active', c === e.target));
+  render();
+});
+document.querySelector('#cartBtn').addEventListener('click',
+  () => document.querySelector('#cartOverlay').classList.add('open'));
+document.querySelectorAll('[data-close]').forEach(b =>
+  b.addEventListener('click', () => b.closest('.overlay').classList.remove('open')));
+document.querySelectorAll('.overlay').forEach(o =>
+  o.addEventListener('click', e => { if(e.target === o) o.classList.remove('open'); }));
+document.addEventListener('keydown', e => {
+  if(e.key === 'Escape') document.querySelectorAll('.overlay').forEach(o => o.classList.remove('open'));
+});
+document.querySelector('#checkout').addEventListener('click', () => {
+  if(!cart.length) return;
+  alert('สั่งซื้อสำเร็จ ขอบคุณครับ');
+  cart = []; saveCart(); renderCart();
+  document.querySelector('#cartOverlay').classList.remove('open');
+});
+
+/* ================= START ================= */
+render(); renderCart();
+</script>
+</body>
+</html>

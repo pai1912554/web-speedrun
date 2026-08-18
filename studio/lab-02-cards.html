@@ -1,0 +1,257 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>LAB 02 · ตารางการ์ด — Studio</title>
+<link rel="stylesheet" href="studio.css">
+</head>
+<body>
+
+<div class="bar"><div class="bar-in">
+  <div class="mark">WEB <b>STUDIO</b></div>
+  <nav>
+    <a href="index.html">ห้องปฏิบัติการ</a>
+    <a href="design-eye.html">ฝึกตาออกแบบ</a>
+    <a href="../index.html">คลังความรู้</a>
+  </nav>
+</div></div>
+
+<div class="bench">
+  <div class="sheet"><div id="labHead"></div><div id="steps"></div></div>
+  <div class="board">
+    <div class="board-head">
+      <div class="seg">
+        <button data-mode="build" class="on">ที่กำลังทำ</button>
+        <button data-mode="target">เป้าหมาย</button>
+      </div>
+      <button class="tool" id="noteBtn">เส้นบอกระยะ</button>
+      <div class="spacer"></div>
+      <div class="sizebtns">
+        <button class="tool on" data-w="100%">จอใหญ่</button>
+        <button class="tool" data-w="390px">มือถือ</button>
+      </div>
+    </div>
+    <div class="stage"><iframe id="frame" title="ตัวอย่างงาน"></iframe></div>
+    <div class="board-foot">
+      <span id="stepNow"></span>
+      <div class="pbar"><i id="pbar"></i></div>
+      <div class="navbtns">
+        <button class="ghost" id="prev">ย้อน</button>
+        <button id="next">ขั้นต่อไป</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const LAB = {
+no: 2,
+title: 'ตารางการ์ด — โครงที่โจทย์แข่งขอบ่อยที่สุด',
+lede: 'สินค้า ข่าว สมาชิก กิจกรรม เมนูอาหาร ทั้งหมดคือโครงเดียวกัน: กล่องเนื้อหาเรียงเป็นตาราง. ทำท่านี้ให้คล่อง แล้วโจทย์ครึ่งหนึ่งจะกลายเป็นแค่การเปลี่ยนข้อมูล.',
+minutes: 25,
+uses: ['CSS Grid', 'กายวิภาคการ์ด', 'สัดส่วนรูป', 'ความสม่ำเสมอ'],
+
+notes: [
+  {sel:'.deck',           label:'grid auto-fit ขั้นต่ำ 250px', side:'top'},
+  {sel:'.card',           label:'padding 20px รอบเนื้อหา', side:'bottom'},
+  {sel:'.card figure',    label:'aspect-ratio 3/2 + object-fit cover', side:'in'},
+  {sel:'.card h3',        label:'17px / 700 — ใหญ่กว่าเนื้อ 1 ระดับ', side:'right'},
+  {sel:'.price',          label:'ตัวเลขคือของสำคัญ ให้เด่นสุดในการ์ด', side:'bottom'},
+],
+
+steps: [
+{
+ t:'ข้อมูลก่อน หน้าตาทีหลัง',
+ why:'ก่อนวาดการ์ดสักใบ ต้องตอบให้ได้ว่า<b>การ์ดหนึ่งใบมีข้อมูลอะไรบ้าง</b>. เขียนออกมาเป็นรายการก่อน แล้วค่อยตัดสินว่าอันไหนเด่นอันไหนจาง. ข้ามขั้นนี้แล้วออกแบบไปเรื่อยๆ จะได้การ์ดที่ทุกอย่างสำคัญเท่ากันหมด.',
+ rule:{t:'กายวิภาคการ์ด', d:'การ์ดที่ดีมี 4 ชั้นเรียงตามความสำคัญ: <b>รูป</b> (ดึงตา) ➝ <b>ชื่อ</b> (บอกว่าอะไร) ➝ <b>รายละเอียดรอง</b> (จาง) ➝ <b>ตัวเลขหรือปุ่ม</b> (สิ่งที่ผู้ใช้จะทำต่อ). เกิน 4 ชั้นเมื่อไหร่ การ์ดจะเริ่มรก.'},
+ css:`:root{
+  --ground:#f7f7f5;
+  --card:#ffffff;
+  --ink:#1a1a1a;
+  --ink-2:#6b6b6b;
+  --line:#e5e3df;
+  --accent:#c2410c;
+}
+body{ background:var(--ground); color:var(--ink); padding:40px 0; }
+.wrap{ width:min(1000px, 100% - 40px); margin-inline:auto; }
+.head{ margin-bottom:24px; }
+.head h1{ font-size:28px; letter-spacing:-.8px; }
+.head p{ color:var(--ink-2); margin-top:6px; }`,
+ html:`<div class="wrap">
+  <div class="head">
+    <h1>ตลาดของมือสองใกล้ตัว</h1>
+    <p>ของสภาพดีจากคนในย่านเดียวกัน นัดรับได้ในวันเดียว</p>
+  </div>
+  <div class="deck"></div>
+</div>`
+},
+{
+ t:'ทำการ์ดใบเดียวให้จบก่อน',
+ why:'อย่าเพิ่งทำหกใบ. ทำใบเดียวให้ดีที่สุด แล้วค่อยคัดลอก — ถ้าทำหกใบพร้อมกันแล้วอยากแก้ระยะ ต้องไล่แก้หกที่ (จริงๆ ตอนแข่งจะใช้ JavaScript วนสร้าง แต่หลักออกแบบเหมือนกัน).',
+ rule:{t:'สัดส่วนรูป', d:'<code>aspect-ratio</code> คู่กับ <code>object-fit:cover</code> คือคู่ที่ต้องจำ. มันบังคับให้รูปทุกใบสูงเท่ากันโดยไม่ยืดผิดสัดส่วน. ขาดข้อนี้ = การ์ดสูงไม่เท่ากัน = งานดูรก ซึ่งเป็นจุดที่มือใหม่พลาดบ่อยที่สุด.'},
+ css:`.card{
+  background:var(--card);
+  border:1px solid var(--line);
+  border-radius:12px;
+  overflow:hidden;          /* บังคับให้รูปโค้งตามมุมการ์ด */
+  display:flex;
+  flex-direction:column;
+}
+.card figure{
+  aspect-ratio:3 / 2;       /* ทุกใบสูงเท่ากันเสมอ */
+  background:#eceae6;
+}
+.card figure img{
+  width:100%; height:100%;
+  object-fit:cover;         /* ครอบไม่ยืด */
+}
+.card .body{
+  padding:20px;
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+  flex:1;                   /* ดันให้การ์ดทุกใบสูงเท่ากัน */
+}
+.card h3{ font-size:17px; font-weight:700; line-height:1.35; }
+.card .meta{ font-size:13.5px; color:var(--ink-2); }`,
+ into:'.deck',
+ html:`<article class="card">
+  <figure><img src="https://picsum.photos/seed/desk/600/400" alt="โต๊ะไม้สักมือสอง"></figure>
+  <div class="body">
+    <h3>โต๊ะทำงานไม้สัก 120 ซม.</h3>
+    <p class="meta">ลาดพร้าว · ลงประกาศ 2 ชั่วโมงที่แล้ว</p>
+  </div>
+</article>`,
+ try:'ลบ <code>aspect-ratio</code> ออกแล้วเพิ่มการ์ดใบที่สองในขั้นถัดไป — จะเห็นทันทีว่าความสูงเริ่มไม่เท่ากันแล้วงานดูไม่เรียบร้อยอย่างไร.'
+},
+{
+ t:'ตัวเลขคือของสำคัญ ให้มันเด่นที่สุดในการ์ด',
+ why:'ในการ์ดสินค้า สิ่งที่ผู้ใช้มองหาคือ<b>ราคา</b>. ในการ์ดข่าวคือ<b>พาดหัว</b>. ในการ์ดสมาชิกคือ<b>ชื่อ</b>. ต้องรู้ว่าอะไรคือของสำคัญของการ์ดนี้ แล้วให้มันชนะทุกอย่างในกล่อง.',
+ rule:{t:'ดันของสำคัญไปล่างสุด', d:'ใส่ <code>margin-top:auto</code> ให้ราคา มันจะถูกดันไปติดขอบล่างเสมอ ไม่ว่าชื่อสินค้าจะยาวหนึ่งหรือสามบรรทัด. ผลคือราคาของทุกใบเรียงตรงกันเป็นแถว — รายละเอียดที่ทำให้ตารางดูเป็นระเบียบ.'},
+ css:`.price{
+  margin-top:auto;                 /* ดันลงล่างสุดเสมอ */
+  padding-top:12px;
+  border-top:1px solid var(--line);
+  font-size:19px;
+  font-weight:800;
+  letter-spacing:-.4px;
+  font-variant-numeric:tabular-nums;
+}
+.tag{
+  align-self:flex-start;
+  font-size:11.5px;
+  font-weight:600;
+  letter-spacing:.6px;
+  text-transform:uppercase;
+  color:var(--accent);
+  background:color-mix(in srgb, var(--accent) 10%, transparent);
+  padding:3px 9px;
+  border-radius:99px;
+}`,
+ into:'.card .body',
+ html:`<span class="tag">สภาพดีมาก</span>
+<div class="price">1,800 บาท</div>`,
+ try:'ลบ <code>margin-top:auto</code> ออก แล้วดูขั้นถัดไปที่มีหลายใบ. ราคาจะลอยขึ้นมาไม่ตรงกัน — ตาจับได้ว่ารก แม้จะบอกไม่ถูกว่าเพราะอะไร.'
+},
+{
+ t:'เรียงเป็นตารางด้วยสูตรเดียวที่ responsive เอง',
+ why:'นี่คือ CSS สามบรรทัดที่คุ้มที่สุดในการแข่ง. มันแบ่งคอลัมน์ให้อัตโนมัติตามความกว้างจอ <b>โดยไม่ต้องเขียน media query เลย</b>.',
+ rule:{t:'อ่านสูตรให้ออก', d:'<code>repeat(auto-fit, minmax(250px, 1fr))</code> แปลว่า "ยัดคอลัมน์ให้ได้มากที่สุด แต่ละคอลัมน์ห้ามแคบกว่า 250px ที่เหลือแบ่งเท่าๆ กัน". จอกว้างได้ 4 ใบต่อแถว มือถือเหลือใบเดียว โดยไม่ต้องสั่งอะไรเพิ่ม.'},
+ css:`.deck{
+  display:grid;
+  grid-template-columns:repeat(auto-fit, minmax(250px, 1fr));
+  gap:20px;                /* ระยะห่างเท่ากันทั้งแนวตั้งและแนวนอน */
+}`,
+ into:'.deck',
+ html:`<article class="card">
+  <figure><img src="https://picsum.photos/seed/chair/600/400" alt="เก้าอี้ทำงาน"></figure>
+  <div class="body"><span class="tag">ใช้งานได้ปกติ</span>
+    <h3>เก้าอี้ทำงานปรับระดับ พนักตาข่าย</h3>
+    <p class="meta">รัชดา · ลงประกาศเมื่อวาน</p>
+    <div class="price">950 บาท</div></div>
+</article>
+<article class="card">
+  <figure><img src="https://picsum.photos/seed/lamp2/600/400" alt="โคมไฟตั้งโต๊ะ"></figure>
+  <div class="body"><span class="tag">เหมือนใหม่</span>
+    <h3>โคมไฟตั้งโต๊ะปรับแสงได้สามระดับ</h3>
+    <p class="meta">อารีย์ · ลงประกาศ 3 วันที่แล้ว</p>
+    <div class="price">420 บาท</div></div>
+</article>
+<article class="card">
+  <figure><img src="https://picsum.photos/seed/shelf/600/400" alt="ชั้นวางหนังสือ"></figure>
+  <div class="body"><span class="tag">มีรอยเล็กน้อย</span>
+    <h3>ชั้นวางหนังสือ 5 ชั้น สูง 180 ซม.</h3>
+    <p class="meta">บางซื่อ · ลงประกาศ 5 วันที่แล้ว</p>
+    <div class="price">1,200 บาท</div></div>
+</article>
+<article class="card">
+  <figure><img src="https://picsum.photos/seed/bike/600/400" alt="จักรยานพับได้"></figure>
+  <div class="body"><span class="tag">สภาพดีมาก</span>
+    <h3>จักรยานพับได้ 20 นิ้ว</h3>
+    <p class="meta">ห้วยขวาง · ลงประกาศวันนี้</p>
+    <div class="price">3,400 บาท</div></div>
+</article>
+<article class="card">
+  <figure><img src="https://picsum.photos/seed/plant/600/400" alt="กระถางต้นไม้"></figure>
+  <div class="body"><span class="tag">ใช้งานได้ปกติ</span>
+    <h3>กระถางดินเผาชุด 3 ใบ</h3>
+    <p class="meta">จตุจักร · ลงประกาศ 2 วันที่แล้ว</p>
+    <div class="price">260 บาท</div></div>
+</article>`,
+ try:'ลาก<b>ขอบหน้าต่างเบราว์เซอร์</b>ให้แคบลงช้าๆ หรือกดปุ่มมือถือบนกระดาน — สังเกตจังหวะที่จำนวนคอลัมน์ลดลงเอง.'
+},
+{
+ t:'ปฏิสัมพันธ์: ทำให้ของที่กดได้ ดูเหมือนกดได้',
+ why:'การ์ดที่กดได้ต้องตอบสนองตอนเมาส์ชี้ ไม่งั้นผู้ใช้ไม่รู้ว่ากดได้. แต่<b>ต้องเบามือ</b> — ขยับ 2px กับเงาจางๆ พอ. ขยับ 10px หรือเปลี่ยนสีทั้งใบจะดูตลกทันที.',
+ rule:{t:'จังหวะที่พอดี', d:'transition 0.18 วินาที คือช่วงที่รู้สึกว่าตอบสนองทันทีแต่ยังนุ่ม. ต่ำกว่า 0.1 จะเหมือนกระตุก สูงกว่า 0.4 จะรู้สึกว่าเว็บอืด.'},
+ css:`.card{
+  transition:transform .18s, box-shadow .18s, border-color .18s;
+  cursor:pointer;
+}
+.card:hover{
+  transform:translateY(-3px);
+  box-shadow:0 10px 24px rgba(0,0,0,.09);
+  border-color:#d6d2cb;
+}
+.card:hover h3{ color:var(--accent); }
+
+/* คนที่ใช้คีย์บอร์ดต้องเห็นว่าตอนนี้อยู่ที่การ์ดใบไหน */
+.card:focus-within{ outline:2px solid var(--accent); outline-offset:2px; }
+
+@media (prefers-reduced-motion:reduce){
+  .card{ transition:none; }
+  .card:hover{ transform:none; }
+}`,
+ try:'เปลี่ยน <code>translateY(-3px)</code> เป็น <code>-14px</code> แล้วชี้เมาส์ดู. จะรู้สึกได้ทันทีว่า "มากไป" — ความรู้สึกนี้แหละคือตาออกแบบที่กำลังฝึกอยู่.'
+},
+{
+ t:'สถานะว่าง — จุดที่ทำให้งานดูคิดมาครบ',
+ why:'ตอนกรรมการพิมพ์ค้นหาแล้วไม่เจออะไร ถ้าหน้าจอว่างเปล่าเฉยๆ งานจะดูทำไม่เสร็จ. ใส่ข้อความสถานะว่างใช้เวลา 2 นาที แต่<b>ทำให้งานดูเป็นระบบจริง</b>.',
+ rule:{t:'เขียนข้อความให้ช่วยผู้ใช้', d:'อย่าเขียนแค่ "ไม่พบข้อมูล". บอกด้วยว่าทำอะไรต่อได้ — "ลองลดตัวกรอง หรือค้นด้วยคำที่สั้นลง". ข้อความที่ดีคือส่วนหนึ่งของงานออกแบบ ไม่ใช่ของแถม.'},
+ css:`.empty{
+  grid-column:1 / -1;              /* กินเต็มความกว้างตาราง */
+  text-align:center;
+  padding:56px 20px;
+  border:1px dashed var(--line);
+  border-radius:12px;
+  color:var(--ink-2);
+}
+.empty b{ display:block; color:var(--ink); font-size:16px; margin-bottom:4px; }`,
+ into:'.wrap',
+ html:`<div style="margin-top:20px">
+  <div class="deck">
+    <div class="empty">
+      <b>ยังไม่มีของในย่านนี้</b>
+      ลองขยายระยะทางเป็น 10 กิโลเมตร หรือค้นด้วยคำที่สั้นลง
+    </div>
+  </div>
+</div>`,
+ try:'กดปุ่ม <b>เส้นบอกระยะ</b> แล้วเทียบทุกค่ากับสเกล 4/8/16/20/24. ถ้าเจอค่าแปลกๆ อย่าง 18px หรือ 22px แปลว่าเผลอเดา ไม่ได้เลือกจากสเกล.'
+},
+]
+};
+</script>
+<script src="lab.js"></script>
+</body>
+</html>

@@ -1,0 +1,189 @@
+/* =========================================================
+   STUDIO — โต๊ะเขียนแบบ
+   ซ้าย = ใบสั่งงาน (ทำทีละขั้น)   ขวา = กระดานงาน (เห็นผลทันที)
+   ========================================================= */
+:root{
+  /* พื้น: เทาอมน้ำเงินเย็น ไม่ใช่ดำสนิท */
+  --ground:#0e1319;
+  --paper:#151c24;
+  --paper-2:#1c242e;
+  --ink:#e7edf3;
+  --ink-2:#a9b7c4;
+  --ink-3:#6f8092;
+  --rule:#232d38;
+  --rule-2:#2f3b48;
+  /* ดินสอเขียนแบบ: ส้มอิฐ ตัดกับพื้นเย็น */
+  --mark:#ff7043;
+  --mark-soft:rgba(255,112,67,.13);
+  --good:#4ade80;
+  --bad:#f87171;
+  --blue:#5b9dff;
+
+  --sp1:4px; --sp2:8px; --sp3:16px; --sp4:24px; --sp5:40px; --sp6:64px;
+  --r:10px;
+  --mono:ui-monospace,"Cascadia Code",Consolas,"SF Mono",monospace;
+  --sans:system-ui,-apple-system,"Segoe UI","Noto Sans Thai",sans-serif;
+}
+
+*,*::before,*::after{box-sizing:border-box}
+*{margin:0}
+img,svg{display:block;max-width:100%}
+button,input,select,textarea{font:inherit;color:inherit}
+html{scroll-behavior:smooth}
+body{background:var(--ground);color:var(--ink);font-family:var(--sans);line-height:1.7;
+  font-size:15.5px}
+a{color:inherit;text-decoration:none}
+
+/* ---------- แถบบน ---------- */
+.bar{position:sticky;top:0;z-index:60;background:rgba(14,19,25,.9);
+  backdrop-filter:blur(10px);border-bottom:1px solid var(--rule)}
+.bar-in{display:flex;align-items:center;gap:var(--sp4);height:56px;
+  padding-inline:22px}
+.mark{font-family:var(--mono);font-size:13px;letter-spacing:2.5px;text-transform:uppercase;
+  color:var(--ink);white-space:nowrap}
+.mark b{color:var(--mark);font-weight:700}
+.bar nav{margin-left:auto;display:flex;gap:20px;font-size:14px}
+.bar nav a{color:var(--ink-3)}
+.bar nav a:hover,.bar nav a.on{color:var(--mark)}
+
+/* ---------- โครง 2 คอลัมน์ ---------- */
+.bench{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.05fr);
+  gap:0;align-items:start}
+.sheet{padding:34px 30px 90px;min-width:0}
+.board{position:sticky;top:56px;height:calc(100vh - 56px);
+  border-left:1px solid var(--rule);background:var(--paper);
+  display:flex;flex-direction:column;min-width:0}
+
+/* ---------- ใบสั่งงาน (ซ้าย) ---------- */
+.kicker{font-family:var(--mono);font-size:11.5px;letter-spacing:2.5px;text-transform:uppercase;
+  color:var(--mark);margin-bottom:10px}
+h1.lab{font-size:clamp(26px,3.4vw,38px);line-height:1.15;letter-spacing:-1px;
+  text-wrap:balance;font-weight:800}
+.lede{color:var(--ink-2);margin-top:12px;max-width:60ch}
+
+.facts{display:flex;gap:var(--sp4);flex-wrap:wrap;margin:22px 0 30px;
+  padding:14px 0;border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);
+  font-family:var(--mono);font-size:12px;color:var(--ink-3)}
+.facts b{color:var(--ink);font-weight:600;display:block;letter-spacing:0;
+  font-family:var(--sans);font-size:14px}
+.facts span{letter-spacing:1.5px;text-transform:uppercase}
+
+/* ขั้นตอน */
+.step{border-left:2px solid var(--rule);padding:0 0 30px 24px;position:relative;
+  margin-left:11px}
+.step::before{content:"";position:absolute;left:-8px;top:5px;width:14px;height:14px;
+  border-radius:50%;background:var(--ground);border:2px solid var(--rule-2)}
+.step.on::before{border-color:var(--mark);background:var(--mark)}
+.step.done::before{border-color:var(--mark)}
+.step:last-child{border-left-color:transparent}
+.step-n{font-family:var(--mono);font-size:11.5px;letter-spacing:2px;color:var(--ink-3);
+  text-transform:uppercase}
+.step h2{font-size:19px;line-height:1.3;margin:2px 0 8px;letter-spacing:-.3px;cursor:pointer}
+.step.on h2{color:var(--mark)}
+.step .why{color:var(--ink-2);font-size:14.5px}
+.step .why b{color:var(--ink)}
+
+/* กล่องเหตุผลออกแบบ */
+.rule-box{border:1px solid var(--rule);border-left:2px solid var(--mark);
+  background:var(--paper);border-radius:0 var(--r) var(--r) 0;
+  padding:13px 16px;margin:14px 0;font-size:14px;color:var(--ink-2)}
+.rule-box .rb-t{font-family:var(--mono);font-size:10.5px;letter-spacing:2px;
+  text-transform:uppercase;color:var(--mark);margin-bottom:5px}
+.rule-box.try{border-left-color:var(--blue)}
+.rule-box.try .rb-t{color:var(--blue)}
+
+/* โค้ด */
+.codewrap{margin:14px 0;border:1px solid var(--rule);border-radius:var(--r);overflow:hidden}
+.codehead{display:flex;align-items:center;gap:10px;padding:7px 12px;background:var(--paper-2);
+  border-bottom:1px solid var(--rule);font-family:var(--mono);font-size:11px;
+  letter-spacing:1.2px;text-transform:uppercase;color:var(--ink-3)}
+.codehead .where{color:var(--mark);text-transform:none;letter-spacing:0}
+.codehead button{margin-left:auto;background:transparent;border:1px solid var(--rule-2);
+  color:var(--ink-2);padding:3px 11px;border-radius:6px;cursor:pointer;font-size:11px;
+  font-family:var(--mono);letter-spacing:.5px}
+.codehead button:hover{border-color:var(--mark);color:var(--mark)}
+.codehead button.ok{background:var(--mark);border-color:var(--mark);color:#1a0800}
+pre{margin:0;padding:14px 16px;overflow-x:auto;background:#0a0e13;
+  font-family:var(--mono);font-size:12.7px;line-height:1.65;color:#cbd6e2;
+  font-variant-ligatures:none}
+code{font-family:var(--mono)}
+.tok-tag{color:#7dd3fc}.tok-atr{color:#fbbf24}.tok-str{color:#86efac}
+.tok-com{color:#5c6b7a;font-style:italic}.tok-prop{color:#93c5fd}.tok-val{color:#fca5a5}
+.tok-sel{color:#f0abfc}
+
+/* ---------- กระดานงาน (ขวา) ---------- */
+.board-head{display:flex;align-items:center;gap:8px;padding:9px 14px;
+  border-bottom:1px solid var(--rule);background:var(--paper-2);flex-wrap:wrap}
+.seg{display:flex;background:var(--ground);border:1px solid var(--rule);border-radius:8px;padding:3px}
+.seg button{background:transparent;border:0;padding:5px 13px;border-radius:6px;
+  color:var(--ink-3);cursor:pointer;font-size:12.5px}
+.seg button.on{background:var(--mark);color:#1a0800;font-weight:600}
+.tool{background:transparent;border:1px solid var(--rule);color:var(--ink-3);
+  padding:6px 12px;border-radius:8px;cursor:pointer;font-size:12.5px}
+.tool:hover{border-color:var(--rule-2);color:var(--ink)}
+.tool.on{border-color:var(--mark);color:var(--mark);background:var(--mark-soft)}
+.board-head .spacer{margin-left:auto}
+.sizebtns{display:flex;gap:4px}
+
+.stage{flex:1;overflow:auto;padding:18px;background:
+  linear-gradient(var(--rule) 1px,transparent 1px) 0 0/100% 24px,
+  linear-gradient(90deg,var(--rule) 1px,transparent 1px) 0 0/24px 100%,
+  var(--ground);
+  background-blend-mode:normal;display:flex;justify-content:center;align-items:flex-start}
+.stage::-webkit-scrollbar{width:10px;height:10px}
+.stage::-webkit-scrollbar-thumb{background:var(--rule-2);border-radius:99px}
+#frame{width:100%;max-width:100%;border:1px solid var(--rule-2);border-radius:8px;
+  background:#fff;height:100%;min-height:520px;transition:max-width .25s}
+.board-foot{border-top:1px solid var(--rule);padding:9px 14px;font-family:var(--mono);
+  font-size:11.5px;color:var(--ink-3);display:flex;gap:14px;align-items:center;flex-wrap:wrap}
+.pbar{flex:1;height:4px;background:var(--rule);border-radius:99px;overflow:hidden;min-width:80px}
+.pbar i{display:block;height:100%;background:var(--mark);width:0;transition:.35s}
+
+.navbtns{display:flex;gap:8px}
+.navbtns button{background:var(--mark);border:0;color:#1a0800;padding:7px 16px;
+  border-radius:8px;font-weight:700;cursor:pointer;font-size:13px}
+.navbtns button.ghost{background:transparent;border:1px solid var(--rule-2);color:var(--ink-2);font-weight:500}
+.navbtns button:disabled{opacity:.35;cursor:default}
+
+/* ---------- หน้ารวม / การ์ด ---------- */
+.wrap{width:min(1080px,100% - 40px);margin-inline:auto}
+.hero-s{padding:70px 0 40px}
+.hero-s h1{font-size:clamp(30px,5vw,50px);line-height:1.1;letter-spacing:-1.6px;
+  text-wrap:balance;font-weight:800}
+.hero-s p{color:var(--ink-2);font-size:17px;max-width:62ch;margin-top:16px}
+.cards{display:grid;gap:16px;grid-template-columns:repeat(auto-fit,minmax(270px,1fr))}
+.lab-card{background:var(--paper);border:1px solid var(--rule);border-radius:var(--r);
+  padding:22px;transition:.18s;display:block}
+.lab-card:hover{border-color:var(--mark);transform:translateY(-3px)}
+.lab-card .no{font-family:var(--mono);font-size:11.5px;letter-spacing:2px;color:var(--mark)}
+.lab-card h3{font-size:17.5px;margin:6px 0 8px;letter-spacing:-.3px}
+.lab-card p{color:var(--ink-2);font-size:14px}
+.lab-card .mini{margin-top:14px;border:1px solid var(--rule);border-radius:7px;
+  overflow:hidden;background:#fff;height:112px}
+.lab-card .mini svg{width:100%;height:100%}
+h2.sec{font-size:24px;letter-spacing:-.6px;margin:52px 0 6px}
+h2.sec::before{content:"";display:inline-block;width:22px;height:2px;background:var(--mark);
+  vertical-align:middle;margin-right:12px}
+p.sec-sub{color:var(--ink-2);margin-bottom:24px}
+
+/* ---------- เทียบดี/แย่ (หน้าฝึกตา) ---------- */
+.vs{display:grid;gap:16px;grid-template-columns:1fr 1fr;margin:18px 0}
+.vs>div{border:1px solid var(--rule);border-radius:var(--r);overflow:hidden;background:var(--paper)}
+.vs .cap{padding:8px 14px;font-family:var(--mono);font-size:11px;letter-spacing:1.6px;
+  text-transform:uppercase;border-bottom:1px solid var(--rule)}
+.vs .bad .cap{color:var(--bad)}
+.vs .good .cap{color:var(--good)}
+.vs .demo{padding:20px;background:#fff;color:#111}
+
+footer.s{border-top:1px solid var(--rule);padding:26px 0;color:var(--ink-3);font-size:13px;
+  margin-top:60px}
+
+@media(max-width:960px){
+  .bench{grid-template-columns:1fr}
+  .board{position:static;height:auto;border-left:0;border-top:1px solid var(--rule);
+    order:-1}
+  #frame{min-height:400px;height:400px}
+  .sheet{padding:26px 20px 70px}
+  .vs{grid-template-columns:1fr}
+}
+@media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}

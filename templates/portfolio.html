@@ -1,0 +1,254 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ธนกร ศรีวัฒน์ — นักพัฒนาเว็บ</title>
+<style>
+:root{
+  --bg:#0a0a0f;--surface:#13131c;--surface-2:#1b1b27;
+  --text:#eceef4;--muted:#8b90a0;--line:#242433;
+  --brand:#c9a227;--brand-2:#7c5cff;--r:14px;
+}
+*,*::before,*::after{box-sizing:border-box}*{margin:0}
+img{display:block;max-width:100%}
+button,input,textarea{font:inherit;color:inherit}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);line-height:1.7;
+  font-family:system-ui,"Segoe UI","Noto Sans Thai",sans-serif}
+a{color:inherit;text-decoration:none}
+.wrap{width:min(980px,100% - 32px);margin-inline:auto}
+section{padding:76px 0;scroll-margin-top:66px}
+h2.t{font-size:clamp(22px,4vw,32px);letter-spacing:-.8px;margin-bottom:8px}
+h2.t span{color:var(--brand)}
+p.st{color:var(--muted);margin-bottom:34px}
+
+header{position:sticky;top:0;z-index:40;background:rgba(10,10,15,.85);
+  backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+header .wrap{display:flex;align-items:center;height:64px;gap:24px}
+.mono{font-family:ui-monospace,Consolas,monospace}
+.logo{font-weight:800;letter-spacing:-.5px}
+.logo i{color:var(--brand);font-style:normal}
+nav{margin-left:auto;display:flex;gap:22px;font-size:14.5px}
+nav a{color:var(--muted)} nav a:hover{color:var(--brand)}
+
+/* ===== HERO ===== */
+.hero{padding:90px 0 60px;display:grid;grid-template-columns:1fr 220px;gap:40px;align-items:center}
+.hero .hi{color:var(--brand);font-size:15px;letter-spacing:1px;margin-bottom:12px}
+.hero h1{font-size:clamp(30px,6vw,52px);line-height:1.1;letter-spacing:-2px;font-weight:800}
+.hero h1 em{font-style:normal;color:var(--muted)}
+.hero p{color:var(--muted);margin:18px 0 26px;max-width:52ch}
+.avatar{width:200px;height:200px;border-radius:50%;object-fit:cover;
+  border:2px solid var(--brand);justify-self:end}
+.actions{display:flex;gap:12px;flex-wrap:wrap}
+.btn{background:var(--brand);color:#171200;border:0;padding:12px 24px;border-radius:10px;
+  font-weight:700;cursor:pointer;transition:.18s}
+.btn:hover{transform:translateY(-2px)}
+.btn.ghost{background:transparent;border:1px solid var(--line);color:var(--text)}
+
+/* ===== SKILLS ===== */
+.skill{margin-bottom:16px}
+.skill .top{display:flex;justify-content:space-between;font-size:14.5px;margin-bottom:6px}
+.skill .top span:last-child{color:var(--muted);font-family:ui-monospace,monospace;font-size:13px}
+.track{height:7px;background:var(--surface-2);border-radius:99px;overflow:hidden}
+.track i{display:block;height:100%;width:0;border-radius:99px;
+  background:linear-gradient(90deg,var(--brand),var(--brand-2));transition:width 1s ease}
+
+/* ===== WORKS ===== */
+.works{display:grid;gap:18px;grid-template-columns:repeat(auto-fit,minmax(270px,1fr))}
+.work{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);
+  overflow:hidden;transition:.2s}
+.work:hover{transform:translateY(-4px);border-color:var(--brand)}
+.work img{width:100%;height:160px;object-fit:cover}
+.work .in{padding:18px}
+.work h3{font-size:17px;margin-bottom:6px}
+.work p{color:var(--muted);font-size:14px;margin-bottom:12px}
+.stack{display:flex;gap:6px;flex-wrap:wrap}
+.stack span{font-size:11.5px;padding:3px 9px;border-radius:99px;
+  background:var(--surface-2);border:1px solid var(--line);color:var(--muted)}
+
+/* ===== TIMELINE ===== */
+.tl{position:relative;padding-left:26px}
+.tl::before{content:"";position:absolute;left:6px;top:6px;bottom:6px;width:2px;background:var(--line)}
+.tl .it{position:relative;padding-bottom:28px}
+.tl .it::before{content:"";position:absolute;left:-26px;top:8px;width:12px;height:12px;
+  border-radius:50%;background:var(--brand);box-shadow:0 0 0 4px var(--bg)}
+.tl .yr{font-size:13px;color:var(--brand);font-family:ui-monospace,monospace}
+.tl h3{font-size:16.5px;margin:2px 0 4px}
+.tl p{color:var(--muted);font-size:14.5px}
+
+/* ===== CONTACT ===== */
+.contact{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:38px 30px}
+.cform{display:grid;gap:14px;grid-template-columns:1fr 1fr}
+.cform .full{grid-column:1/-1}
+.cform input,.cform textarea{width:100%;background:var(--bg);border:1px solid var(--line);
+  padding:12px 14px;border-radius:10px}
+.cform textarea{min-height:110px;resize:vertical}
+.cform input:focus,.cform textarea:focus{outline:0;border-color:var(--brand)}
+
+footer{border-top:1px solid var(--line);padding:28px 0;color:var(--muted);font-size:13.5px;
+  text-align:center}
+
+@media(max-width:720px){
+  .hero{grid-template-columns:1fr;text-align:center}
+  .avatar{justify-self:center;width:150px;height:150px}
+  .actions{justify-content:center}
+  nav{display:none}
+  .cform{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <div class="logo">TK<i>.</i></div>
+    <nav>
+      <a href="#about">เกี่ยวกับ</a><a href="#skills">ทักษะ</a>
+      <a href="#works">ผลงาน</a><a href="#exp">ประสบการณ์</a><a href="#contact">ติดต่อ</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+<!-- ===== HERO ===== -->
+<div class="wrap">
+  <section class="hero">
+    <div>
+      <p class="hi mono">สวัสดีครับ ผมชื่อ</p>
+      <h1>ธนกร ศรีวัฒน์<br><em>นักพัฒนาเว็บ</em></h1>
+      <p>ผมสร้างเว็บไซต์ที่โหลดเร็ว ใช้ง่าย และดูดีบนทุกหน้าจอ
+         สนใจงานที่ได้แก้ปัญหาจริงให้ผู้ใช้จริง</p>
+      <div class="actions">
+        <a class="btn" href="#works">ดูผลงาน</a>
+        <a class="btn ghost" href="#contact">ติดต่อผม</a>
+      </div>
+    </div>
+    <img class="avatar" src="https://picsum.photos/seed/portrait/300/300" alt="รูปโปรไฟล์">
+  </section>
+</div>
+
+<!-- ===== ABOUT ===== -->
+<div class="wrap">
+  <section id="about">
+    <h2 class="t">เกี่ยวกับ<span>ผม</span></h2>
+    <p class="st">เรื่องย่อสั้นๆ</p>
+    <p style="color:var(--muted);max-width:66ch">
+      เริ่มเขียนเว็บจากความอยากทำเว็บให้ร้านของที่บ้าน จนตอนนี้ทำเว็บให้ธุรกิจเล็กมาแล้วกว่า 20 แห่ง
+      ผมชอบงานที่ต้องคิดเรื่องโครงสร้างข้อมูลก่อนลงมือเขียน และเชื่อว่าเว็บที่ดีคือเว็บที่ผู้ใช้ไม่ต้องเรียนรู้วิธีใช้
+    </p>
+  </section>
+</div>
+
+<!-- ===== SKILLS ===== -->
+<div class="wrap">
+  <section id="skills">
+    <h2 class="t">ทักษะ<span>ที่ใช้จริง</span></h2>
+    <p class="st">เปอร์เซ็นต์คือความมั่นใจในการใช้งานจริง ไม่ใช่คะแนนสอบ</p>
+    <div id="skills-box" style="max-width:620px"></div>
+  </section>
+</div>
+
+<!-- ===== WORKS ===== -->
+<div class="wrap">
+  <section id="works">
+    <h2 class="t">ผล<span>งาน</span></h2>
+    <p class="st">เลือกมา 4 ชิ้นที่ภูมิใจที่สุด</p>
+    <div class="works" id="works-box"></div>
+  </section>
+</div>
+
+<!-- ===== TIMELINE ===== -->
+<div class="wrap">
+  <section id="exp">
+    <h2 class="t">ประสบ<span>การณ์</span></h2>
+    <p class="st">เส้นทางที่ผ่านมา</p>
+    <div class="tl" id="tl-box"></div>
+  </section>
+</div>
+
+<!-- ===== CONTACT ===== -->
+<div class="wrap">
+  <section id="contact">
+    <div class="contact">
+      <h2 class="t">ติด<span>ต่อ</span></h2>
+      <p class="st">ส่งข้อความมาได้เลย ผมตอบภายใน 1 วัน</p>
+      <form class="cform" id="cform">
+        <div><input name="name" placeholder="ชื่อของคุณ" required></div>
+        <div><input name="email" type="email" placeholder="อีเมล" required></div>
+        <div class="full"><textarea name="msg" placeholder="ข้อความ" required></textarea></div>
+        <div class="full"><button class="btn" type="submit">ส่งข้อความ</button>
+          <span id="cmsg" style="margin-left:14px;color:var(--brand);font-size:14px"></span></div>
+      </form>
+    </div>
+  </section>
+</div>
+</main>
+
+<footer>© 2026 ธนกร ศรีวัฒน์ · เขียนด้วย HTML CSS JavaScript ล้วน ไม่ใช้ framework</footer>
+
+<script>
+/* ================= DATA ================= */
+const skills = [
+  {n:'HTML / โครงสร้างเว็บ', v:95},
+  {n:'CSS / Flexbox & Grid', v:90},
+  {n:'JavaScript',           v:82},
+  {n:'ออกแบบ UI',            v:75},
+  {n:'Git',                  v:70},
+];
+const works = [
+  {t:'เว็บร้านกาแฟ Bloom',   d:'เว็บหน้าเดียว สั่งกาแฟล่วงหน้าได้ ยอดสั่งเพิ่ม 30%',
+   img:'https://picsum.photos/seed/w1/500/300', st:['HTML','CSS','JS']},
+  {t:'ระบบจัดการคลังสินค้า',  d:'ตารางเพิ่ม ลบ แก้ไข ค้นหา บันทึกลงเบราว์เซอร์',
+   img:'https://picsum.photos/seed/w2/500/300', st:['JS','localStorage']},
+  {t:'แดชบอร์ดยอดขาย',       d:'กราฟแท่งและวงกลมทำจาก CSS ล้วน ไม่ใช้ไลบรารี',
+   img:'https://picsum.photos/seed/w3/500/300', st:['CSS','Chart']},
+  {t:'เว็บสมัครกิจกรรมโรงเรียน',d:'ฟอร์มพร้อมตรวจข้อมูล รองรับผู้สมัคร 800 คน',
+   img:'https://picsum.photos/seed/w4/500/300', st:['Form','Validate']},
+];
+const timeline = [
+  {y:'2026', t:'ฟรีแลนซ์รับทำเว็บ', d:'ทำเว็บให้ธุรกิจเล็ก 20+ แห่ง ดูแลตั้งแต่ออกแบบถึงส่งมอบ'},
+  {y:'2025', t:'ชนะเลิศแข่งเขียนเว็บระดับภาค', d:'โจทย์ระบบจองห้องประชุม ทำคนเดียวใน 3 ชั่วโมง'},
+  {y:'2024', t:'ฝึกงานทีมพัฒนาเว็บ', d:'ดูแลหน้าเว็บสาธารณะ ปรับความเร็วโหลดลง 40%'},
+  {y:'2023', t:'เริ่มเขียนเว็บ', d:'ทำเว็บร้านของที่บ้านเป็นชิ้นแรก'},
+];
+
+/* ================= RENDER ================= */
+document.querySelector('#skills-box').innerHTML = skills.map(s => `
+  <div class="skill">
+    <div class="top"><span>${s.n}</span><span>${s.v}%</span></div>
+    <div class="track"><i data-v="${s.v}"></i></div>
+  </div>`).join('');
+
+document.querySelector('#works-box').innerHTML = works.map(w => `
+  <article class="work">
+    <img src="${w.img}" alt="${w.t}" loading="lazy">
+    <div class="in">
+      <h3>${w.t}</h3><p>${w.d}</p>
+      <div class="stack">${w.st.map(s => `<span>${s}</span>`).join('')}</div>
+    </div>
+  </article>`).join('');
+
+document.querySelector('#tl-box').innerHTML = timeline.map(t => `
+  <div class="it"><div class="yr">${t.y}</div><h3>${t.t}</h3><p>${t.d}</p></div>`).join('');
+
+/* ===== แถบทักษะวิ่งเมื่อเลื่อนถึง ===== */
+const io = new IntersectionObserver(es => {
+  es.forEach(e => {
+    if(e.isIntersecting){
+      e.target.querySelectorAll('.track i').forEach(i => i.style.width = i.dataset.v + '%');
+      io.unobserve(e.target);
+    }
+  });
+}, {threshold:.3});
+io.observe(document.querySelector('#skills-box'));
+
+/* ===== ฟอร์มติดต่อ ===== */
+document.querySelector('#cform').addEventListener('submit', e => {
+  e.preventDefault();
+  document.querySelector('#cmsg').textContent = 'ส่งข้อความเรียบร้อย ขอบคุณครับ';
+  e.target.reset();
+});
+</script>
+</body>
+</html>

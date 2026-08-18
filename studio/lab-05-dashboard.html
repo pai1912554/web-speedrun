@@ -1,0 +1,291 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>LAB 05 · แดชบอร์ด — Studio</title>
+<link rel="stylesheet" href="studio.css">
+</head>
+<body>
+
+<div class="bar"><div class="bar-in">
+  <div class="mark">WEB <b>STUDIO</b></div>
+  <nav>
+    <a href="index.html">ห้องปฏิบัติการ</a>
+    <a href="design-eye.html">ฝึกตาออกแบบ</a>
+    <a href="../index.html">คลังความรู้</a>
+  </nav>
+</div></div>
+
+<div class="bench">
+  <div class="sheet"><div id="labHead"></div><div id="steps"></div></div>
+  <div class="board">
+    <div class="board-head">
+      <div class="seg">
+        <button data-mode="build" class="on">ที่กำลังทำ</button>
+        <button data-mode="target">เป้าหมาย</button>
+      </div>
+      <button class="tool" id="noteBtn">เส้นบอกระยะ</button>
+      <div class="spacer"></div>
+      <div class="sizebtns">
+        <button class="tool on" data-w="100%">จอใหญ่</button>
+        <button class="tool" data-w="390px">มือถือ</button>
+      </div>
+    </div>
+    <div class="stage"><iframe id="frame" title="ตัวอย่างงาน"></iframe></div>
+    <div class="board-foot">
+      <span id="stepNow"></span>
+      <div class="pbar"><i id="pbar"></i></div>
+      <div class="navbtns">
+        <button class="ghost" id="prev">ย้อน</button>
+        <button id="next">ขั้นต่อไป</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const LAB = {
+no: 5,
+title: 'แดชบอร์ด — งานออกแบบข้อมูล ไม่ใช่งานออกแบบหน้าเว็บ',
+lede: 'หน้าเว็บทั่วไปคนอ่านจากบนลงล่าง แดชบอร์ดคนกวาดตาหาสิ่งผิดปกติ. กติกาจึงต่างกันสิ้นเชิง: สรุปมาก่อนรายละเอียด และสถานะต้องอ่านออกโดยไม่ต้องอ่านตัวเลข.',
+minutes: 28,
+uses: ['ออกแบบข้อมูล', 'สีเชิงความหมาย', 'กราฟด้วย CSS', 'ตารางที่อ่านง่าย'],
+
+notes: [
+  {sel:'.kpis',       label:'สรุปอยู่บนสุดเสมอ', side:'top'},
+  {sel:'.kpi .v',     label:'28px tabular-nums — ตัวเลขเรียงตรงกัน', side:'in'},
+  {sel:'.chart',      label:'กราฟจาก flex + height เป็น % ไม่ใช้ไลบรารี', side:'top'},
+  {sel:'.pill.warn',  label:'สีความหมาย แยกจากสีแบรนด์', side:'right'},
+  {sel:'table',       label:'ตัวเลขชิดขวา ข้อความชิดซ้าย', side:'bottom'},
+],
+
+steps: [
+{
+ t:'สรุปก่อน รายละเอียดทีหลัง',
+ why:'คนเปิดแดชบอร์ดมีคำถามในหัวว่า "วันนี้มีอะไรต้องห่วงไหม". <b>แถวตัวเลขสรุปบนสุดต้องตอบคำถามนั้นภายใน 2 วินาที</b> ถ้าต้องเลื่อนหาก่อนถึงจะรู้ แปลว่าออกแบบผิดลำดับ.',
+ rule:{t:'เลือก 4 ตัวเลขพอ', d:'แดชบอร์ดที่ขึ้นตัวเลข 12 ค่าเท่ากันหมดคือแดชบอร์ดที่ไม่บอกอะไรเลย. เลือกมา 3-4 ตัวที่<b>ถ้าค่าผิดปกติแล้วต้องลงมือทำอะไรสักอย่าง</b> ที่เหลือเก็บไว้หน้ารายละเอียด.'},
+ css:`:root{
+  --ground:#0f1216;
+  --panel:#171b21;
+  --panel-2:#1e242c;
+  --ink:#e9edf2;
+  --ink-2:#8d99a8;
+  --line:#262d36;
+  --accent:#5b8cff;
+  --good:#3fbf7f;
+  --warn:#e0a33e;
+  --bad:#e0605e;
+}
+body{ background:var(--ground); color:var(--ink); padding:22px; }
+.wrap{ width:min(940px,100%); margin-inline:auto; }
+
+.top{ display:flex; align-items:baseline; gap:12px; margin-bottom:18px; flex-wrap:wrap; }
+.top h1{ font-size:20px; letter-spacing:-.4px; }
+.top .when{ color:var(--ink-2); font-size:13px; margin-left:auto; }
+
+.kpis{ display:grid; gap:12px; grid-template-columns:repeat(auto-fit,minmax(170px,1fr)); }
+.kpi{ background:var(--panel); border:1px solid var(--line); border-radius:11px; padding:16px; }
+.kpi .k{ font-size:12.5px; color:var(--ink-2); }
+.kpi .v{
+  font-size:28px; font-weight:800; letter-spacing:-1px; margin:4px 0 2px;
+  font-variant-numeric:tabular-nums;      /* ตัวเลขกว้างเท่ากันทุกตัว */
+}
+.kpi .d{ font-size:12.5px; }
+.up{ color:var(--good); } .down{ color:var(--bad); }`,
+ html:`<div class="wrap">
+  <div class="top">
+    <h1>ศูนย์เฝ้าระวังคุณภาพน้ำ</h1>
+    <span class="when">ข้อมูลล่าสุด 14:20 น.</span>
+  </div>
+
+  <div class="kpis">
+    <div class="kpi"><div class="k">สถานีที่ออนไลน์</div>
+      <div class="v">42<span style="font-size:15px;color:#8d99a8"> / 45</span></div>
+      <div class="d down">▼ 3 สถานีขาดการติดต่อ</div></div>
+    <div class="kpi"><div class="k">ค่าออกซิเจนเฉลี่ย</div>
+      <div class="v">6.4</div><div class="d up">▲ 0.3 จากเมื่อวาน</div></div>
+    <div class="kpi"><div class="k">แจ้งเตือนวันนี้</div>
+      <div class="v">7</div><div class="d down">▲ 4 จากเมื่อวาน</div></div>
+    <div class="kpi"><div class="k">คำร้องรอตรวจสอบ</div>
+      <div class="v">12</div><div class="d">เฉลี่ยรอ 1.8 วัน</div></div>
+  </div>
+</div>`
+},
+{
+ t:'สีความหมาย ต้องแยกจากสีแบรนด์',
+ why:'ในแดชบอร์ด สีมีหน้าที่<b>บอกสถานะ</b> ไม่ใช่ตกแต่ง. เขียว=ปกติ เหลือง=เฝ้าระวัง แดง=ต้องจัดการ. ถ้าเอาสีแบรนด์ไปใช้เป็นสีสถานะด้วย ผู้ใช้จะแยกไม่ออกว่าสีน้ำเงินนี้แปลว่าอะไร.',
+ rule:{t:'อย่าใช้สีลอยๆ', d:'ป้ายสถานะต้องมี<b>ทั้งสีและข้อความ</b>. วงกลมแดงเฉยๆ คนตาบอดสีอ่านไม่ออก และคนทั่วไปก็ต้องเดา. ป้ายที่เขียนว่า "เกินเกณฑ์" พร้อมพื้นแดงจางๆ อ่านออกทันทีทุกคน.'},
+ css:`.pill{
+  display:inline-flex; align-items:center; gap:6px;
+  font-size:12px; font-weight:600;
+  padding:3px 10px; border-radius:99px;
+  border:1px solid currentColor;
+}
+.pill::before{ content:""; width:6px; height:6px; border-radius:50%; background:currentColor; }
+.pill.ok  { color:var(--good); background:color-mix(in srgb,var(--good) 12%,transparent); }
+.pill.warn{ color:var(--warn); background:color-mix(in srgb,var(--warn) 12%,transparent); }
+.pill.bad { color:var(--bad);  background:color-mix(in srgb,var(--bad) 12%,transparent); }
+
+.panel{
+  background:var(--panel); border:1px solid var(--line);
+  border-radius:11px; padding:18px; margin-top:14px;
+}
+.panel h2{ font-size:13.5px; color:var(--ink-2); font-weight:600; margin-bottom:14px; }`,
+ into:'.wrap',
+ html:`<div class="panel">
+  <h2>สถานะสถานีที่ต้องดูวันนี้</h2>
+  <div style="display:flex;gap:8px;flex-wrap:wrap">
+    <span class="pill ok">ปกติ 35 สถานี</span>
+    <span class="pill warn">เฝ้าระวัง 4 สถานี</span>
+    <span class="pill bad">เกินเกณฑ์ 3 สถานี</span>
+  </div>
+</div>`,
+ try:'ลองเปลี่ยน <code>--accent</code> เป็นสีเขียวเดียวกับ <code>--good</code> แล้วดูทั้งหน้า. จะเริ่มแยกไม่ออกว่าเขียวไหนคือ "ปกติ" เขียวไหนคือ "ปุ่ม" — นี่คือเหตุผลที่ต้องแยกสองชุดสีออกจากกัน.'
+},
+{
+ t:'กราฟแท่งจาก CSS ล้วน ไม่ต้องใช้ไลบรารี',
+ why:'โจทย์แข่งมักห้ามใช้ไลบรารีภายนอก หรือเน็ตใช้ไม่ได้. กราฟแท่งทำได้ด้วย flex กับความสูงเป็นเปอร์เซ็นต์ — <b>สิบบรรทัด และควบคุมหน้าตาได้เต็มที่</b>.',
+ rule:{t:'สูตรความสูง', d:'ความสูงแท่ง = <code>ค่าของแท่งนี้ ÷ ค่าสูงสุด × 100%</code>. หาค่าสูงสุดด้วย <code>Math.max(...ค่าทั้งหมด)</code> เสมอ อย่าใส่ตัวเลขตายตัว ไม่งั้นข้อมูลเปลี่ยนแล้วกราฟล้น.'},
+ css:`.chart{ display:flex; align-items:flex-end; gap:8px; height:150px; }
+.col{ flex:1; display:flex; flex-direction:column; justify-content:flex-end;
+      align-items:center; gap:6px; height:100%; }
+.col .bar{
+  width:100%;
+  background:var(--accent);
+  border-radius:5px 5px 0 0;
+  transition:height .5s;
+  position:relative;
+}
+.col .bar.hot{ background:var(--bad); }        /* แท่งที่ผิดปกติ เปลี่ยนสีเลย */
+.col .bar:hover::after{
+  content:attr(data-v);
+  position:absolute; top:-22px; left:50%; transform:translateX(-50%);
+  font-size:11px; color:var(--ink-2); white-space:nowrap;
+}
+.col .lb{ font-size:11px; color:var(--ink-2); }
+.axis{ display:flex; justify-content:space-between; font-size:11px;
+       color:var(--ink-2); border-top:1px solid var(--line);
+       padding-top:6px; margin-top:8px; }`,
+ into:'.wrap',
+ html:`<div class="panel">
+  <h2>จำนวนแจ้งเตือนย้อนหลัง 7 วัน</h2>
+  <div class="chart" id="chart"></div>
+  <div class="axis"><span>7 วันก่อน</span><span>วันนี้</span></div>
+</div>
+
+<script>
+  var data = [
+    {d:'จ', v:2}, {d:'อ', v:3}, {d:'พ', v:1},
+    {d:'พฤ', v:4}, {d:'ศ', v:3}, {d:'ส', v:2}, {d:'อา', v:7}
+  ];
+  var max = Math.max.apply(null, data.map(function(x){ return x.v; }));
+
+  document.getElementById('chart').innerHTML = data.map(function(x){
+    var pct = (x.v / max * 100).toFixed(0);
+    var hot = x.v >= max ? ' hot' : '';
+    return '<div class="col">' +
+             '<div class="bar' + hot + '" style="height:' + pct + '%" data-v="' + x.v + ' ครั้ง"></div>' +
+             '<div class="lb">' + x.d + '</div>' +
+           '</div>';
+  }).join('');
+<\/script>`,
+ try:'ชี้เมาส์ที่แท่งกราฟในกระดาน — ตัวเลขจะโผล่. ลองเปลี่ยนค่าวันอาทิตย์เป็น 20 แล้วสังเกตว่าแท่งอื่นเตี้ยลงเองเพราะคำนวณจากค่าสูงสุด.'
+},
+{
+ t:'ตาราง: ตัวเลขชิดขวา ข้อความชิดซ้าย',
+ why:'กฎเดียวที่ทำให้ตารางอ่านง่ายขึ้นทันที. <b>ตัวเลขชิดขวาแล้วหลักจะเรียงตรงกัน</b> ตาเทียบค่ามาก-น้อยได้โดยไม่ต้องอ่านทีละตัว. ตัวเลขชิดซ้ายคือความผิดพลาดที่พบบ่อยที่สุดในงานมือใหม่.',
+ rule:{t:'เส้นแนวนอนพอ ไม่ต้องมีแนวตั้ง', d:'ตารางที่ตีกรอบทุกช่องดูเหมือนสเปรดชีต และอ่านล้า. ใช้เส้นคั่นแถวบางๆ อย่างเดียว แล้วให้ระยะห่างทำหน้าที่แยกคอลัมน์.'},
+ css:`table{ width:100%; border-collapse:collapse; font-size:13.5px; }
+th, td{ padding:10px 12px; border-bottom:1px solid var(--line); text-align:left; }
+th{
+  color:var(--ink-2); font-size:11px; font-weight:600;
+  letter-spacing:1px; text-transform:uppercase;
+}
+td.num, th.num{
+  text-align:right;                       /* กฎทองของตาราง */
+  font-variant-numeric:tabular-nums;
+}
+tbody tr:hover{ background:var(--panel-2); }
+tbody tr:last-child td{ border-bottom:0; }
+.tbl-wrap{ overflow-x:auto; }             /* ตารางกว้างต้องเลื่อนในกล่องตัวเอง */`,
+ into:'.wrap',
+ html:`<div class="panel">
+  <h2>สถานีที่ค่าเกินเกณฑ์</h2>
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr>
+        <th>สถานี</th><th>ลุ่มน้ำ</th>
+        <th class="num">ออกซิเจน</th><th class="num">ความขุ่น</th><th>สถานะ</th>
+      </tr></thead>
+      <tbody>
+        <tr><td>ST-014 สะพานท่าน้ำ</td><td>เจ้าพระยาตอนล่าง</td>
+            <td class="num">2.1</td><td class="num">148</td>
+            <td><span class="pill bad">เกินเกณฑ์</span></td></tr>
+        <tr><td>ST-027 ปากคลองบางหลวง</td><td>เจ้าพระยาตอนล่าง</td>
+            <td class="num">3.4</td><td class="num">96</td>
+            <td><span class="pill bad">เกินเกณฑ์</span></td></tr>
+        <tr><td>ST-009 หน้าวัดเกาะ</td><td>ท่าจีน</td>
+            <td class="num">4.8</td><td class="num">61</td>
+            <td><span class="pill warn">เฝ้าระวัง</span></td></tr>
+        <tr><td>ST-031 บ้านดอนไก่ดี</td><td>ท่าจีน</td>
+            <td class="num">5.2</td><td class="num">44</td>
+            <td><span class="pill warn">เฝ้าระวัง</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>`,
+ try:'เปลี่ยน <code>text-align:right</code> เป็น <code>left</code> ในคลาส <code>.num</code> แล้วมองคอลัมน์ตัวเลข. ความรู้สึก "อ่านยากขึ้น" ที่เกิดขึ้นทันทีนั้นคือสิ่งที่ต้องจำ.'
+},
+{
+ t:'วางผังทั้งหน้า และตรวจบนมือถือ',
+ why:'สุดท้ายคือจัดผังให้กราฟกับตารางอยู่ร่วมกันได้. บนจอกว้างวางคู่กัน บนมือถือเรียงลงล่าง — <b>สั่งครั้งเดียวด้วย grid แล้วสลับเป็นคอลัมน์เดียวเมื่อจอแคบ</b>.',
+ rule:{t:'แดชบอร์ดบนมือถือคือรายการ ไม่ใช่ตาราง', d:'อย่าพยายามยัดตาราง 5 คอลัมน์ลงจอ 390px. ให้ตารางเลื่อนแนวนอนในกล่องของมันเอง (<code>overflow-x:auto</code>) แล้วส่วนสรุปเรียงลงมาเป็นแถวเดียว.'},
+ css:`.duo{ display:grid; gap:14px; grid-template-columns:1.4fr 1fr; margin-top:14px; }
+.duo .panel{ margin-top:0; }
+
+@media (max-width:820px){
+  .duo{ grid-template-columns:1fr; }
+  .kpis{ grid-template-columns:repeat(2,1fr); }
+  .kpi .v{ font-size:23px; }
+  body{ padding:14px; }
+}`,
+ into:'.wrap',
+ html:`<div class="duo">
+  <div class="panel">
+    <h2>สัดส่วนสาเหตุการแจ้งเตือน</h2>
+    <div style="display:flex;align-items:center;gap:18px;flex-wrap:wrap">
+      <div style="width:120px;height:120px;border-radius:50%;display:grid;place-items:center;
+        background:conic-gradient(#e0605e 0% 46%, #e0a33e 46% 74%, #5b8cff 74% 100%)">
+        <div style="width:74px;height:74px;background:#171b21;border-radius:50%"></div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:7px;font-size:13px;color:#8d99a8">
+        <div><span style="display:inline-block;width:9px;height:9px;border-radius:2px;
+          background:#e0605e;margin-right:7px"></span>ออกซิเจนต่ำ 46%</div>
+        <div><span style="display:inline-block;width:9px;height:9px;border-radius:2px;
+          background:#e0a33e;margin-right:7px"></span>ความขุ่นสูง 28%</div>
+        <div><span style="display:inline-block;width:9px;height:9px;border-radius:2px;
+          background:#5b8cff;margin-right:7px"></span>สัญญาณขาดหาย 26%</div>
+      </div>
+    </div>
+  </div>
+  <div class="panel">
+    <h2>งานที่รอดำเนินการ</h2>
+    <div style="display:flex;flex-direction:column;gap:11px;font-size:13.5px">
+      <div style="display:flex;justify-content:space-between;gap:10px">
+        <span>ส่งทีมตรวจ ST-014</span><span class="pill bad">ด่วน</span></div>
+      <div style="display:flex;justify-content:space-between;gap:10px">
+        <span>เปลี่ยนเซ็นเซอร์ ST-022</span><span class="pill warn">ภายในสัปดาห์</span></div>
+      <div style="display:flex;justify-content:space-between;gap:10px">
+        <span>สรุปรายงานประจำเดือน</span><span class="pill ok">ตามกำหนด</span></div>
+    </div>
+  </div>
+</div>`,
+ try:'กดปุ่ม <b>มือถือ</b> บนกระดาน แล้วเลื่อนดูทั้งหน้า. ตารางต้องเลื่อนแนวนอนได้ในกล่องของมันเอง โดยที่<b>ตัวหน้าเว็บไม่เลื่อนซ้ายขวา</b> — ถ้าทั้งหน้าเลื่อนได้แปลว่ามีของล้น ต้องตามหาให้เจอ.'
+},
+]
+};
+</script>
+<script src="lab.js"></script>
+</body>
+</html>

@@ -1,0 +1,221 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>แดชบอร์ดยอดขาย</title>
+<style>
+:root{
+  --bg:#0d1017;--surface:#151a23;--surface-2:#1c222d;
+  --text:#e9edf3;--muted:#8e99ab;--line:#252c38;
+  --brand:#6c8cff;--ok:#3ddc97;--warn:#ffb020;--bad:#ff5c5c;--r:14px;
+}
+*,*::before,*::after{box-sizing:border-box}*{margin:0}
+input,button,select{font:inherit;color:inherit}
+body{background:var(--bg);color:var(--text);line-height:1.6;
+  font-family:system-ui,"Segoe UI","Noto Sans Thai",sans-serif}
+a{color:inherit;text-decoration:none}
+
+/* ===== LAYOUT หลัก: sidebar + เนื้อหา ===== */
+.app{display:grid;grid-template-columns:230px 1fr;min-height:100vh}
+
+aside{background:var(--surface);border-right:1px solid var(--line);padding:22px 16px}
+.brand{font-weight:800;font-size:18px;padding:0 10px 20px;letter-spacing:-.5px}
+.brand i{color:var(--brand);font-style:normal}
+aside nav{display:flex;flex-direction:column;gap:4px}
+aside nav a{padding:10px 12px;border-radius:9px;color:var(--muted);font-size:14.5px}
+aside nav a:hover{background:var(--surface-2);color:var(--text)}
+aside nav a.active{background:var(--brand);color:#fff;font-weight:600}
+
+main{padding:26px 28px}
+.topbar{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-bottom:24px}
+.topbar h1{font-size:22px;letter-spacing:-.5px}
+.topbar .spacer{margin-left:auto}
+select,input{background:var(--surface);border:1px solid var(--line);color:var(--text);
+  padding:9px 12px;border-radius:9px}
+
+/* ===== KPI cards ===== */
+.kpis{display:grid;gap:16px;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));margin-bottom:20px}
+.kpi{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:20px}
+.kpi .label{font-size:13px;color:var(--muted)}
+.kpi .val{font-size:27px;font-weight:800;margin:6px 0 4px;letter-spacing:-1px}
+.kpi .delta{font-size:12.5px}
+.up{color:var(--ok)} .down{color:var(--bad)}
+
+/* ===== panels ===== */
+.row{display:grid;gap:16px;grid-template-columns:2fr 1fr;margin-bottom:20px}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:20px}
+.panel h2{font-size:15px;margin-bottom:16px;color:var(--muted);font-weight:600}
+
+/* ===== กราฟแท่ง ทำจาก CSS ล้วน ไม่ต้องใช้ library ===== */
+.chart{display:flex;align-items:flex-end;gap:10px;height:200px;padding-top:10px}
+.bar{flex:1;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;gap:6px;height:100%}
+.bar .fill{width:100%;background:linear-gradient(180deg,var(--brand),#3d5ed6);
+  border-radius:6px 6px 0 0;transition:height .6s ease;position:relative}
+.bar .fill:hover{filter:brightness(1.2)}
+.bar .fill span{position:absolute;top:-22px;left:50%;transform:translateX(-50%);
+  font-size:11px;color:var(--muted);white-space:nowrap}
+.bar .lbl{font-size:12px;color:var(--muted)}
+
+/* ===== กราฟวงกลม ทำด้วย conic-gradient ===== */
+.donut{width:150px;height:150px;border-radius:50%;margin:0 auto 16px;
+  display:grid;place-items:center}
+.donut::after{content:"";width:96px;height:96px;background:var(--surface);border-radius:50%}
+.legend{display:flex;flex-direction:column;gap:8px;font-size:13.5px}
+.legend div{display:flex;align-items:center;gap:8px;color:var(--muted)}
+.dot{width:10px;height:10px;border-radius:3px}
+
+table{width:100%;border-collapse:collapse;font-size:14px}
+th,td{padding:10px 8px;text-align:left;border-bottom:1px solid var(--line)}
+th{color:var(--muted);font-size:12px;text-transform:uppercase;letter-spacing:.5px}
+.right{text-align:right}
+.badge{font-size:11.5px;padding:3px 9px;border-radius:99px;border:1px solid}
+.badge.done{color:var(--ok);border-color:var(--ok)}
+.badge.wait{color:var(--warn);border-color:var(--warn)}
+.badge.fail{color:var(--bad);border-color:var(--bad)}
+
+@media(max-width:900px){ .row{grid-template-columns:1fr} }
+@media(max-width:720px){
+  .app{grid-template-columns:1fr}
+  aside{border-right:0;border-bottom:1px solid var(--line)}
+  aside nav{flex-direction:row;overflow-x:auto}
+  main{padding:20px 16px}
+}
+</style>
+</head>
+<body>
+<div class="app">
+
+  <!-- ============ SIDEBAR ============ -->
+  <aside>
+    <div class="brand">Shop<i>Board</i></div>
+    <nav>
+      <a href="#" class="active">ภาพรวม</a>
+      <a href="#">คำสั่งซื้อ</a>
+      <a href="#">สินค้า</a>
+      <a href="#">ลูกค้า</a>
+      <a href="#">รายงาน</a>
+      <a href="#">ตั้งค่า</a>
+    </nav>
+  </aside>
+
+  <!-- ============ MAIN ============ -->
+  <main>
+    <div class="topbar">
+      <h1>ภาพรวมยอดขาย</h1>
+      <div class="spacer"></div>
+      <select id="range">
+        <option value="7">7 วันล่าสุด</option>
+        <option value="12" selected>12 เดือนล่าสุด</option>
+      </select>
+    </div>
+
+    <div class="kpis" id="kpis"></div>
+
+    <div class="row">
+      <div class="panel">
+        <h2>ยอดขายรายเดือน (บาท)</h2>
+        <div class="chart" id="chart"></div>
+      </div>
+      <div class="panel">
+        <h2>สัดส่วนหมวดสินค้า</h2>
+        <div class="donut" id="donut"></div>
+        <div class="legend" id="legend"></div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <h2>คำสั่งซื้อล่าสุด</h2>
+      <table>
+        <thead><tr><th>รหัส</th><th>ลูกค้า</th><th>สินค้า</th>
+          <th class="right">ยอด</th><th class="right">สถานะ</th></tr></thead>
+        <tbody id="orders"></tbody>
+      </table>
+    </div>
+  </main>
+</div>
+
+<script>
+/* ================= DATA ================= */
+const sales = [
+  {m:'ม.ค.',v:120},{m:'ก.พ.',v:185},{m:'มี.ค.',v:160},{m:'เม.ย.',v:210},
+  {m:'พ.ค.',v:240},{m:'มิ.ย.',v:198},{m:'ก.ค.',v:275},{m:'ส.ค.',v:320},
+  {m:'ก.ย.',v:290},{m:'ต.ค.',v:355},{m:'พ.ย.',v:410},{m:'ธ.ค.',v:480},
+];
+const cats = [
+  {name:'เครื่องดื่ม', v:42, color:'#6c8cff'},
+  {name:'อาหาร',      v:28, color:'#3ddc97'},
+  {name:'ของใช้',     v:18, color:'#ffb020'},
+  {name:'อื่นๆ',      v:12, color:'#ff5c5c'},
+];
+const orders = [
+  {id:'#1042', cust:'สมชาย ใจดี',   item:'กาแฟคั่วกลาง x2', amt:500,  st:'done'},
+  {id:'#1041', cust:'มานี รักเรียน', item:'ชาเขียวมัทฉะ',     amt:320,  st:'wait'},
+  {id:'#1040', cust:'ปิติ ชูใจ',     item:'แก้วเซรามิก x3',   amt:540,  st:'done'},
+  {id:'#1039', cust:'วีระ ทองดี',    item:'ขนมปังโฮลวีต x5', amt:325,  st:'fail'},
+  {id:'#1038', cust:'สุดา ศรีสุข',   item:'คุกกี้ช็อกโกแลต',  amt:95,   st:'done'},
+];
+
+/* ================= HELPERS ================= */
+const money = n => n.toLocaleString('th-TH');
+const stText = {done:'สำเร็จ', wait:'รอชำระ', fail:'ยกเลิก'};
+
+/* ================= RENDER: KPI ================= */
+const total = sales.reduce((s,x) => s + x.v, 0) * 1000;
+const last  = sales.at(-1).v, prev = sales.at(-2).v;
+const growth = (((last - prev) / prev) * 100).toFixed(1);
+
+document.querySelector('#kpis').innerHTML = `
+  <div class="kpi"><div class="label">ยอดขายรวมทั้งปี</div>
+    <div class="val">฿${money(total)}</div>
+    <div class="delta up">▲ ${growth}% จากเดือนก่อน</div></div>
+  <div class="kpi"><div class="label">คำสั่งซื้อ</div>
+    <div class="val">1,042</div><div class="delta up">▲ 8.2%</div></div>
+  <div class="kpi"><div class="label">ลูกค้าใหม่</div>
+    <div class="val">318</div><div class="delta up">▲ 12.4%</div></div>
+  <div class="kpi"><div class="label">อัตราคืนสินค้า</div>
+    <div class="val">2.1%</div><div class="delta down">▼ 0.4%</div></div>`;
+
+/* ================= RENDER: กราฟแท่ง ================= */
+const max = Math.max(...sales.map(s => s.v));
+document.querySelector('#chart').innerHTML = sales.map(s => `
+  <div class="bar">
+    <div class="fill" style="height:${(s.v/max*100).toFixed(0)}%">
+      <span>${s.v}k</span>
+    </div>
+    <div class="lbl">${s.m}</div>
+  </div>`).join('');
+
+/* ================= RENDER: กราฟวงกลม (conic-gradient) ================= */
+let acc = 0;
+const stops = cats.map(c => {
+  const from = acc, to = acc + c.v;
+  acc = to;
+  return `${c.color} ${from}% ${to}%`;
+}).join(',');
+document.querySelector('#donut').style.background = `conic-gradient(${stops})`;
+document.querySelector('#legend').innerHTML = cats.map(c => `
+  <div><span class="dot" style="background:${c.color}"></span>${c.name} · ${c.v}%</div>`).join('');
+
+/* ================= RENDER: ตาราง ================= */
+document.querySelector('#orders').innerHTML = orders.map(o => `
+  <tr>
+    <td>${o.id}</td><td>${o.cust}</td><td>${o.item}</td>
+    <td class="right">฿${money(o.amt)}</td>
+    <td class="right"><span class="badge ${o.st}">${stText[o.st]}</span></td>
+  </tr>`).join('');
+
+/* ================= EVENTS ================= */
+document.querySelector('#range').addEventListener('change', e => {
+  const n = Number(e.target.value);
+  const part = sales.slice(-n);
+  const mx = Math.max(...part.map(s => s.v));
+  document.querySelector('#chart').innerHTML = part.map(s => `
+    <div class="bar">
+      <div class="fill" style="height:${(s.v/mx*100).toFixed(0)}%"><span>${s.v}k</span></div>
+      <div class="lbl">${s.m}</div>
+    </div>`).join('');
+});
+</script>
+</body>
+</html>

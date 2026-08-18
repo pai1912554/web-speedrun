@@ -1,0 +1,234 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>บันทึกนักเขียน — บล็อก</title>
+<style>
+:root{
+  --bg:#fbfaf7;--surface:#ffffff;--text:#1c1d20;--muted:#6b7280;--line:#e6e3dc;
+  --brand:#b4531f;--r:12px;
+}
+/* โหมดมืด: สลับด้วยปุ่ม toggle ที่ header */
+body.dark{--bg:#12130f;--surface:#1a1c17;--text:#eceae4;--muted:#9a9c94;--line:#2a2d26;--brand:#ff9c5b}
+
+*,*::before,*::after{box-sizing:border-box}*{margin:0}
+img{display:block;max-width:100%}
+button,input{font:inherit;color:inherit}
+body{background:var(--bg);color:var(--text);line-height:1.75;transition:.25s;
+  font-family:Georgia,"Noto Serif Thai",serif}
+a{color:inherit;text-decoration:none}
+.wrap{width:min(760px,100% - 32px);margin-inline:auto}
+.wide{width:min(1040px,100% - 32px)}
+
+header{border-bottom:1px solid var(--line);position:sticky;top:0;z-index:30;
+  background:color-mix(in srgb,var(--bg) 92%,transparent);backdrop-filter:blur(8px)}
+header .wrap{display:flex;align-items:center;gap:18px;height:68px}
+.logo{font-size:20px;font-weight:700;letter-spacing:-.3px}
+.logo i{color:var(--brand);font-style:normal}
+nav{margin-left:auto;display:flex;gap:20px;align-items:center;
+  font-family:system-ui,"Noto Sans Thai",sans-serif;font-size:14.5px}
+nav a{color:var(--muted)} nav a:hover{color:var(--text)}
+.toggle{background:transparent;border:1px solid var(--line);border-radius:99px;
+  width:34px;height:34px;cursor:pointer}
+
+.hero{padding:56px 0 34px;text-align:center}
+.hero h1{font-size:clamp(30px,5vw,44px);line-height:1.2;letter-spacing:-1px}
+.hero p{color:var(--muted);margin-top:12px;font-size:17px;
+  font-family:system-ui,"Noto Sans Thai",sans-serif}
+
+.filters{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin:26px 0 34px;
+  font-family:system-ui,"Noto Sans Thai",sans-serif}
+.chip{border:1px solid var(--line);background:var(--surface);color:var(--muted);
+  padding:6px 16px;border-radius:99px;cursor:pointer;font-size:14px}
+.chip.active{background:var(--brand);border-color:var(--brand);color:#fff}
+.searchbox{width:100%;max-width:340px;padding:10px 14px;border:1px solid var(--line);
+  border-radius:99px;background:var(--surface);
+  font-family:system-ui,"Noto Sans Thai",sans-serif}
+
+/* ===== list ===== */
+.posts{display:grid;gap:26px;padding-bottom:60px}
+.post{display:grid;grid-template-columns:200px 1fr;gap:22px;
+  border-bottom:1px solid var(--line);padding-bottom:26px;cursor:pointer}
+.post:hover h2{color:var(--brand)}
+.post img{width:100%;height:140px;object-fit:cover;border-radius:var(--r)}
+.meta{font-size:13px;color:var(--muted);display:flex;gap:10px;flex-wrap:wrap;
+  font-family:system-ui,"Noto Sans Thai",sans-serif}
+.tag{color:var(--brand);font-weight:600}
+.post h2{font-size:22px;line-height:1.3;margin:8px 0;transition:.15s}
+.post p{color:var(--muted);font-size:16px}
+
+/* ===== หน้าอ่านบทความ ===== */
+.article{display:none;padding-bottom:80px}
+.article.show{display:block}
+.list.hide{display:none}
+.back{font-family:system-ui,"Noto Sans Thai",sans-serif;font-size:14px;color:var(--brand);
+  cursor:pointer;background:none;border:0;padding:20px 0;display:inline-block}
+.article img.cover{width:100%;height:320px;object-fit:cover;border-radius:16px;margin:16px 0 26px}
+.article h1{font-size:clamp(26px,4.5vw,38px);line-height:1.25;letter-spacing:-.8px}
+.article .body{margin-top:24px;font-size:18px}
+.article .body p{margin-bottom:20px}
+.article .body h3{font-size:22px;margin:34px 0 12px}
+.article .body blockquote{border-left:3px solid var(--brand);padding-left:20px;
+  color:var(--muted);font-style:italic;margin:24px 0}
+
+@media(max-width:640px){
+  .post{grid-template-columns:1fr}
+  .post img{height:180px}
+  nav a:not(.keep){display:none}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap wide">
+    <div class="logo">บันทึก<i>นักเขียน</i></div>
+    <nav>
+      <a href="#">หน้าแรก</a><a href="#">หมวดหมู่</a><a href="#">เกี่ยวกับ</a>
+      <button class="toggle" id="themeBtn" title="สลับธีม">🌙</button>
+    </nav>
+  </div>
+</header>
+
+<!-- ============ หน้ารายการ ============ -->
+<div class="list" id="list">
+  <div class="wrap">
+    <div class="hero">
+      <h1>เรื่องเล่าจากโต๊ะทำงาน</h1>
+      <p>บันทึกความคิด งานฝีมือ และชีวิตช้าๆ สัปดาห์ละหนึ่งเรื่อง</p>
+    </div>
+
+    <div class="filters">
+      <input class="searchbox" id="search" placeholder="ค้นหาบทความ...">
+    </div>
+    <div class="filters" id="chips"></div>
+
+    <div class="posts" id="posts"></div>
+  </div>
+</div>
+
+<!-- ============ หน้าอ่าน ============ -->
+<div class="article" id="article">
+  <div class="wrap">
+    <button class="back" id="back">&larr; กลับหน้ารายการ</button>
+    <div class="meta" id="aMeta"></div>
+    <h1 id="aTitle"></h1>
+    <img class="cover" id="aImg" alt="">
+    <div class="body" id="aBody"></div>
+  </div>
+</div>
+
+<script>
+/* ================= DATA ================= */
+const posts = [
+  { id:1, title:'ทำไมงานฝีมือถึงยังสำคัญในยุคที่ทุกอย่างผลิตได้เร็ว',
+    tag:'ความคิด', date:'12 ส.ค. 2026', read:6,
+    img:'https://picsum.photos/seed/craft1/700/400',
+    excerpt:'ในโลกที่ของทุกชิ้นถูกผลิตซ้ำได้เป็นล้านชิ้น สิ่งที่หายากที่สุดกลับเป็นร่องรอยของมือคน',
+    body:`<p>เมื่อสิบปีก่อนผมเชื่อว่าความเร็วคือคำตอบของทุกอย่าง ยิ่งทำได้เร็ว ยิ่งได้เปรียบ จนวันหนึ่งผมได้ถือถ้วยดินเผาที่ปั้นด้วยมือ แล้วสังเกตเห็นรอยนิ้วหัวแม่มือที่ยังค้างอยู่บนขอบถ้วย</p>
+<h3>ร่องรอยที่เครื่องจักรทำไม่ได้</h3>
+<p>รอยนั้นไม่ได้เกิดจากความตั้งใจ มันเกิดจากการที่มีคนคนหนึ่งจับดินก้อนนั้นจริงๆ นานพอที่จะทิ้งรอยไว้</p>
+<blockquote>ของที่สมบูรณ์แบบเกินไป มักไม่มีเรื่องเล่า</blockquote>
+<p>นี่คือเหตุผลที่งานฝีมือยังอยู่ ไม่ใช่เพราะมันดีกว่าในเชิงประสิทธิภาพ แต่เพราะมันบอกเราว่ามีใครสักคนใช้เวลากับมัน</p>
+<h3>แล้วเราเรียนอะไรจากตรงนี้</h3>
+<p>งานที่คุณทำอยู่ก็เหมือนกัน ถ้ามันเร็วจนไม่เหลือร่องรอยของคุณเลย มันก็แทนที่ได้ง่ายเช่นกัน</p>` },
+
+  { id:2, title:'ตื่นตีห้ามาสามปี สิ่งที่ได้ไม่ใช่เวลาที่มากขึ้น',
+    tag:'ชีวิต', date:'5 ส.ค. 2026', read:4,
+    img:'https://picsum.photos/seed/craft2/700/400',
+    excerpt:'ทุกคนบอกว่าตื่นเช้าแล้วจะมีเวลามากขึ้น สามปีผ่านไปผมพบว่าเรื่องนี้ไม่จริงเลย',
+    body:`<p>วันแรกที่ผมตั้งนาฬิกาปลุกตีห้า ผมคิดว่าจะได้เวลาเพิ่มวันละสามชั่วโมง</p>
+<h3>สิ่งที่ได้จริงคือความเงียบ</h3>
+<p>ตีห้าไม่มีใครส่งข้อความมา ไม่มีอะไรต้องตอบ ความเงียบนั้นต่างหากที่เปลี่ยนงานของผม ไม่ใช่จำนวนชั่วโมง</p>
+<blockquote>เวลาที่ไม่ถูกขัดจังหวะหนึ่งชั่วโมง มีค่ามากกว่าเวลาที่ถูกขัดสี่ชั่วโมง</blockquote>
+<p>ถ้าคุณตื่นเช้าไม่ไหว ลองหาความเงียบในเวลาอื่นแทน ผลลัพธ์เหมือนกัน</p>` },
+
+  { id:3, title:'บันทึกการทำแจกันใบแรกที่พัง 14 ครั้ง',
+    tag:'งานฝีมือ', date:'28 ก.ค. 2026', read:8,
+    img:'https://picsum.photos/seed/craft3/700/400',
+    excerpt:'ไม่มีใครบอกผมว่าดินจะแตกตอนเผา และไม่มีใครบอกว่ามันจะแตกซ้ำอีกสิบสามครั้ง',
+    body:`<p>ครั้งที่หนึ่งถึงห้า ผมโทษเตา ครั้งที่หกถึงสิบ ผมโทษดิน ครั้งที่สิบเอ็ดผมเริ่มโทษตัวเอง</p>
+<h3>ปัญหาอยู่ที่ความหนาไม่เท่ากัน</h3>
+<p>ผนังแจกันด้านหนึ่งหนา 8 มิลลิเมตร อีกด้าน 3 มิลลิเมตร ตอนเผาส่วนที่บางแห้งเร็วกว่าแล้วดึงจนแตก</p>
+<blockquote>ของจะพังตรงจุดที่ไม่สม่ำเสมอเสมอ</blockquote>
+<p>ใบที่สิบห้ารอด ไม่ใช่เพราะผมเก่งขึ้น แต่เพราะผมช้าลง</p>` },
+
+  { id:4, title:'ห้าเครื่องมือที่ผมใช้ทุกวัน และสามอย่างที่เลิกใช้',
+    tag:'เครื่องมือ', date:'20 ก.ค. 2026', read:5,
+    img:'https://picsum.photos/seed/craft4/700/400',
+    excerpt:'เครื่องมือที่ดีที่สุดคืออันที่คุณไม่ต้องคิดถึงมันเลยตอนใช้งาน',
+    body:`<p>ผมเคยซื้อเครื่องมือใหม่ทุกเดือน คิดว่าอันถัดไปจะทำให้ทำงานได้ดีขึ้น</p>
+<h3>ห้าอย่างที่รอด</h3>
+<p>สมุดเปล่า ดินสอ 2B มีดคัตเตอร์ ไม้บรรทัดเหล็ก และไฟตั้งโต๊ะดวงเดียว</p>
+<blockquote>ถ้าคุณต้องอ่านคู่มือทุกครั้งก่อนใช้ มันไม่ใช่เครื่องมือของคุณ</blockquote>
+<p>สามอย่างที่เลิกใช้ ล้วนเป็นของที่แพงที่สุดที่ผมเคยซื้อ</p>` },
+];
+
+let activeTag = 'ทั้งหมด';
+
+/* ================= CHIPS ================= */
+const tags = ['ทั้งหมด', ...new Set(posts.map(p => p.tag))];
+document.querySelector('#chips').innerHTML = tags.map(t =>
+  `<button class="chip ${t===activeTag?'active':''}" data-tag="${t}">${t}</button>`).join('');
+
+/* ================= RENDER LIST ================= */
+function render(){
+  const q = document.querySelector('#search').value.toLowerCase().trim();
+  const data = posts.filter(p =>
+    (p.title + p.excerpt).toLowerCase().includes(q) &&
+    (activeTag === 'ทั้งหมด' || p.tag === activeTag));
+
+  document.querySelector('#posts').innerHTML = data.length ? data.map(p => `
+    <article class="post" onclick="openPost(${p.id})">
+      <img src="${p.img}" alt="${p.title}" loading="lazy">
+      <div>
+        <div class="meta"><span class="tag">${p.tag}</span><span>${p.date}</span><span>อ่าน ${p.read} นาที</span></div>
+        <h2>${p.title}</h2>
+        <p>${p.excerpt}</p>
+      </div>
+    </article>`).join('')
+    : '<p style="color:var(--muted);text-align:center;padding:40px 0">ไม่พบบทความ</p>';
+}
+
+/* ================= เปิดอ่าน / กลับ ================= */
+function openPost(id){
+  const p = posts.find(x => x.id === id);
+  document.querySelector('#aMeta').innerHTML =
+    `<span class="tag">${p.tag}</span><span>${p.date}</span><span>อ่าน ${p.read} นาที</span>`;
+  document.querySelector('#aTitle').textContent = p.title;
+  document.querySelector('#aImg').src = p.img;
+  document.querySelector('#aImg').alt = p.title;
+  document.querySelector('#aBody').innerHTML = p.body;
+
+  document.querySelector('#list').classList.add('hide');
+  document.querySelector('#article').classList.add('show');
+  window.scrollTo({top:0});
+}
+document.querySelector('#back').addEventListener('click', () => {
+  document.querySelector('#list').classList.remove('hide');
+  document.querySelector('#article').classList.remove('show');
+});
+
+/* ================= EVENTS ================= */
+document.querySelector('#search').addEventListener('input', render);
+document.querySelector('#chips').addEventListener('click', e => {
+  if(!e.target.dataset.tag) return;
+  activeTag = e.target.dataset.tag;
+  document.querySelectorAll('.chip').forEach(c => c.classList.toggle('active', c === e.target));
+  render();
+});
+
+/* ================= DARK MODE ================= */
+const themeBtn = document.querySelector('#themeBtn');
+if(localStorage.getItem('theme') === 'dark'){ document.body.classList.add('dark'); themeBtn.textContent='☀️'; }
+themeBtn.addEventListener('click', () => {
+  const dark = document.body.classList.toggle('dark');
+  themeBtn.textContent = dark ? '☀️' : '🌙';
+  localStorage.setItem('theme', dark ? 'dark' : 'light');
+});
+
+render();
+</script>
+</body>
+</html>

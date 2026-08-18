@@ -1,0 +1,235 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>LAB 03 · แถบเมนู — Studio</title>
+<link rel="stylesheet" href="studio.css">
+</head>
+<body>
+
+<div class="bar"><div class="bar-in">
+  <div class="mark">WEB <b>STUDIO</b></div>
+  <nav>
+    <a href="index.html">ห้องปฏิบัติการ</a>
+    <a href="design-eye.html">ฝึกตาออกแบบ</a>
+    <a href="../index.html">คลังความรู้</a>
+  </nav>
+</div></div>
+
+<div class="bench">
+  <div class="sheet"><div id="labHead"></div><div id="steps"></div></div>
+  <div class="board">
+    <div class="board-head">
+      <div class="seg">
+        <button data-mode="build" class="on">ที่กำลังทำ</button>
+        <button data-mode="target">เป้าหมาย</button>
+      </div>
+      <button class="tool" id="noteBtn">เส้นบอกระยะ</button>
+      <div class="spacer"></div>
+      <div class="sizebtns">
+        <button class="tool on" data-w="100%">จอใหญ่</button>
+        <button class="tool" data-w="390px">มือถือ</button>
+      </div>
+    </div>
+    <div class="stage"><iframe id="frame" title="ตัวอย่างงาน"></iframe></div>
+    <div class="board-foot">
+      <span id="stepNow"></span>
+      <div class="pbar"><i id="pbar"></i></div>
+      <div class="navbtns">
+        <button class="ghost" id="prev">ย้อน</button>
+        <button id="next">ขั้นต่อไป</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const LAB = {
+no: 3,
+title: 'แถบเมนู — ส่วนที่กรรมการเห็นก่อนใครและพังบ่อยที่สุดบนมือถือ',
+lede: 'Flexbox ห้าบรรทัดจบงานนี้ แต่รายละเอียดที่ทำให้ดูโปรอยู่ที่การจัดแนวและสถานะปัจจุบัน. เราจะทำทั้งเวอร์ชันจอใหญ่และเมนูมือถือที่กดเปิดได้จริง.',
+minutes: 20,
+uses: ['Flexbox', 'การจัดแนว', 'sticky', 'เมนูมือถือ'],
+
+notes: [
+  {sel:'.nav',        label:'สูง 64px คงที่', side:'in'},
+  {sel:'.nav-in',     label:'align-items:center = ทุกอย่างตรงกลางแนวตั้ง', side:'top'},
+  {sel:'.links',      label:'margin-left:auto ดันไปขวา', side:'bottom'},
+  {sel:'.links a.on', label:'สถานะปัจจุบัน ต้องมองเห็น', side:'top'},
+  {sel:'.nav .cta',   label:'ปุ่มหลักหนึ่งเดียวบนแถบ', side:'right'},
+],
+
+steps: [
+{
+ t:'แถบเดียว สามหน้าที่',
+ why:'แถบเมนูต้องตอบสามอย่างในแถบเดียว: <b>นี่เว็บอะไร</b> (โลโก้ซ้าย) · <b>ไปไหนได้บ้าง</b> (ลิงก์กลาง-ขวา) · <b>อยากให้ทำอะไรที่สุด</b> (ปุ่มขวาสุด). วางผิดลำดับนี้เมื่อไหร่ ผู้ใช้จะหาไม่เจอ เพราะทุกเว็บในโลกวางเหมือนกันจนคนชินแล้ว.',
+ rule:{t:'อย่าฝืนความเคยชิน', d:'ความคิดสร้างสรรค์ในงานแข่งควรใช้กับเนื้อหาและสีสัน ไม่ใช่กับตำแหน่งเมนู. เมนูที่วางแปลกๆ ไม่ได้ดูสร้างสรรค์ มันดูใช้ยาก.'},
+ css:`:root{
+  --ground:#ffffff;
+  --ink:#101418;
+  --ink-2:#697585;
+  --line:#e8eaee;
+  --accent:#1d4ed8;
+}
+body{ background:var(--ground); color:var(--ink); }
+.wrap{ width:min(1080px, 100% - 32px); margin-inline:auto; }
+
+.nav{ border-bottom:1px solid var(--line); }
+.nav-in{ height:64px; }
+.logo{ font-weight:800; font-size:19px; letter-spacing:-.5px; }
+.logo i{ color:var(--accent); font-style:normal; }`,
+ html:`<header class="nav">
+  <div class="wrap nav-in">
+    <a class="logo" href="#">คลัง<i>ยา</i></a>
+    <nav class="links">
+      <a href="#" class="on">ค้นหายา</a>
+      <a href="#">ร้านใกล้ฉัน</a>
+      <a href="#">ถามเภสัชกร</a>
+      <a href="#">บทความ</a>
+    </nav>
+    <a class="cta" href="#">เข้าสู่ระบบ</a>
+  </div>
+</header>
+
+<main class="wrap" style="padding:48px 0">
+  <h1 style="font-size:32px;letter-spacing:-1px">ค้นข้อมูลยาจากชื่อสามัญ</h1>
+  <p style="color:#697585;margin-top:8px">ข้อมูลอ้างอิงจากบัญชียาหลักแห่งชาติ ปรับปรุงล่าสุดเดือนนี้</p>
+</main>`
+},
+{
+ t:'สามบรรทัดที่จัดทุกอย่างให้เข้าที่',
+ why:'<code>display:flex</code> เรียงลูกเป็นแถวนอน · <code>align-items:center</code> จัดกึ่งกลางแนวตั้ง · <code>gap</code> เว้นระยะ. <b>ปัญหาที่มือใหม่เจอบ่อยที่สุดคือโลโก้กับเมนูไม่ตรงกันแนวตั้ง</b> — สาเหตุคือลืม align-items เกือบทุกครั้ง.',
+ rule:{t:'ใช้ gap อย่าใช้ margin', d:'สมัยก่อนต้องใส่ margin-right ให้ทุกลิงก์แล้วยกเว้นอันสุดท้าย. ตอนนี้ <code>gap</code> จัดการให้หมด ไม่มีระยะเกินท้ายแถว และแก้ค่าเดียวเปลี่ยนทั้งแถว.'},
+ css:`.nav-in{
+  display:flex;
+  align-items:center;      /* หัวใจ: ทุกอย่างตรงกลางแนวตั้ง */
+  gap:28px;
+}
+
+.links{
+  display:flex;
+  gap:24px;
+  margin-left:auto;        /* ดันกลุ่มนี้กับทุกอย่างหลังจากนี้ไปขวา */
+}
+.links a{
+  color:var(--ink-2);
+  text-decoration:none;
+  font-size:14.5px;
+}`,
+ try:'ลบ <code>align-items:center</code> ออก. โลโก้จะไปเกาะขอบบน — นี่คืออาการที่เห็นบ่อยในงานมือใหม่ และตอนนี้คุณรู้แล้วว่าแก้ตรงไหน.'
+},
+{
+ t:'บอกให้ชัดว่าตอนนี้อยู่หน้าไหน',
+ why:'เมนูที่ทุกอันหน้าตาเหมือนกันคือเมนูที่ไม่ช่วยอะไร. <b>สถานะปัจจุบันต้องต่างจากอันอื่นชัดเจน</b> ด้วยสีเข้มขึ้น น้ำหนักหนาขึ้น หรือขีดใต้ — เลือกอย่างเดียวพอ ใช้พร้อมกันสามอย่างจะกลายเป็นเสียงดัง.',
+ rule:{t:'สถานะที่ต้องมีครบ', d:'ลิงก์ทุกตัวควรมี 3 สถานะ: ปกติ (จาง) · ชี้เมาส์ (เข้มขึ้น) · หน้าปัจจุบัน (เข้มสุด + เครื่องหมาย). และ <code>:focus-visible</code> สำหรับคนกด Tab — ข้อนี้คือคะแนน accessibility ที่ได้ฟรี.'},
+ css:`.links a{
+  position:relative;
+  padding:6px 0;
+  transition:color .15s;
+}
+.links a:hover{ color:var(--ink); }
+
+.links a.on{
+  color:var(--ink);
+  font-weight:600;
+}
+.links a.on::after{               /* ขีดใต้บางๆ บอกตำแหน่งปัจจุบัน */
+  content:"";
+  position:absolute;
+  left:0; right:0; bottom:-21px;  /* ดันลงไปเกาะเส้นล่างของแถบ */
+  height:2px;
+  background:var(--accent);
+}
+
+.links a:focus-visible{
+  outline:2px solid var(--accent);
+  outline-offset:4px;
+  border-radius:3px;
+}`,
+ try:'กด <code>Tab</code> รัวๆ ในกระดานด้านขวา แล้วดูว่ากรอบโฟกัสวิ่งไปทีละลิงก์ไหม. ถ้าเห็นชัด แปลว่าคนที่ใช้คีย์บอร์ดอย่างเดียวใช้เว็บคุณได้.'
+},
+{
+ t:'ปุ่มหลักบนแถบ และการติดบนเมื่อเลื่อน',
+ why:'ปุ่มขวาสุดคือสิ่งที่คุณอยากให้ผู้ใช้ทำมากที่สุด — มีได้อันเดียว. ส่วน <code>position:sticky</code> ทำให้แถบติดอยู่ตอนเลื่อนลง ซึ่งทำให้เว็บ<b>รู้สึกเหมือนแอปพลิเคชันจริง</b> ด้วยโค้ดสองบรรทัด.',
+ rule:{t:'sticky ต้องมี top เสมอ', d:'<code>position:sticky</code> ที่ไม่มี <code>top:0</code> จะไม่ทำงาน และไม่มี error แจ้ง — เป็นกับดักที่เสียเวลาไล่หานาน. จำเป็นคู่: sticky + top + z-index.'},
+ css:`.nav{
+  position:sticky;
+  top:0;                    /* ขาดบรรทัดนี้ sticky จะเงียบสนิท */
+  z-index:50;
+  background:rgba(255,255,255,.86);
+  backdrop-filter:blur(10px);   /* เนื้อหาที่เลื่อนผ่านใต้แถบจะเบลอ ดูมีชั้น */
+}
+
+.nav .cta{
+  background:var(--accent);
+  color:#fff;
+  text-decoration:none;
+  padding:9px 18px;
+  border-radius:8px;
+  font-size:14px;
+  font-weight:600;
+  white-space:nowrap;       /* กันปุ่มตัดคำเป็นสองบรรทัด */
+  transition:.16s;
+}
+.nav .cta:hover{ filter:brightness(1.12); }`,
+ into:'body',
+ html:`<section class="wrap" style="padding-bottom:80px">
+  <div style="height:900px;border:1px dashed #e8eaee;border-radius:12px;
+              display:grid;place-items:center;color:#697585">
+    เลื่อนลงเพื่อดูแถบเมนูติดอยู่ด้านบน
+  </div>
+</section>`,
+ try:'เลื่อนเนื้อหาในกระดานลงไป แล้วสังเกตแถบเมนู. จากนั้นลบ <code>top:0</code> ออกแล้วลองใหม่ — จะเห็นว่าเงียบสนิท ไม่มีอะไรเตือน.'
+},
+{
+ t:'มือถือ: ซ่อนเมนู เปิดด้วยปุ่มเดียว',
+ why:'เมนูสี่ลิงก์บนจอ 390px จะเบียดกันจนล้น. วิธีมาตรฐานคือ<b>ซ่อนแล้วเปิดด้วยปุ่ม</b>. ตรงนี้ต้องใช้ JavaScript สามบรรทัด — น้อยมากเมื่อเทียบกับคะแนน responsive ที่ได้.',
+ rule:{t:'ปุ่มต้องกดง่ายด้วยนิ้วโป้ง', d:'พื้นที่กดขั้นต่ำที่นิ้วคนกดแม่นคือ 44 x 44 พิกเซล. ปุ่มเล็กกว่านี้ผู้ใช้จะกดพลาด และกรรมการที่ลองบนมือถือจะรู้สึกทันที.'},
+ css:`.burger{
+  display:none;             /* จอใหญ่ไม่ต้องใช้ */
+  margin-left:auto;
+  width:44px; height:44px;  /* ขนาดขั้นต่ำที่นิ้วกดแม่น */
+  border:1px solid var(--line);
+  background:transparent;
+  border-radius:9px;
+  cursor:pointer;
+  font-size:18px;
+}
+
+@media (max-width:760px){
+  .burger{ display:block; }
+
+  .links{
+    display:none;
+    position:absolute;
+    top:64px; left:0; right:0;
+    flex-direction:column;
+    gap:0;
+    background:#fff;
+    border-bottom:1px solid var(--line);
+    padding:8px 16px 16px;
+  }
+  .links.open{ display:flex; }
+  .links a{ padding:13px 0; border-bottom:1px solid var(--line); }
+  .links a.on::after{ display:none; }   /* ขีดใต้ไม่เหมาะกับเมนูแนวตั้ง */
+
+  .nav .cta{ display:none; }
+  .nav-in{ position:relative; }
+}`,
+ into:'.nav-in',
+ html:`<button class="burger" id="menuBtn" aria-label="เปิดเมนู">☰</button>
+
+<script>
+  document.querySelector('#menuBtn').addEventListener('click', function(){
+    document.querySelector('.links').classList.toggle('open');
+  });
+<\/script>`,
+ try:'กดปุ่ม <b>มือถือ</b> บนกระดาน แล้วกดปุ่มสามขีดจริงๆ. ถ้าเมนูเปิดปิดได้ แปลว่าคุณทำ responsive navigation เป็นแล้ว — ทักษะที่โจทย์แข่งขอเกือบทุกครั้ง.'
+},
+]
+};
+</script>
+<script src="lab.js"></script>
+</body>
+</html>

@@ -1,0 +1,462 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>คลัง Snippet — กดคัดลอกได้</title>
+<link rel="stylesheet" href="../css/style.css">
+<style>
+.snip{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);
+  padding:20px;margin-bottom:18px}
+.snip .head{display:flex;align-items:center;gap:12px;margin-bottom:6px;flex-wrap:wrap}
+.snip h3{font-size:16.5px;margin:0}
+.snip .when{color:var(--muted);font-size:13.5px;margin-bottom:10px}
+.copy{margin-left:auto;background:var(--surface-2);border:1px solid var(--line);
+  color:var(--text);padding:6px 14px;border-radius:8px;cursor:pointer;font-size:13px}
+.copy:hover{border-color:var(--brand)}
+.copy.done{background:var(--ok);color:#04120e;border-color:var(--ok)}
+.demo{border:1px dashed var(--line);border-radius:8px;padding:16px;margin-top:12px;
+  background:var(--bg)}
+.demo .lbl{font-size:11px;color:var(--muted);letter-spacing:1px;margin-bottom:10px}
+</style>
+</head>
+<body>
+<header class="site"><div class="wrap">
+  <div class="logo">WEB <span>SPEEDRUN</span></div>
+  <nav class="top"><a href="../index.html">หน้าแรก</a><a href="../lessons/01-structure.html">บทเรียน</a>
+  <a href="../templates/index.html">เทมเพลต</a><a href="index.html" class="active">Snippet</a>
+  <a href="../lessons/05-lookup.html">ค้นหายังไง</a></nav></div></header>
+
+<div class="wrap lesson">
+<div class="hero"><span class="tag">คลังของชิ้นเล็ก</span>
+<h1>Snippet — กดปุ่มคัดลอกแล้ววางได้เลย</h1>
+<p class="lead">ชิ้นส่วนที่โจทย์แข่งขอบ่อยที่สุด. ทุกอันเป็น HTML+CSS+JS ล้วน ไม่ต้องติดตั้งอะไร.</p></div>
+
+<div id="list"></div>
+
+<div class="prevnext"><a class="btn ghost" href="../templates/index.html">&larr; เทมเพลต</a>
+<a class="btn" href="../lessons/04-battle-plan.html">แผน 3 ชม. &rarr;</a></div>
+</div>
+<footer class="site"><div class="wrap">Web Speedrun</div></footer>
+
+<script>
+const snippets = [
+{
+ t:'Modal / หน้าต่างเด้ง',
+ w:'โจทย์ขอ "ดูรายละเอียด", "ยืนยันก่อนลบ", "ดูรูปใหญ่"',
+ code:`<!-- HTML -->
+<button id="openBtn">เปิดหน้าต่าง</button>
+<div class="overlay" id="overlay">
+  <div class="modal">
+    <button class="x" data-close>&times;</button>
+    <h2>หัวข้อ</h2>
+    <p>เนื้อหาในหน้าต่าง</p>
+  </div>
+</div>
+
+<style>
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.7);display:none;
+  align-items:center;justify-content:center;z-index:100;padding:20px}
+.overlay.open{display:flex}
+.modal{background:#171a21;border:1px solid #2a2f3a;border-radius:16px;
+  padding:26px;width:min(440px,100%);position:relative}
+.x{position:absolute;top:12px;right:16px;background:none;border:0;
+  color:#fff;font-size:24px;cursor:pointer}
+</style>
+
+<script>
+const ov = document.querySelector('#overlay');
+document.querySelector('#openBtn').addEventListener('click', () => ov.classList.add('open'));
+document.querySelector('[data-close]').addEventListener('click', () => ov.classList.remove('open'));
+ov.addEventListener('click', e => { if(e.target === ov) ov.classList.remove('open'); });
+document.addEventListener('keydown', e => { if(e.key === 'Escape') ov.classList.remove('open'); });
+<\/script>`
+},
+{
+ t:'Tabs / แท็บสลับเนื้อหา',
+ w:'โจทย์ขอ "แบ่งหมวด", "รายละเอียด/รีวิว/จัดส่ง"',
+ code:`<!-- HTML -->
+<div class="tabs">
+  <button class="tab active" data-tab="a">รายละเอียด</button>
+  <button class="tab" data-tab="b">รีวิว</button>
+  <button class="tab" data-tab="c">จัดส่ง</button>
+</div>
+<div class="pane active" id="a">เนื้อหา A</div>
+<div class="pane" id="b">เนื้อหา B</div>
+<div class="pane" id="c">เนื้อหา C</div>
+
+<style>
+.tabs{display:flex;gap:8px;border-bottom:1px solid #2a2f3a;margin-bottom:16px}
+.tab{background:none;border:0;padding:10px 16px;color:#9aa4b2;cursor:pointer;
+  border-bottom:2px solid transparent}
+.tab.active{color:#fff;border-bottom-color:#4f8cff}
+.pane{display:none}
+.pane.active{display:block}
+</style>
+
+<script>
+document.querySelectorAll('.tab').forEach(t => {
+  t.addEventListener('click', () => {
+    document.querySelectorAll('.tab').forEach(x => x.classList.remove('active'));
+    document.querySelectorAll('.pane').forEach(x => x.classList.remove('active'));
+    t.classList.add('active');
+    document.querySelector('#' + t.dataset.tab).classList.add('active');
+  });
+});
+<\/script>`
+},
+{
+ t:'Accordion / คำถามที่พบบ่อย',
+ w:'โจทย์ขอ "FAQ", "คำถามที่พบบ่อย", "ย่อ-ขยายหัวข้อ"',
+ code:`<!-- HTML: ใช้ details ของ HTML เองเลย ไม่ต้องเขียน JS -->
+<details class="faq">
+  <summary>คำถามข้อที่ 1</summary>
+  <p>คำตอบข้อที่ 1</p>
+</details>
+<details class="faq">
+  <summary>คำถามข้อที่ 2</summary>
+  <p>คำตอบข้อที่ 2</p>
+</details>
+
+<style>
+.faq{background:#171a21;border:1px solid #2a2f3a;border-radius:10px;
+  padding:14px 18px;margin-bottom:10px}
+.faq summary{cursor:pointer;font-weight:600;list-style:none}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::after{content:"+";float:right;color:#4f8cff}
+.faq[open] summary::after{content:"−"}
+.faq p{color:#9aa4b2;margin-top:10px}
+</style>`
+},
+{
+ t:'ค้นหา + กรอง แบบสด',
+ w:'โจทย์ขอ "ค้นหา", "กรองตามหมวด" — ใช้บ่อยที่สุด',
+ code:`<input id="q" placeholder="ค้นหา...">
+<div id="box"></div>
+
+<script>
+const data = [
+  {name:'กาแฟ', cat:'ดื่ม'},
+  {name:'ชา',   cat:'ดื่ม'},
+  {name:'ขนม',  cat:'กิน'},
+];
+
+function render(list = data){
+  document.querySelector('#box').innerHTML = list.length
+    ? list.map(d => \`<div class="card"><h3>\${d.name}</h3><p>\${d.cat}</p></div>\`).join('')
+    : '<p>ไม่พบข้อมูล</p>';
+}
+
+document.querySelector('#q').addEventListener('input', e => {
+  const q = e.target.value.toLowerCase().trim();
+  render(data.filter(d => d.name.toLowerCase().includes(q)));
+});
+
+render();
+<\/script>`
+},
+{
+ t:'Dark mode / สลับธีม',
+ w:'ของแถมที่ได้คะแนนง่ายมาก ใช้เวลา 3 นาที',
+ code:`<button id="themeBtn">🌙</button>
+
+<style>
+:root{ --bg:#0f1115; --text:#e8eaed; --surface:#171a21; }
+body.light{ --bg:#ffffff; --text:#1c1d20; --surface:#f4f5f7; }
+body{ background:var(--bg); color:var(--text); transition:.25s; }
+</style>
+
+<script>
+const btn = document.querySelector('#themeBtn');
+// จำธีมที่เลือกไว้
+if(localStorage.getItem('theme') === 'light'){
+  document.body.classList.add('light'); btn.textContent = '☀️';
+}
+btn.addEventListener('click', () => {
+  const light = document.body.classList.toggle('light');
+  btn.textContent = light ? '☀️' : '🌙';
+  localStorage.setItem('theme', light ? 'light' : 'dark');
+});
+<\/script>`
+},
+{
+ t:'Toast / ข้อความแจ้งเตือนมุมจอ',
+ w:'ใช้แทน alert() ดูโปรกว่าเยอะ',
+ code:`<style>
+#toast{position:fixed;bottom:24px;right:24px;background:#3ddc97;color:#04120e;
+  padding:13px 20px;border-radius:10px;font-weight:600;z-index:200;
+  opacity:0;transform:translateY(16px);transition:.28s;pointer-events:none}
+#toast.show{opacity:1;transform:none}
+</style>
+<div id="toast"></div>
+
+<script>
+function toast(msg, color = '#3ddc97'){
+  const t = document.querySelector('#toast');
+  t.textContent = msg;
+  t.style.background = color;
+  t.classList.add('show');
+  clearTimeout(t._timer);
+  t._timer = setTimeout(() => t.classList.remove('show'), 2200);
+}
+// ใช้: toast('บันทึกแล้ว')  /  toast('เกิดข้อผิดพลาด', '#ff5c5c')
+<\/script>`
+},
+{
+ t:'นับถอยหลัง / นาฬิกา',
+ w:'โจทย์ขอ "เหลือเวลาอีก", "เปิดจองใน..."',
+ code:`<div id="clock" style="font-size:28px;font-family:monospace"></div>
+
+<script>
+const target = new Date('2026-12-31T23:59:59');
+
+setInterval(() => {
+  const diff = target - new Date();
+  if(diff <= 0){ document.querySelector('#clock').textContent = 'หมดเวลาแล้ว'; return; }
+
+  const d = Math.floor(diff / 86400000);
+  const h = Math.floor(diff / 3600000) % 24;
+  const m = Math.floor(diff / 60000) % 60;
+  const s = Math.floor(diff / 1000) % 60;
+
+  document.querySelector('#clock').textContent =
+    \`\${d} วัน \${String(h).padStart(2,'0')}:\${String(m).padStart(2,'0')}:\${String(s).padStart(2,'0')}\`;
+}, 1000);
+<\/script>`
+},
+{
+ t:'กราฟแท่ง ด้วย CSS ล้วน',
+ w:'โจทย์ขอ "แสดงสถิติ/กราฟ" โดยห้ามใช้ไลบรารีภายนอก',
+ code:`<div class="chart" id="chart"></div>
+
+<style>
+.chart{display:flex;align-items:flex-end;gap:10px;height:180px}
+.bar{flex:1;display:flex;flex-direction:column;justify-content:flex-end;
+  align-items:center;gap:6px;height:100%}
+.bar .fill{width:100%;background:#4f8cff;border-radius:6px 6px 0 0;transition:height .6s}
+.bar .lbl{font-size:12px;color:#9aa4b2}
+</style>
+
+<script>
+const data = [
+  {m:'ม.ค.', v:120}, {m:'ก.พ.', v:185}, {m:'มี.ค.', v:160}, {m:'เม.ย.', v:240},
+];
+const max = Math.max(...data.map(d => d.v));
+
+document.querySelector('#chart').innerHTML = data.map(d => \`
+  <div class="bar">
+    <div class="fill" style="height:\${(d.v / max * 100).toFixed(0)}%"></div>
+    <div class="lbl">\${d.m}</div>
+  </div>\`).join('');
+<\/script>`
+},
+{
+ t:'กราฟวงกลม ด้วย conic-gradient',
+ w:'สัดส่วน เปอร์เซ็นต์ พายชาร์ต — CSS บรรทัดเดียว',
+ code:`<div class="donut" style="background:conic-gradient(
+  #4f8cff 0% 42%,
+  #3ddc97 42% 70%,
+  #ffb020 70% 88%,
+  #ff5c5c 88% 100%)"></div>
+
+<style>
+.donut{width:160px;height:160px;border-radius:50%;
+  display:grid;place-items:center}
+/* เจาะรูตรงกลางให้เป็นโดนัท */
+.donut::after{content:"";width:100px;height:100px;
+  background:#0f1115;border-radius:50%}
+</style>`
+},
+{
+ t:'Scroll reveal / ค่อยๆ ปรากฏตอนเลื่อน',
+ w:'ทำให้เว็บดูมีชีวิต ใช้เวลา 2 นาที',
+ code:`<style>
+.reveal{opacity:0;transform:translateY(20px);transition:.6s}
+.reveal.on{opacity:1;transform:none}
+</style>
+
+<script>
+const io = new IntersectionObserver(entries => {
+  entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('on'); });
+}, {threshold:.15});
+
+document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+// ใช้: ใส่ class="reveal" ให้ element ที่อยากให้ค่อยๆ โผล่
+<\/script>`
+},
+{
+ t:'เมนูมือถือ / hamburger',
+ w:'โจทย์บังคับ responsive',
+ code:`<button class="burger" id="burger">☰</button>
+<nav id="nav">
+  <a href="#">หน้าแรก</a><a href="#">บริการ</a><a href="#">ติดต่อ</a>
+</nav>
+
+<style>
+.burger{display:none;background:none;border:0;color:#fff;font-size:24px;cursor:pointer}
+#nav{display:flex;gap:20px}
+@media(max-width:720px){
+  .burger{display:block;margin-left:auto}
+  #nav{display:none;position:absolute;top:64px;left:0;right:0;
+    flex-direction:column;background:#171a21;padding:16px;
+    border-bottom:1px solid #2a2f3a}
+  #nav.open{display:flex}
+}
+</style>
+
+<script>
+document.querySelector('#burger').addEventListener('click', () => {
+  document.querySelector('#nav').classList.toggle('open');
+});
+<\/script>`
+},
+{
+ t:'ตรวจฟอร์ม + แสดงข้อความใต้ช่อง',
+ w:'โจทย์ขอ "ตรวจสอบข้อมูลก่อนส่ง"',
+ code:`<form id="f" novalidate>
+  <div class="field">
+    <input id="email" placeholder="อีเมล">
+    <p class="err">รูปแบบอีเมลไม่ถูกต้อง</p>
+  </div>
+  <button>ส่ง</button>
+</form>
+
+<style>
+.err{color:#ff5c5c;font-size:12.5px;display:none;margin-top:4px}
+.field.bad input{border-color:#ff5c5c}
+.field.bad .err{display:block}
+</style>
+
+<script>
+const isEmail = v => /^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(v);
+
+document.querySelector('#f').addEventListener('submit', e => {
+  e.preventDefault();
+  const inp = document.querySelector('#email');
+  const bad = !isEmail(inp.value);
+  inp.closest('.field').classList.toggle('bad', bad);
+  if(bad) return;
+  console.log('ส่งได้', inp.value);
+});
+<\/script>`
+},
+{
+ t:'บันทึกข้อมูลไม่ให้หาย (localStorage)',
+ w:'โจทย์ขอ "ข้อมูลต้องอยู่หลังรีเฟรช" — ได้คะแนนง่าย',
+ code:`// โหลดตอนเปิดหน้า ( || [] กันกรณียังไม่เคยเซฟ )
+let items = JSON.parse(localStorage.getItem('items')) || [];
+
+// เซฟ — เรียกทุกครั้งหลังแก้ข้อมูล
+function save(){
+  localStorage.setItem('items', JSON.stringify(items));
+}
+
+// ตัวอย่างใช้งาน
+function add(name){
+  items.push({ id: Date.now(), name });
+  save();
+  render();
+}
+
+// ลบข้อมูลทั้งหมด
+// localStorage.removeItem('items');`
+},
+{
+ t:'ดึงข้อมูลจาก API + สถานะกำลังโหลด',
+ w:'โจทย์ขอ "ดึงข้อมูลจากภายนอก" (ต้องเปิดผ่าน Live Server)',
+ code:`const box = document.querySelector('#box');
+
+async function load(){
+  box.innerHTML = '<p>กำลังโหลด...</p>';
+  try{
+    const res = await fetch('https://fakestoreapi.com/products?limit=8');
+    if(!res.ok) throw new Error('HTTP ' + res.status);
+    const data = await res.json();
+
+    box.innerHTML = data.map(p => \`
+      <div class="card">
+        <img src="\${p.image}" alt="\${p.title}" style="height:120px;object-fit:contain">
+        <h3>\${p.title}</h3>
+        <p>$\${p.price}</p>
+      </div>\`).join('');
+  }catch(err){
+    box.innerHTML = '<p>โหลดข้อมูลไม่สำเร็จ</p>';
+    console.error(err);
+  }
+}
+load();`
+},
+{
+ t:'ตะกร้าสินค้า / คิดยอดรวม',
+ w:'โจทย์ร้านค้า ระบบสั่งซื้อ',
+ code:`let cart = [];
+
+function addToCart(product){
+  const line = cart.find(c => c.id === product.id);
+  if(line) line.qty++;
+  else cart.push({ ...product, qty: 1 });
+  renderCart();
+}
+
+function changeQty(id, delta){
+  const line = cart.find(c => c.id === id);
+  line.qty += delta;
+  if(line.qty <= 0) cart = cart.filter(c => c.id !== id);
+  renderCart();
+}
+
+function renderCart(){
+  const count = cart.reduce((s, c) => s + c.qty, 0);
+  const total = cart.reduce((s, c) => s + c.qty * c.price, 0);
+
+  document.querySelector('#count').textContent = count;
+  document.querySelector('#total').textContent = '฿' + total.toLocaleString('th-TH');
+}`
+},
+{
+ t:'เลื่อนไปยังหัวข้อแบบนุ่ม + ไฮไลต์เมนู',
+ w:'เว็บ one-page ทุกอันควรมี',
+ code:`<style>
+html{ scroll-behavior: smooth; }
+section{ scroll-margin-top: 70px; }  /* กัน header บังหัวข้อ */
+nav a.active{ color:#4f8cff; }
+</style>
+
+<script>
+// ไฮไลต์เมนูตามหัวข้อที่กำลังดูอยู่
+const io = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if(e.isIntersecting){
+      document.querySelectorAll('nav a').forEach(a =>
+        a.classList.toggle('active', a.getAttribute('href') === '#' + e.target.id));
+    }
+  });
+}, {threshold:.5});
+
+document.querySelectorAll('section[id]').forEach(s => io.observe(s));
+<\/script>`
+},
+];
+
+/* render */
+document.querySelector('#list').innerHTML = snippets.map((s, i) => `
+  <div class="snip">
+    <div class="head">
+      <h3>${i+1}. ${s.t}</h3>
+      <button class="copy" data-i="${i}">คัดลอก</button>
+    </div>
+    <p class="when">ใช้เมื่อ: ${s.w}</p>
+    <pre><code>${s.code.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}</code></pre>
+  </div>`).join('');
+
+document.querySelectorAll('.copy').forEach(btn => {
+  btn.addEventListener('click', async () => {
+    await navigator.clipboard.writeText(snippets[btn.dataset.i].code);
+    btn.textContent = 'คัดลอกแล้ว';
+    btn.classList.add('done');
+    setTimeout(() => { btn.textContent = 'คัดลอก'; btn.classList.remove('done'); }, 1500);
+  });
+});
+</script>
+</body>
+</html>

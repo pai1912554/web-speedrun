@@ -1,0 +1,268 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>LAB 04 · ฟอร์ม — Studio</title>
+<link rel="stylesheet" href="studio.css">
+</head>
+<body>
+
+<div class="bar"><div class="bar-in">
+  <div class="mark">WEB <b>STUDIO</b></div>
+  <nav>
+    <a href="index.html">ห้องปฏิบัติการ</a>
+    <a href="design-eye.html">ฝึกตาออกแบบ</a>
+    <a href="../index.html">คลังความรู้</a>
+  </nav>
+</div></div>
+
+<div class="bench">
+  <div class="sheet"><div id="labHead"></div><div id="steps"></div></div>
+  <div class="board">
+    <div class="board-head">
+      <div class="seg">
+        <button data-mode="build" class="on">ที่กำลังทำ</button>
+        <button data-mode="target">เป้าหมาย</button>
+      </div>
+      <button class="tool" id="noteBtn">เส้นบอกระยะ</button>
+      <div class="spacer"></div>
+      <div class="sizebtns">
+        <button class="tool on" data-w="100%">จอใหญ่</button>
+        <button class="tool" data-w="390px">มือถือ</button>
+      </div>
+    </div>
+    <div class="stage"><iframe id="frame" title="ตัวอย่างงาน"></iframe></div>
+    <div class="board-foot">
+      <span id="stepNow"></span>
+      <div class="pbar"><i id="pbar"></i></div>
+      <div class="navbtns">
+        <button class="ghost" id="prev">ย้อน</button>
+        <button id="next">ขั้นต่อไป</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const LAB = {
+no: 4,
+title: 'ฟอร์มที่คนกรอกจนจบ ไม่ใช่ฟอร์มที่คนปิดหนี',
+lede: 'ฟอร์มคือจุดที่ผู้ใช้ต้องออกแรง งานออกแบบจึงมีหน้าที่เดียว: ลดแรงนั้นให้เหลือน้อยที่สุด. ทุกช่องที่ตัดออกได้คือชัยชนะ ทุกข้อความผิดพลาดที่ไม่บอกวิธีแก้คือความล้มเหลว.',
+minutes: 22,
+uses: ['จัดกลุ่มข้อมูล', 'สถานะโฟกัส', 'ข้อความผิดพลาด', 'ป้ายกำกับ'],
+
+notes: [
+  {sel:'.form',        label:'กว้างสูงสุด 520px — ฟอร์มยาวเกินอ่านล้า', side:'top'},
+  {sel:'.field',       label:'ระยะระหว่างช่อง 18px', side:'in'},
+  {sel:'label',        label:'ป้ายอยู่เหนือช่องเสมอ อ่านเร็วกว่าอยู่ข้าง', side:'right'},
+  {sel:'.field input', label:'สูง 46px กดง่ายบนมือถือ', side:'bottom'},
+  {sel:'.err',         label:'ข้อความผิดพลาดติดกับช่องที่ผิด', side:'bottom'},
+],
+
+steps: [
+{
+ t:'ตัดช่องที่ไม่จำเป็นออกก่อนออกแบบ',
+ why:'งานออกแบบฟอร์มที่ได้ผลที่สุดเกิดก่อนเขียนโค้ด: <b>ถามตัวเองทุกช่องว่าถ้าไม่มีข้อมูลนี้จะเป็นอะไรไหม</b>. ฟอร์มสมัคร 12 ช่องกับ 5 ช่องต่างกันที่จำนวนคนกรอกจนจบเป็นเท่าตัว.',
+ rule:{t:'จัดกลุ่มด้วยช่องว่าง', d:'ช่องที่เกี่ยวข้องกันอยู่ห่าง 18px · ระหว่างกลุ่มห่าง 32px. แค่นี้ผู้ใช้ก็อ่านออกว่าฟอร์มแบ่งเป็นกี่ตอน โดยไม่ต้องมีกล่องหรือเส้นคั่นให้รก.'},
+ css:`:root{
+  --ground:#f6f7f9;
+  --card:#fff;
+  --ink:#111418;
+  --ink-2:#68727e;
+  --line:#dfe3e8;
+  --accent:#0d7a5f;
+  --bad:#c0392b;
+}
+body{ background:var(--ground); color:var(--ink); padding:40px 20px; }
+
+.form{
+  width:min(520px, 100%);          /* ฟอร์มกว้างเกินนี้จะกวาดตาลำบาก */
+  margin-inline:auto;
+  background:var(--card);
+  border:1px solid var(--line);
+  border-radius:14px;
+  padding:32px;
+}
+.form-head{ margin-bottom:26px; }
+.form-head h1{ font-size:23px; letter-spacing:-.6px; }
+.form-head p{ color:var(--ink-2); font-size:14.5px; margin-top:5px; }`,
+ html:`<form class="form" novalidate>
+  <div class="form-head">
+    <h1>จองคิวฉีดวัคซีน</h1>
+    <p>ใช้เวลาประมาณ 1 นาที ต้องกรอก 4 ช่องเท่านั้น</p>
+  </div>
+</form>`
+},
+{
+ t:'ป้ายกำกับอยู่เหนือช่อง และต้องผูกกับช่องจริงๆ',
+ why:'ป้ายที่วางไว้เหนือช่องอ่านเร็วที่สุดและไม่พังบนมือถือ. ที่สำคัญกว่าคือ <code>label for</code> ต้องตรงกับ <code>id</code> ของช่อง — ทำแล้ว<b>กดที่ป้ายก็โฟกัสเข้าช่องได้</b> และโปรแกรมอ่านหน้าจอใช้งานได้.',
+ rule:{t:'อย่าใช้ placeholder แทนป้าย', d:'placeholder หายไปทันทีที่เริ่มพิมพ์ ผู้ใช้จะลืมว่าช่องนี้ให้กรอกอะไร. ใช้ป้ายบอกว่าช่องคืออะไร ใช้ placeholder บอกตัวอย่างรูปแบบ เช่น 0812345678.'},
+ css:`.field{ display:flex; flex-direction:column; gap:6px; margin-bottom:18px; }
+
+label{ font-size:13.5px; font-weight:600; color:var(--ink); }
+label .opt{ font-weight:400; color:var(--ink-2); }
+
+.field input,
+.field select{
+  height:46px;                    /* สูงพอให้นิ้วกดแม่นบนมือถือ */
+  padding:0 14px;
+  border:1px solid var(--line);
+  border-radius:9px;
+  background:#fff;
+  font-size:15px;
+}
+.hint{ font-size:12.5px; color:var(--ink-2); }`,
+ into:'.form',
+ html:`<div class="field">
+  <label for="name">ชื่อ-นามสกุล</label>
+  <input id="name" name="name" required>
+</div>
+
+<div class="field">
+  <label for="cid">เลขบัตรประชาชน</label>
+  <input id="cid" name="cid" inputmode="numeric" maxlength="13" placeholder="13 หลัก" required>
+  <span class="hint">ใช้ยืนยันสิทธิ์เท่านั้น ไม่เผยแพร่ต่อ</span>
+</div>
+
+<div class="field">
+  <label for="site">จุดบริการ</label>
+  <select id="site" name="site" required>
+    <option value="">เลือกจุดที่สะดวก</option>
+    <option>โรงพยาบาลประจำอำเภอ</option>
+    <option>ศูนย์อนามัยชุมชน</option>
+    <option>หน่วยเคลื่อนที่ตลาดกลาง</option>
+  </select>
+</div>
+
+<div class="field">
+  <label for="tel">เบอร์ติดต่อ <span class="opt">(ไม่บังคับ)</span></label>
+  <input id="tel" name="tel" type="tel" placeholder="0812345678">
+</div>`,
+ try:'กดที่<b>ข้อความป้าย</b> "เลขบัตรประชาชน" ในกระดานขวา. เคอร์เซอร์ต้องกระโดดเข้าช่อง ถ้าไม่กระโดด แปลว่า for กับ id ไม่ตรงกัน.'
+},
+{
+ t:'สถานะโฟกัสที่มองเห็นชัด',
+ why:'ผู้ใช้ต้องรู้ตลอดเวลาว่าตอนนี้พิมพ์อยู่ช่องไหน. เบราว์เซอร์มีกรอบให้อยู่แล้ว แต่<b>หลายคนไปเขียน <code>outline:none</code> เพื่อความสวย แล้วลืมใส่ของแทน</b> — ผลคือคนใช้คีย์บอร์ดหลงทางทั้งฟอร์ม.',
+ rule:{t:'ห้ามลบโฟกัสโดยไม่ใส่ของแทน', d:'ถ้าอยากได้กรอบสวยกว่าเดิม ให้เปลี่ยนสีขอบพร้อมวงแหวนจางๆ รอบนอก. สิ่งสำคัญคือ<b>ต้องเห็นได้ชัดโดยไม่ต้องเพ่ง</b>.'},
+ css:`.field input:focus,
+.field select:focus{
+  outline:none;                       /* ลบของเดิม... */
+  border-color:var(--accent);         /* ...แล้วใส่ของที่ดีกว่าแทน */
+  box-shadow:0 0 0 3px color-mix(in srgb, var(--accent) 18%, transparent);
+}
+
+.field input::placeholder{ color:#a9b2bc; }
+
+/* ช่องที่ไม่บังคับ ทำให้จางลงนิดเพื่อให้สายตาข้ามได้ */
+.field input:not([required]){ background:#fcfcfd; }`,
+ try:'กด Tab ไล่ทีละช่องในกระดาน. ถ้ามองปราดเดียวรู้ว่าอยู่ช่องไหน ถือว่าผ่าน. ลองลบ box-shadow ออกแล้วเทียบดูความต่าง.'
+},
+{
+ t:'ข้อความผิดพลาดที่บอกวิธีแก้',
+ why:'"ข้อมูลไม่ถูกต้อง" คือข้อความที่แย่ที่สุด เพราะผู้ใช้ไม่รู้ว่าต้องทำอะไรต่อ. ข้อความที่ดี<b>บอกว่าผิดตรงไหนและต้องแก้เป็นอะไร</b> และต้องอยู่<b>ติดกับช่องที่ผิด</b> ไม่ใช่รวมกันไว้บนสุด.',
+ rule:{t:'อย่าใช้สีอย่างเดียวสื่อความหมาย', d:'คนตาบอดสีแดง-เขียวมีราว 8% ของผู้ชาย. ขอบแดงอย่างเดียวเขาอาจไม่เห็น จึงต้องมีข้อความกำกับด้วยเสมอ — นี่คือหลัก accessibility ที่กรรมการมักตรวจ.'},
+ css:`.field.bad input,
+.field.bad select{
+  border-color:var(--bad);
+  background:#fff8f7;
+}
+.field.bad input:focus{
+  box-shadow:0 0 0 3px color-mix(in srgb, var(--bad) 18%, transparent);
+}
+
+.err{
+  display:none;
+  font-size:12.5px;
+  color:var(--bad);
+  font-weight:500;
+}
+.field.bad .err{ display:block; }
+.err::before{ content:"! "; font-weight:800; }   /* สัญลักษณ์ ไม่พึ่งสีอย่างเดียว */
+
+.submit{
+  width:100%;
+  height:48px;
+  margin-top:14px;
+  background:var(--accent);
+  color:#fff;
+  border:0;
+  border-radius:9px;
+  font-size:15px;
+  font-weight:700;
+  cursor:pointer;
+}
+.submit:hover{ filter:brightness(1.08); }
+.note{ text-align:center; font-size:12.5px; color:var(--ink-2); margin-top:12px; }`,
+ into:'.form',
+ html:`<button class="submit" type="submit">ยืนยันการจอง</button>
+<p class="note">กดยืนยันแล้วระบบจะส่ง SMS ยืนยันคิวภายใน 5 นาที</p>`
+},
+{
+ t:'ตรวจสดขณะกรอก แต่ไม่จู้จี้',
+ why:'จังหวะการเตือนสำคัญมาก. <b>เตือนตอนออกจากช่อง ไม่ใช่ตอนกำลังพิมพ์</b> — เพราะเตือนระหว่างพิมพ์เท่ากับบอกว่า "ผิด" ตั้งแต่ตัวอักษรแรก ซึ่งกวนใจมาก. แต่พอผู้ใช้แก้แล้ว ให้ลบคำเตือนออกทันที.',
+ rule:{t:'สูตรจังหวะที่ใช้ได้เสมอ', d:'เหตุการณ์ <code>blur</code> = ตรวจ · เหตุการณ์ <code>input</code> = ลบคำเตือนถ้าถูกแล้ว · ตอนกดส่ง = ตรวจทั้งหมดแล้วพาไปยังช่องแรกที่ผิด.<br><br><b>กับดักที่ทำให้เสียเวลาเป็นชั่วโมง:</b> ถ้าช่องมี <code>required</code> แต่แท็ก <code>&lt;form&gt;</code> ไม่มี <code>novalidate</code> เบราว์เซอร์จะบล็อกการส่งไว้เองพร้อมกล่องเตือนของมัน แล้ว<b>เหตุการณ์ submit ของเราจะไม่ทำงานเลย</b> โดยไม่มี error แจ้ง. ใส่ <code>novalidate</code> ที่แท็กฟอร์มเสมอเมื่อจะเขียนการตรวจเอง.'},
+ css:`.ok-box{
+  display:none;
+  margin-top:18px;
+  padding:16px;
+  border:1px solid var(--accent);
+  background:color-mix(in srgb, var(--accent) 7%, #fff);
+  border-radius:10px;
+  font-size:14.5px;
+}
+.ok-box.show{ display:block; }
+.ok-box b{ display:block; margin-bottom:3px; }`,
+ into:'.form',
+ html:`<div class="ok-box" id="okBox">
+  <b>จองคิวเรียบร้อย</b>
+  หมายเลขคิวของคุณคือ A-0421 กรุณามาก่อนเวลานัด 15 นาที
+</div>
+
+<script>
+  var form  = document.querySelector('.form');
+  var rules = {
+    name: function(v){ return v.trim().length > 1; },
+    cid : function(v){ return /^\\d{13}$/.test(v); },
+    site: function(v){ return v !== ''; }
+  };
+  var messages = {
+    name: 'กรอกชื่อและนามสกุล',
+    cid : 'เลขบัตรต้องเป็นตัวเลข 13 หลัก ไม่ต้องใส่ขีด',
+    site: 'เลือกจุดบริการที่สะดวก'
+  };
+
+  Object.keys(rules).forEach(function(id){
+    var el = document.getElementById(id);
+    var box = el.closest('.field');
+    if(!box.querySelector('.err')){
+      var e = document.createElement('span');
+      e.className = 'err';
+      e.textContent = messages[id];
+      box.appendChild(e);
+    }
+    el.addEventListener('blur',  function(){ box.classList.toggle('bad', !rules[id](el.value)); });
+    el.addEventListener('input', function(){ if(rules[id](el.value)) box.classList.remove('bad'); });
+  });
+
+  form.addEventListener('submit', function(e){
+    e.preventDefault();
+    var firstBad = null;
+    Object.keys(rules).forEach(function(id){
+      var el = document.getElementById(id);
+      var bad = !rules[id](el.value);
+      el.closest('.field').classList.toggle('bad', bad);
+      if(bad && !firstBad) firstBad = el;
+    });
+    if(firstBad){ firstBad.focus(); return; }
+    document.getElementById('okBox').classList.add('show');
+  });
+<\/script>`,
+ try:'ในกระดานขวา กด <b>ยืนยันการจอง</b> โดยยังไม่กรอกอะไร — เคอร์เซอร์ต้องกระโดดไปช่องแรกที่ผิดเอง. จากนั้นพิมพ์เลขบัตรไม่ครบ 13 หลักแล้วคลิกออก.'
+},
+]
+};
+</script>
+<script src="lab.js"></script>
+</body>
+</html>

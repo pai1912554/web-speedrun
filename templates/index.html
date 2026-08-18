@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="th"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>คลังเทมเพลต</title>
+<link rel="stylesheet" href="../css/style.css"></head>
+<body>
+<header class="site"><div class="wrap">
+  <div class="logo">WEB <span>SPEEDRUN</span></div>
+  <nav class="top"><a href="../index.html">หน้าแรก</a><a href="../lessons/01-structure.html">บทเรียน</a>
+  <a href="index.html" class="active">เทมเพลต</a><a href="../snippets/index.html">Snippet</a>
+  <a href="../lessons/05-lookup.html">ค้นหายังไง</a></nav></div></header>
+
+<div class="wrap lesson">
+<div class="hero"><span class="tag">คลังของ</span>
+<h1>เทมเพลต 8 แบบ — ไฟล์เดียวจบทุกอัน</h1>
+<p class="lead">ทุกไฟล์เป็น HTML+CSS+JS ในไฟล์เดียว ไม่ต้องติดตั้งอะไร copy ไปวางแล้วแก้ได้ทันที.
+ทุกไฟล์ใช้ชุดตัวแปรสีเดียวกัน จำครั้งเดียวใช้ได้หมด.</p></div>
+
+<div class="note"><b>วิธีใช้ตอนแข่ง:</b> เปิดไฟล์ที่ใกล้โจทย์ที่สุด &gt; <code>Ctrl+A Ctrl+C</code> &gt;
+วางในไฟล์ใหม่ &gt; แก้ <code>:root</code> (สี) &gt; แก้ข้อความ &gt; แก้ array ข้อมูล. <b>15 นาทีได้เว็บที่ดูโปร.</b></div>
+
+<h2>เลือกตามโจทย์</h2>
+<div class="grid c2" style="margin-top:16px">
+  <a class="card" href="landing.html"><div class="num">01 · LANDING</div>
+    <h3>หน้าแนะนำ / One-page</h3>
+    <p>Hero + ฟีเจอร์ + ราคา + ติดต่อ + เมนูเลื่อนนุ่ม. <b>ใช้ได้กับ 50% ของโจทย์</b> ถ้าไม่รู้จะเลือกอะไร เอาอันนี้.</p></a>
+
+  <a class="card" href="dashboard.html"><div class="num">02 · DASHBOARD</div>
+    <h3>แดชบอร์ด + กราฟ</h3>
+    <p>Sidebar + การ์ดตัวเลขสถิติ + กราฟแท่งทำจาก CSS ล้วน + ตารางล่าสุด. โจทย์ "ระบบจัดการ" ใช้อันนี้.</p></a>
+
+  <a class="card" href="crud-table.html"><div class="num">03 · CRUD</div>
+    <h3>ตาราง เพิ่ม/ลบ/แก้/ค้นหา</h3>
+    <p>ครบทุกท่า JS + localStorage + เรียง + กรองหมวด + สรุปยอด. <b>เทมเพลตที่ได้คะแนนง่ายที่สุด.</b></p></a>
+
+  <a class="card" href="form.html"><div class="num">04 · FORM</div>
+    <h3>ฟอร์มลงทะเบียน + ตรวจข้อมูล</h3>
+    <p>input ทุกชนิด, validation แบบแสดงข้อความใต้ช่อง, สรุปผลหลังส่ง.</p></a>
+
+  <a class="card" href="login.html"><div class="num">05 · LOGIN</div>
+    <h3>เข้าสู่ระบบ / สมัคร</h3>
+    <p>จัดกลางจอ + สลับแท็บล็อกอิน/สมัคร + ซ่อน-แสดงรหัส + จำผู้ใช้ใน localStorage.</p></a>
+
+  <a class="card" href="gallery.html"><div class="num">06 · GALLERY</div>
+    <h3>แกลเลอรี / สินค้า + ตะกร้า</h3>
+    <p>Grid การ์ดสินค้า + กรองหมวด + ค้นหา + ตะกร้าคิดเงินรวม + Modal ดูรูปใหญ่.</p></a>
+
+  <a class="card" href="blog.html"><div class="num">07 · BLOG</div>
+    <h3>บทความ / ข่าวสาร</h3>
+    <p>รายการบทความ + อ่านต่อในหน้าเดียว + แท็กหมวด + เวลาอ่าน.</p></a>
+
+  <a class="card" href="portfolio.html"><div class="num">08 · PORTFOLIO</div>
+    <h3>แนะนำตัว / ผลงาน</h3>
+    <p>ประวัติ + ทักษะแบบแถบเปอร์เซ็นต์ + ผลงาน + ไทม์ไลน์ + ติดต่อ. โจทย์ "แนะนำตัวเอง/ทีม" ใช้อันนี้.</p></a>
+</div>
+
+<h2>สิ่งที่ควรทำก่อนวันแข่ง</h2>
+<div class="lesson">
+<ol>
+<li>เปิดทุกไฟล์ในเบราว์เซอร์ดู 1 รอบ (5 นาที) ให้จำหน้าตาได้</li>
+<li>เลือกมา 2 อัน แล้วลองแก้เป็นธีมอื่น เช่น landing เป็นเว็บร้านกาแฟ</li>
+<li>สังเกตว่าทุกไฟล์มีโครงเหมือนกันเป๊ะ: tokens &gt; reset &gt; layout &gt; component &gt; DATA &gt; render &gt; events</li>
+</ol>
+</div>
+
+<div class="prevnext"><a class="btn ghost" href="../index.html">&larr; หน้าแรก</a>
+<a class="btn" href="../snippets/index.html">Snippet ชิ้นเล็ก &rarr;</a></div>
+</div>
+<footer class="site"><div class="wrap">Web Speedrun</div></footer>
+</body></html>

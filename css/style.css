@@ -1,0 +1,94 @@
+/* ===== Design tokens : ทุกโปรเจกต์เริ่มจากตรงนี้ ===== */
+:root{
+  --bg:#0f1115; --surface:#171a21; --surface-2:#1e222b;
+  --text:#e8eaed; --muted:#9aa4b2; --line:#2a2f3a;
+  --brand:#4f8cff; --brand-2:#7c5cff; --ok:#3ddc97; --warn:#ffb020; --bad:#ff5c5c;
+  --r:12px; --r-sm:8px;
+  --sp-1:4px; --sp-2:8px; --sp-3:16px; --sp-4:24px; --sp-5:40px; --sp-6:64px;
+  --shadow:0 6px 24px rgba(0,0,0,.35);
+  --font:system-ui,-apple-system,"Segoe UI","Noto Sans Thai",sans-serif;
+  --mono:"JetBrains Mono",Consolas,"Courier New",monospace;
+  --wrap:1080px;
+}
+/* ===== Reset 5 บรรทัดที่ควรจำ ===== */
+*,*::before,*::after{box-sizing:border-box}
+*{margin:0}
+body{min-height:100vh;-webkit-font-smoothing:antialiased}
+img,svg,video{display:block;max-width:100%}
+input,button,select,textarea{font:inherit;color:inherit}
+
+body{background:var(--bg);color:var(--text);font-family:var(--font);line-height:1.7}
+a{color:var(--brand);text-decoration:none}
+a:hover{text-decoration:underline}
+.wrap{width:min(var(--wrap),100% - 32px);margin-inline:auto}
+
+/* header */
+header.site{position:sticky;top:0;z-index:50;background:rgba(15,17,21,.85);
+  backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+header.site .wrap{display:flex;align-items:center;gap:var(--sp-4);height:60px}
+.logo{font-weight:800;letter-spacing:-.5px;font-size:18px}
+.logo span{background:linear-gradient(90deg,var(--brand),var(--brand-2));
+  -webkit-background-clip:text;background-clip:text;color:transparent}
+nav.top{margin-left:auto;display:flex;gap:var(--sp-3);flex-wrap:wrap}
+nav.top a{color:var(--muted);font-size:14px}
+nav.top a:hover,nav.top a.active{color:var(--text)}
+
+/* hero */
+.hero{padding:var(--sp-6) 0 var(--sp-5)}
+.hero h1{font-size:clamp(28px,5vw,46px);line-height:1.2;letter-spacing:-1px}
+.hero p.lead{color:var(--muted);font-size:18px;margin-top:var(--sp-3);max-width:62ch}
+
+/* cards grid */
+.grid{display:grid;gap:var(--sp-3)}
+.grid.c2{grid-template-columns:repeat(auto-fit,minmax(300px,1fr))}
+.grid.c3{grid-template-columns:repeat(auto-fit,minmax(240px,1fr))}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);
+  padding:var(--sp-4);transition:.18s}
+.card:hover{border-color:var(--brand);transform:translateY(-2px)}
+.card h3{font-size:17px;margin-bottom:var(--sp-2)}
+.card p{color:var(--muted);font-size:14px}
+.card .num{font-family:var(--mono);font-size:12px;color:var(--brand);letter-spacing:1px}
+
+section{padding:var(--sp-5) 0}
+h2.sec{font-size:24px;margin-bottom:var(--sp-3);letter-spacing:-.5px}
+h2.sec::before{content:"";display:inline-block;width:4px;height:20px;
+  background:var(--brand);border-radius:2px;margin-right:10px;vertical-align:-3px}
+
+/* lesson body */
+.lesson h2{margin:var(--sp-5) 0 var(--sp-2);font-size:22px;scroll-margin-top:80px}
+.lesson h3{margin:var(--sp-4) 0 var(--sp-2);font-size:17px;color:var(--brand)}
+.lesson p,.lesson li{color:#c8cfd9}
+.lesson ul,.lesson ol{padding-left:22px;margin:var(--sp-2) 0}
+.lesson li{margin:6px 0}
+.lesson table{width:100%;border-collapse:collapse;margin:var(--sp-3) 0;font-size:14px}
+.lesson th,.lesson td{border:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top}
+.lesson th{background:var(--surface-2);color:var(--text)}
+.lesson td code{white-space:nowrap}
+
+pre{background:#0a0c10;border:1px solid var(--line);border-radius:var(--r-sm);
+  padding:14px 16px;overflow:auto;font-family:var(--mono);font-size:13px;line-height:1.6;margin:var(--sp-2) 0}
+code{font-family:var(--mono);font-size:.9em;background:#0a0c10;
+  padding:2px 6px;border-radius:5px;color:#9fd0ff}
+pre code{background:none;padding:0;color:#d7dee8}
+
+.note{border-left:3px solid var(--brand);background:var(--surface);
+  padding:12px 16px;border-radius:0 var(--r-sm) var(--r-sm) 0;margin:var(--sp-3) 0}
+.note.warn{border-color:var(--warn)}
+.note.ok{border-color:var(--ok)}
+.note b{color:var(--text)}
+
+.btn{display:inline-block;background:var(--brand);color:#fff;padding:10px 18px;
+  border-radius:var(--r-sm);font-weight:600;font-size:14px;border:0;cursor:pointer}
+.btn:hover{filter:brightness(1.1);text-decoration:none}
+.btn.ghost{background:transparent;border:1px solid var(--line);color:var(--text)}
+
+.tag{display:inline-block;font-size:11px;font-family:var(--mono);padding:3px 8px;
+  border-radius:99px;background:var(--surface-2);color:var(--muted);border:1px solid var(--line)}
+
+footer.site{border-top:1px solid var(--line);padding:var(--sp-4) 0;color:var(--muted);font-size:13px;margin-top:var(--sp-5)}
+
+.prevnext{display:flex;justify-content:space-between;gap:var(--sp-3);margin-top:var(--sp-5);
+  padding-top:var(--sp-4);border-top:1px solid var(--line)}
+
+/* timer widget */
+.timer{font-family:var(--mono);font-size:13px;color:var(--warn)}

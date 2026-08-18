@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="th"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>03 · JavaScript ที่ใช้จริง</title>
+<link rel="stylesheet" href="../css/style.css"></head>
+<body>
+<header class="site"><div class="wrap">
+  <div class="logo">WEB <span>SPEEDRUN</span></div>
+  <nav class="top"><a href="../index.html">หน้าแรก</a><a href="01-structure.html">01</a>
+  <a href="02-css-layout.html">02</a><a href="03-js-core.html" class="active">03</a>
+  <a href="04-battle-plan.html">04</a><a href="05-lookup.html">05</a><a href="06-vscode.html">06</a>
+  <a href="../templates/index.html">เทมเพลต</a></nav></div></header>
+
+<div class="wrap lesson">
+<div class="hero"><span class="tag">LESSON 03</span>
+<h1>JavaScript 6 อย่างที่ตอบโจทย์แข่งได้ 90%</h1>
+<p class="lead">ไม่ต้องเรียน closure, prototype, async generator. ตอนแข่งคุณใช้แค่ 6 ท่านี้ วนไปวนมา.</p></div>
+
+<div class="note warn"><b>ก่อนเริ่ม:</b> เปิด DevTools ด้วย <code>F12</code> แท็บ <b>Console</b> ค้างไว้ตลอดเวลาเขียนโค้ด.
+JS พังจะขึ้นตัวแดงที่นี่. ไม่เปิด = เดาไปเรื่อยๆ เสียเวลาเป็นชั่วโมง.</div>
+
+<h2>ท่า 1 — จับ element</h2>
+<pre><code>const el   = document.querySelector('#total');    // ตัวแรกที่เจอ
+const list = document.querySelectorAll('.card');  // ได้หลายตัว
+
+el.textContent = 'สวัสดี';        // เปลี่ยนข้อความ
+el.innerHTML   = '&lt;b&gt;ตัวหนา&lt;/b&gt;'; // ใส่ HTML
+el.value                          // อ่านค่าจาก input
+el.classList.add('active');
+el.classList.remove('active');
+el.classList.toggle('active');    // มีก็เอาออก ไม่มีก็ใส่ &lt;-- ใช้บ่อยสุด
+el.style.display = 'none';</code></pre>
+<p><code>querySelector</code> ใช้ selector แบบเดียวกับ CSS เป๊ะ: <code>#id</code>, <code>.class</code>, <code>tag</code>. จำอันเดียวพอ.</p>
+
+<h2>ท่า 2 — ดักการกด (event)</h2>
+<pre><code>document.querySelector('#btn').addEventListener('click', () =&gt; {
+  console.log('กดแล้ว');
+});
+
+input.addEventListener('input',  e =&gt; console.log(e.target.value)); // พิมพ์ทีละตัว
+select.addEventListener('change', e =&gt; console.log(e.target.value));
+form.addEventListener('submit', e =&gt; { e.preventDefault(); /* สำคัญ! */ });</code></pre>
+<div class="note warn"><b>กับดัก:</b> ลืม <code>e.preventDefault()</code> ในฟอร์ม ทำให้หน้าเว็บรีเฟรช ข้อมูลหายหมด.
+มือใหม่ตายตรงนี้ทุกคน.</div>
+
+<h2>ท่า 3 — ข้อมูล + render list (ท่าที่ใช้มากที่สุดในการแข่ง)</h2>
+<p>โจทย์แข่ง 80% คือ "แสดงรายการของ + ค้นหา/กรอง/เพิ่ม/ลบ". สูตรตายตัว:</p>
+<pre><code>// 1) ข้อมูล -- array ของ object เสมอ
+let items = [
+  { id:1, name:'กาแฟ',  price:45, cat:'ดื่ม' },
+  { id:2, name:'ขนมปัง', price:30, cat:'กิน' },
+];
+
+// 2) ที่ว่างใน HTML:  &lt;div id="list"&gt;&lt;/div&gt;
+const box = document.querySelector('#list');
+
+// 3) ฟังก์ชัน render -- เรียกทุกครั้งที่ข้อมูลเปลี่ยน
+function render(data = items){
+  box.innerHTML = data.map(it =&gt; `
+    &lt;div class="card"&gt;
+      &lt;h3&gt;${it.name}&lt;/h3&gt;
+      &lt;p&gt;${it.price} บาท · ${it.cat}&lt;/p&gt;
+      &lt;button onclick="del(${it.id})"&gt;ลบ&lt;/button&gt;
+    &lt;/div&gt;`).join('');
+}
+render();</code></pre>
+<p><b>เข้าใจบรรทัดนี้ = เข้าใจ 80% ของ front-end:</b>
+<code>data.map(...).join('')</code> คือ "แปลงของทุกชิ้นเป็น HTML แล้วต่อกันเป็นข้อความเดียว".</p>
+
+<p>เพิ่ม / ลบ / กรอง — ทุกอันจบด้วย <code>render()</code>:</p>
+<pre><code>function add(name, price){
+  items.push({ id: Date.now(), name, price, cat:'ใหม่' });
+  render();
+}
+function del(id){
+  items = items.filter(it =&gt; it.id !== id);
+  render();
+}
+// ค้นหา
+search.addEventListener('input', e =&gt; {
+  const q = e.target.value.toLowerCase();
+  render( items.filter(it =&gt; it.name.toLowerCase().includes(q)) );
+});
+// เรียงราคา
+items.sort((a,b) =&gt; a.price - b.price);   // น้อยไปมาก
+items.sort((a,b) =&gt; b.price - a.price);   // มากไปน้อย
+// รวมเงิน
+const total = items.reduce((sum, it) =&gt; sum + it.price, 0);</code></pre>
+<table>
+<tr><th>เมธอด</th><th>ทำอะไร</th><th>โจทย์ที่เจอ</th></tr>
+<tr><td><code>.map()</code></td><td>แปลงทุกตัว</td><td>สร้าง HTML การ์ด/แถวตาราง</td></tr>
+<tr><td><code>.filter()</code></td><td>คัดเฉพาะที่ผ่าน</td><td>ค้นหา, กรองหมวด, ลบ</td></tr>
+<tr><td><code>.reduce()</code></td><td>ยุบเหลือค่าเดียว</td><td>รวมยอดเงิน, นับ</td></tr>
+<tr><td><code>.sort()</code></td><td>เรียง</td><td>เรียงราคา/ชื่อ/วันที่</td></tr>
+<tr><td><code>.find()</code></td><td>หาตัวแรกที่ตรง</td><td>หา item จาก id</td></tr>
+<tr><td><code>.forEach()</code></td><td>วนทำอะไรสักอย่าง</td><td>ผูก event หลายปุ่ม</td></tr>
+</table>
+
+<h2>ท่า 4 — ฟอร์ม + ตรวจข้อมูล</h2>
+<pre><code>form.addEventListener('submit', e =&gt; {
+  e.preventDefault();
+  const name  = form.name.value.trim();   // form.[ค่า attribute name]
+  const email = form.email.value.trim();
+
+  if(!name){ alert('กรอกชื่อด้วย'); return; }
+  if(!email.includes('@')){ alert('อีเมลไม่ถูก'); return; }
+
+  console.log({name, email});
+  form.reset();
+});</code></pre>
+<p>HTML ช่วยตรวจให้ฟรี ไม่ต้องเขียน JS: <code>required</code>, <code>type="email"</code>, <code>min="0"</code>, <code>maxlength="20"</code>, <code>pattern</code>.</p>
+
+<h2>ท่า 5 — ดึงข้อมูลจาก API</h2>
+<pre><code>async function load(){
+  try{
+    const res  = await fetch('https://jsonplaceholder.typicode.com/users');
+    const data = await res.json();
+    items = data;
+    render();
+  }catch(err){
+    box.innerHTML = '&lt;p&gt;โหลดข้อมูลไม่สำเร็จ&lt;/p&gt;';
+    console.error(err);
+  }
+}
+load();</code></pre>
+<div class="note warn"><b>กับดักตอนแข่ง:</b> fetch ไม่ทำงานเมื่อเปิดไฟล์แบบ <code>file:///</code> (ติด CORS).
+<b>ต้องเปิดผ่าน Live Server เท่านั้น.</b> ถ้า API ล่ม/เน็ตไม่มี ให้ใช้ข้อมูลปลอมใน array ทันที อย่าดื้อ.</div>
+<p>API ฟรีไว้เดโม (ไม่ต้องสมัคร): <code>jsonplaceholder.typicode.com</code>,
+<code>fakestoreapi.com</code> (สินค้า+รูป), <code>dog.ceo/api/breeds/image/random</code>,
+<code>open-meteo.com</code> (อากาศ), <code>picsum.photos/400/300</code> (รูปสุ่ม).</p>
+
+<h2>ท่า 6 — เก็บข้อมูลไม่ให้หายตอนรีเฟรช</h2>
+<pre><code>localStorage.setItem('items', JSON.stringify(items));       // เซฟ
+items = JSON.parse(localStorage.getItem('items')) || [];    // โหลด (|| [] กันค่าว่าง)
+localStorage.removeItem('items');</code></pre>
+<p>ใส่ <code>save()</code> ต่อท้ายทุกจุดที่แก้ข้อมูล. กรรมการรีเฟรชแล้วข้อมูลยังอยู่ = ดูเป็นระบบจริง <b>ได้คะแนนง่ายมาก</b>.</p>
+
+<h2>เบ็ดเตล็ดที่ใช้บ่อย</h2>
+<pre><code>Number(x)                            // ข้อความเป็นตัวเลข ("5"+1="51" แต่ Number("5")+1=6)
+n.toLocaleString('th-TH')            // 1234567 เป็น "1,234,567"
+new Date().toLocaleDateString('th-TH')
+Math.round(x)  Math.random()
+setTimeout(fn, 1000)   setInterval(fn, 1000)
+el.scrollIntoView({behavior:'smooth'})</code></pre>
+
+<h2>โครงไฟล์ JS ที่ควรวางเสมอ</h2>
+<pre><code>// 1. DATA
+let items = [...];
+// 2. ELEMENTS
+const box = document.querySelector('#list');
+// 3. RENDER
+function render(data = items){ ... }
+// 4. ACTIONS
+function add(){} function del(){} function save(){}
+// 5. EVENTS
+btn.addEventListener('click', add);
+// 6. START
+render();</code></pre>
+<p>วางแบบนี้ทุกครั้ง ทำให้หา bug เจอเร็ว แก้ทัน.</p>
+
+<h2>แบบฝึกหัด (40 นาที) — ทำอันนี้อันเดียวคุ้มสุด</h2>
+<div class="note">
+<b>สร้าง To-do list ที่:</b> เพิ่มได้ / ลบได้ / ติ๊กว่าเสร็จได้ / ค้นหาได้ / รีเฟรชแล้วไม่หาย<br>
+ครบ 5 ข้อนี้ = คุณใช้ครบทั้ง 6 ท่า = ทำโจทย์แข่งได้เกือบทุกแนว<br>
+ติดตรงไหน เปิด <code>templates/crud-table.html</code> ดูของจริง.
+</div>
+
+<div class="prevnext"><a class="btn ghost" href="02-css-layout.html">&larr; 02</a>
+<a class="btn" href="04-battle-plan.html">04 · แผนรบ 3 ชม. &rarr;</a></div>
+</div>
+<footer class="site"><div class="wrap">Web Speedrun</div></footer>
+</body></html>

@@ -18,6 +18,21 @@ button,input,select,textarea{font:inherit;color:inherit}
 body{font-family:system-ui,-apple-system,"Segoe UI","Noto Sans Thai",sans-serif;line-height:1.6}
 `;
 
+/* ---------- ประกอบโค้ดจากชิ้นส่วน ---------- */
+/* ชิ้นที่มี ghost:true = แสดงและอธิบาย แต่ไม่ถูกใส่ลงตัวอย่าง
+   (ใช้กับบรรทัดโครง เช่น doctype/head ที่กระดานสร้างให้อยู่แล้ว) */
+function partsCode(parts){
+  return parts.filter(p => !p.ghost).map(p => p.c).join('\n');
+}
+function stepCss(s){
+  if(s.parts && s.partsLang === 'css') return partsCode(s.parts);
+  return s.css || '';
+}
+function stepHtml(s){
+  if(s.parts && s.partsLang !== 'css') return partsCode(s.parts);
+  return s.html || '';
+}
+
 /* ---------- สร้างเอกสารตัวอย่างถึงขั้นที่ n ---------- */
 function buildDoc(upto, showNotes){
   const doc = new DOMParser().parseFromString(
@@ -25,10 +40,11 @@ function buildDoc(upto, showNotes){
 
   let css = '';
   LAB.steps.slice(0, upto + 1).forEach(s => {
-    if(s.css) css += '\n' + s.css;
-    if(s.html){
+    const c = stepCss(s), h = stepHtml(s);
+    if(c) css += '\n' + c;
+    if(h){
       const target = s.into ? doc.querySelector(s.into) : doc.body;
-      if(target) target.insertAdjacentHTML('beforeend', s.html);
+      if(target) target.insertAdjacentHTML('beforeend', h);
     }
   });
 
@@ -113,6 +129,29 @@ function annoTable(rows){
   </div>`;
 }
 
+/* ---------- เดินโค้ดทีละชิ้น: โค้ดชิ้นเล็ก + คำอธิบายติดกับชิ้นนั้น ---------- */
+function walkthrough(parts, lang, where){
+  const id = 'w' + Math.random().toString(36).slice(2, 8);
+  const full = partsCode(parts);
+  const label = lang === 'css' ? 'CSS' : (lang === 'js' ? 'JAVASCRIPT' : 'HTML');
+
+  const rows = parts.map((p, i) => {
+    const painted = paint(p.c, lang);
+    return `<div class="wk-p${p.d ? '' : ' bare'}">
+      <div class="wk-code"><span class="wk-n">${i + 1}</span><pre><code>${painted}</code></pre></div>
+      ${p.d ? `<div class="wk-say">${p.d}</div>` : ''}
+    </div>`;
+  }).join('');
+
+  return `<div class="walk">
+    <div class="wk-h"><span>${label} · ทีละชิ้น</span>
+      ${where ? `<span class="where">${where}</span>` : ''}
+      <button data-copy="${id}">คัดลอกทั้งก้อน</button></div>
+    ${rows}
+    <div class="wk-f" data-raw="${encodeURIComponent(full)}" id="${id}"></div>
+  </div>`;
+}
+
 /* ---------- ขั้นที่เป็นคำสั่งให้ทำใน VS Code ---------- */
 function doSteps(list){
   if(!list || !list.length) return '';
@@ -150,6 +189,9 @@ function renderSheet(){
       <p class="why">${s.why}</p>
       ${s.do   ? doSteps(s.do) : ''}
       ${s.rule ? `<div class="rule-box"><div class="rb-t">${s.rule.t}</div>${s.rule.d}</div>` : ''}
+      ${s.parts ? walkthrough(s.parts, s.partsLang || 'html',
+          s.partsWhere || (s.partsLang === 'css' ? 'วางในแท็ก &lt;style&gt;'
+            : (s.into ? 'วางข้างใน ' + s.into : 'วางในแท็ก &lt;body&gt;'))) : ''}
       ${s.css  ? codeBlock('CSS', s.cssWhere || 'วางในแท็ก &lt;style&gt;', s.css, 'css') : ''}
       ${s.cssLines ? annoTable(s.cssLines) : ''}
       ${s.html ? codeBlock('HTML', s.into ? 'วางข้างใน ' + s.into : 'วางในแท็ก &lt;body&gt;', s.html, 'html') : ''}
@@ -162,7 +204,8 @@ function renderSheet(){
 
   document.querySelectorAll('[data-copy]').forEach(b =>
     b.addEventListener('click', async () => {
-      const raw = decodeURIComponent(document.querySelector('#'+b.dataset.copy).dataset.raw);
+      const el = document.querySelector('#'+b.dataset.copy);
+      const raw = decodeURIComponent(el.dataset.raw);
       await navigator.clipboard.writeText(raw);
       b.textContent = 'คัดลอกแล้ว'; b.classList.add('ok');
       setTimeout(() => { b.textContent = 'คัดลอก'; b.classList.remove('ok'); }, 1400);

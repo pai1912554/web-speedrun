@@ -111,6 +111,34 @@ code{font-family:var(--mono)}
 .tok-com{color:#5c6b7a;font-style:italic}.tok-prop{color:#93c5fd}.tok-val{color:#fca5a5}
 .tok-sel{color:#f0abfc}
 
+/* เดินโค้ดทีละชิ้น */
+.walk{border:1px solid var(--rule);border-radius:var(--r);overflow:hidden;margin:14px 0;
+  background:#0a0e13}
+.wk-h{display:flex;align-items:center;gap:10px;padding:8px 12px;background:var(--paper-2);
+  border-bottom:1px solid var(--rule);font-family:var(--mono);font-size:10.5px;
+  letter-spacing:2px;text-transform:uppercase;color:var(--ink-3)}
+.wk-h .where{color:var(--mark);text-transform:none;letter-spacing:0;font-size:11px}
+.wk-h button{margin-left:auto;background:transparent;border:1px solid var(--rule-2);
+  color:var(--ink-2);padding:3px 11px;border-radius:6px;cursor:pointer;font-size:10.5px;
+  font-family:var(--mono);letter-spacing:.5px;text-transform:none}
+.wk-h button:hover{border-color:var(--mark);color:var(--mark)}
+.wk-h button.ok{background:var(--mark);border-color:var(--mark);color:#1a0800}
+
+.wk-p{border-bottom:1px solid #151b23}
+.wk-p:last-of-type{border-bottom:0}
+.wk-code{display:flex;gap:0;align-items:stretch}
+.wk-n{flex:0 0 34px;display:flex;align-items:flex-start;justify-content:center;
+  padding-top:9px;font-family:var(--mono);font-size:10.5px;color:#3d4956;
+  background:#080b0f;border-right:1px solid #151b23;user-select:none}
+.wk-code pre{flex:1;margin:0;padding:8px 14px;background:transparent;font-size:12.7px}
+.wk-say{padding:2px 14px 12px 48px;font-size:13.8px;line-height:1.62;color:var(--ink-2);
+  background:#0d1218;border-top:1px dashed #1a222c}
+.wk-say b{color:var(--ink)}
+.wk-say code{font-size:11.8px;background:#05080b;color:#9fd0ff;padding:1px 5px;border-radius:4px}
+.wk-p.bare .wk-code pre{padding-top:4px;padding-bottom:4px}
+.wk-f{display:none}
+@media(max-width:640px){ .wk-say{padding-left:16px} }
+
 /* อธิบายทีละบรรทัด */
 .anno{border:1px solid var(--rule);border-radius:var(--r);overflow:hidden;margin:14px 0}
 .anno-h{padding:7px 14px;background:var(--paper-2);border-bottom:1px solid var(--rule);

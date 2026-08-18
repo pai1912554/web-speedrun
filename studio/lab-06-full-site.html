@@ -253,56 +253,60 @@ header.site .wrap{ display:flex; align-items:center; gap:26px; height:64px; }
   color:var(--accent); background:var(--accent-soft);
   padding:3px 9px; border-radius:99px;
 }`,
- html:`<section id="menu">
-  <div class="wrap">
-    <div class="head">
-      <h2>เมนูประจำร้าน</h2>
-      <p>ทำสดทุกจาน วัตถุดิบรับจากตลาดเช้าในย่านเดียวกัน</p>
-    </div>
-    <div class="menu-grid" id="menuGrid"></div>
-  </div>
-</section>
+ partsLang:'html',
+ partsWhere:'พิมพ์ต่อจาก &lt;/section&gt; ของ hero',
+ parts:[
+  {c:'<section id="menu">',
+   d:'<code>id="menu"</code> คือปลายทางของลิงก์ <code>href="#menu"</code> ที่ใส่ไว้บนแถบเมนูตั้งแต่ขั้นที่ 2 — <b>ตอนนี้ลิงก์นั้นจะเริ่มใช้งานได้แล้ว</b>'},
+  {c:'  <div class="wrap">',
+   d:'กล่องครอบเดิมที่แต่งไว้ตั้งแต่ขั้นที่ 1 <b>ใช้ซ้ำทุก section</b> เพื่อให้ขอบซ้าย-ขวาของทั้งเว็บตรงกันเป๊ะ'},
+  {c:'    <div class="head">\n      <h2>เมนูประจำร้าน</h2>\n      <p>ทำสดทุกจาน วัตถุดิบรับจากตลาดเช้าในย่านเดียวกัน</p>\n    </div>',
+   d:'หัวข้อของส่วนนี้. <b>ใช้คลาส <code>.head</code> เดียวกันทุก section</b> — เขียน CSS ครั้งเดียว ใช้ได้ทั้งเว็บ'},
+  {c:'    <div class="menu-grid" id="menuGrid"></div>',
+   d:'<b>กล่องว่างเปล่า</b> — ไม่ต้องพิมพ์การ์ดอาหารใน HTML เลยสักใบ<br>เดี๋ยว JavaScript จะสร้างใส่ให้ทั้งหมด. <b>นี่คือจุดที่แยกงานมือใหม่ออกจากงานที่ขยายต่อได้</b>'},
+  {c:'  </div>\n</section>', d:''},
 
-<script>
-/* ---------- ข้อมูล: แก้ตรงนี้ที่เดียว หน้าเว็บเปลี่ยนตามทันที ---------- */
-var dishes = [
-  {id:1, name:'แกงส้มชะอมกุ้ง',     cat:'แกง',    price:180, img:'https://picsum.photos/seed/soup1/500/380', desc:'เปรี้ยวนำ เผ็ดตาม ใช้กุ้งแม่น้ำสด'},
-  {id:2, name:'ผัดกะเพราหมูกรอบ',   cat:'ผัด',    price:120, img:'https://picsum.photos/seed/basil/500/380', desc:'กะเพราใบใหญ่จากสวนหลังร้าน'},
-  {id:3, name:'ปลาทับทิมนึ่งมะนาว', cat:'ปลา',    price:320, img:'https://picsum.photos/seed/fish1/500/380', desc:'ตัวละแปดขีด นึ่งสดหน้าร้าน'},
-  {id:4, name:'ต้มยำไก่บ้าน',       cat:'แกง',    price:160, img:'https://picsum.photos/seed/tomyum/500/380', desc:'น้ำใส ไก่บ้านเนื้อแน่น'},
-  {id:5, name:'ยำถั่วพูกุ้งสด',     cat:'ยำ',     price:150, img:'https://picsum.photos/seed/salad1/500/380', desc:'ถั่วพูกรอบ ราดน้ำพริกเผาคั่วเอง'},
-  {id:6, name:'ข้าวผัดปูก้อน',      cat:'ผัด',    price:220, img:'https://picsum.photos/seed/rice1/500/380', desc:'ปูก้อนเต็มคำ ไข่แดงเยิ้ม'},
-  {id:7, name:'ปลาสลิดทอดกรอบ',     cat:'ปลา',    price:140, img:'https://picsum.photos/seed/fish2/500/380', desc:'แดดเดียวจากบางบ่อ ทอดใหม่ทุกจาน'},
-  {id:8, name:'ยำมะม่วงปลาป่น',     cat:'ยำ',     price:110, img:'https://picsum.photos/seed/mango/500/380', desc:'มะม่วงเปรี้ยวซอย โรยปลาป่นคั่ว'},
-];
+  {c:'<script>', d:'เริ่มส่วน JavaScript ของหน้านี้'},
+  {c:'var dishes = [',
+   d:'<b>array ของ object</b> — วงเล็บเหลี่ยม <code>[ ]</code> คือรายการ, ปีกกา <code>{ }</code> คือของหนึ่งชิ้น<br><b>ทุกชิ้นต้องมีคีย์เหมือนกันหมด</b> ไม่งั้นเวลาวนอ่านจะเจอ undefined'},
+  {c:"  {id:1, name:'แกงส้มชะอมกุ้ง', cat:'แกง', price:180,\n   img:'https://picsum.photos/seed/soup1/500/380', desc:'เปรี้ยวนำ เผ็ดตาม ใช้กุ้งแม่น้ำสด'},",
+   d:'ของหนึ่งชิ้นมี 6 คีย์<br>• <code>id</code> <b>เลขประจำตัวห้ามซ้ำ</b> — จำเป็นตอนจะลบหรือแก้รายการใดรายการหนึ่ง ไม่มีแล้วอ้างถึงไม่ได้<br>• <code>cat</code> หมวด — จะใช้สร้างปุ่มกรองในขั้นถัดไป<br>• <code>price</code> เป็น<b>ตัวเลข ไม่ใช่ข้อความ</b> ไม่งั้นเรียงราคาจะเพี้ยน<br>• <code>img</code> ใช้ <code>picsum.photos</code> เป็นรูปสุ่ม <b>ตอนแข่งถ้าไม่มีรูปจริงให้ใช้ตัวนี้</b> อย่าปล่อยกรอบว่าง'},
+  {c:"  {id:2, name:'ผัดกะเพราหมูกรอบ', cat:'ผัด', price:120,\n   img:'https://picsum.photos/seed/basil/500/380', desc:'กะเพราใบใหญ่จากสวนหลังร้าน'},\n" +
+     "  {id:3, name:'ปลาทับทิมนึ่งมะนาว', cat:'ปลา', price:320,\n   img:'https://picsum.photos/seed/fish1/500/380', desc:'ตัวละแปดขีด นึ่งสดหน้าร้าน'},\n" +
+     "  {id:4, name:'ต้มยำไก่บ้าน', cat:'แกง', price:160,\n   img:'https://picsum.photos/seed/tomyum/500/380', desc:'น้ำใส ไก่บ้านเนื้อแน่น'},\n" +
+     "  {id:5, name:'ยำถั่วพูกุ้งสด', cat:'ยำ', price:150,\n   img:'https://picsum.photos/seed/salad1/500/380', desc:'ถั่วพูกรอบ ราดน้ำพริกเผาคั่วเอง'},\n" +
+     "  {id:6, name:'ข้าวผัดปูก้อน', cat:'ผัด', price:220,\n   img:'https://picsum.photos/seed/rice1/500/380', desc:'ปูก้อนเต็มคำ ไข่แดงเยิ้ม'},\n" +
+     "  {id:7, name:'ปลาสลิดทอดกรอบ', cat:'ปลา', price:140,\n   img:'https://picsum.photos/seed/fish2/500/380', desc:'แดดเดียวจากบางบ่อ ทอดใหม่ทุกจาน'},\n" +
+     "  {id:8, name:'ยำมะม่วงปลาป่น', cat:'ยำ', price:110,\n   img:'https://picsum.photos/seed/mango/500/380', desc:'มะม่วงเปรี้ยวซอย โรยปลาป่นคั่ว'},",
+   d:'อีก 7 จาน <b>รูปแบบเดียวกันเป๊ะ</b> — ตรงนี้แค่คัดลอกบรรทัดบนแล้วเปลี่ยนค่า'},
+  {c:'];',
+   d:'ปิด array. <b>ตรงนี้คือที่เดียวที่ต้องแก้เวลาอยากเพิ่มหรือลดเมนู</b> — ไม่ต้องไปยุ่งกับ HTML เลย'},
 
-/* ---------- ฟังก์ชันวาดรายการ: เรียกทุกครั้งที่ข้อมูลเปลี่ยน ---------- */
-var grid = document.querySelector('#menuGrid');
-
-function renderMenu(list){
-  grid.innerHTML = list.map(function(d){
-    return '<article class="dish">' +
-      '<figure><img src="' + d.img + '" alt="' + d.name + '" loading="lazy"></figure>' +
-      '<div class="in">' +
-        '<span class="chip-cat">' + d.cat + '</span>' +
-        '<h3>' + d.name + '</h3>' +
-        '<p class="desc">' + d.desc + '</p>' +
-        '<div class="foot"><span class="price">' + d.price + ' บาท</span>' +
-        '<button class="btn quiet pick" data-id="' + d.id + '">เลือก</button></div>' +
-      '</div></article>';
-  }).join('');
-}
-
-renderMenu(dishes);
-<\/script>`,
- lines:[
-  {c:'var dishes = [ {...}, {...} ]', d:'<b>array ของ object</b> — วงเล็บเหลี่ยมคือรายการ ปีกกาคือของหนึ่งชิ้น. ทุกชิ้นต้องมีคีย์เหมือนกันหมด'},
-  {c:'id: 1', d:'เลขประจำตัวที่ไม่ซ้ำ. <b>จำเป็นตอนจะลบหรือแก้ไขรายการใดรายการหนึ่ง</b> ถ้าไม่มีจะอ้างถึงของชิ้นนั้นไม่ได้'},
-  {c:'list.map(function(d){ ... })', d:'<b>แปลงของทุกชิ้นเป็น HTML</b>. <code>d</code> คือของหนึ่งชิ้นในรอบนั้น เปลี่ยนชื่อเป็นอะไรก็ได้'},
-  {c:".join('')", d:'ต่อ HTML ทุกชิ้นเข้าด้วยกันเป็นข้อความเดียว. <b>ลืม join จะได้ลูกน้ำคั่นระหว่างการ์ดทุกใบ</b>'},
-  {c:'grid.innerHTML = ...', d:'ยัด HTML ที่สร้างเสร็จลงในกล่องว่างที่เตรียมไว้. <b>เขียนทับของเดิมทั้งหมด</b> จึงต้องส่งรายการที่ต้องการแสดงเข้าไปทุกครั้ง'},
-  {c:'loading="lazy"', d:'ให้เบราว์เซอร์โหลดรูปเมื่อเลื่อนถึงเท่านั้น. <b>หน้าเว็บเปิดเร็วขึ้นมากเมื่อมีรูปเยอะ</b>'},
-  {c:'data-id="..."', d:'เก็บค่าไว้กับปุ่ม เพื่อให้ JavaScript รู้ว่าปุ่มนี้เป็นของรายการไหน. อ่านค่าด้วย <code>btn.dataset.id</code>'}
+  {c:"var grid = document.querySelector('#menuGrid');",
+   d:'จับกล่องว่างที่เตรียมไว้ <b>เก็บใส่ตัวแปรครั้งเดียว</b> แล้วเรียกใช้ซ้ำได้ตลอด — เร็วกว่าเรียก querySelector ทุกครั้ง'},
+  {c:'function renderMenu(list){',
+   d:'<b>ฟังก์ชันวาดรายการ — ตัวสำคัญที่สุดของเว็บนี้</b><br>รับรายการเข้ามา แล้ววาดออกไป. <b>ต้องรับเป็นพารามิเตอร์ ไม่ใช่ไปอ่าน <code>dishes</code> ตรงๆ</b> เพราะขั้นถัดไปจะส่งรายการที่กรองแล้วเข้ามาแทน'},
+  {c:'  grid.innerHTML = list.map(function(d){',
+   d:'<code>map</code> = <b>แปลงของทุกชิ้นเป็นอย่างอื่น</b> ตรงนี้คือแปลง object เป็นข้อความ HTML<br><code>d</code> คือของหนึ่งชิ้นในรอบนั้น จะตั้งชื่อว่าอะไรก็ได้'},
+  {c:'    return \'<article class="dish">\' +',
+   d:'ขึ้นต้นการ์ดหนึ่งใบ. ใช้ <code>article</code> แทน <code>div</code> เพราะ<b>เป็นเนื้อหาที่ยืนอยู่ได้ด้วยตัวเอง</b> — เป็นคะแนน semantic ฟรี<br>เครื่องหมาย <code>+</code> ท้ายบรรทัดคือ<b>ต่อข้อความกับบรรทัดถัดไป</b>'},
+  {c:'      \'<figure><img src="\' + d.img + \'" alt="\' + d.name + \'" loading="lazy"><\\/figure>\' +',
+   d:'สังเกตการสลับ <b>ข้อความ + ตัวแปร + ข้อความ</b><br>• <code>alt</code> ใส่ชื่ออาหารจริง <b>ไม่ใช่คำว่า "รูปภาพ"</b><br>• <code>loading="lazy"</code> โหลดรูปเมื่อเลื่อนถึงเท่านั้น <b>หน้าเว็บเปิดเร็วขึ้นมากเมื่อมีรูปเยอะ</b>'},
+  {c: "      '<div class=\"in\">' +\n" +
+      "        '<span class=\"chip-cat\">' + d.cat + '<\\/span>' +\n" +
+      "        '<h3>' + d.name + '<\\/h3>' +\n" +
+      "        '<p class=\"desc\">' + d.desc + '<\\/p>' +",
+   d:'เนื้อหาการ์ดเรียงตามความสำคัญ: <b>หมวด ➝ ชื่อ ➝ คำอธิบาย</b><br>ใช้ <code>h3</code> เพราะอยู่ใต้ <code>h2</code> ของ section <b>ห้ามข้ามระดับหัวข้อ</b>'},
+  {c: "        '<div class=\"foot\"><span class=\"price\">' + d.price + ' บาท<\\/span>' +\n" +
+      "        '<button class=\"btn quiet pick\" data-id=\"' + d.id + '\">เลือก<\\/button><\\/div>' +",
+   d:'<code>data-id</code> = <b>ฝากเลขประจำตัวไว้กับปุ่ม</b> เพื่อให้ JavaScript รู้ว่าปุ่มนี้เป็นของอาหารจานไหน<br>อ่านค่าคืนด้วย <code>btn.dataset.id</code> — จะใช้จริงในขั้นที่ 7'},
+  {c: "      '<\\/div><\\/article>';", d:'ปิดการ์ด และจบข้อความที่ต่อกันมาทั้งหมดด้วยเซมิโคลอน'},
+  {c: "  }).join('');",
+   d:'<code>map</code> คืน<b>รายการของข้อความ</b> ไม่ใช่ข้อความเดียว<br><code>join(\'\')</code> จึงต้องมาต่อทุกชิ้นเข้าด้วยกัน — <b>ลืม join จะเห็นลูกน้ำคั่นระหว่างการ์ดทุกใบ</b>'},
+  {c:'}', d:''},
+  {c:'renderMenu(dishes);',
+   d:'<b>เรียกครั้งแรกด้วยข้อมูลทั้งหมด</b> ไม่เรียกก็จะไม่มีอะไรขึ้นบนจอ — เป็นสาเหตุยอดฮิตของอาการ "ไม่มี error แต่หน้าว่าง"'},
+  {c:'<\/script>', d:''},
  ],
  try:'เพิ่มเมนูใหม่หนึ่งบรรทัดใน array แล้วบันทึก — การ์ดใบใหม่จะโผล่มาเอง. <b>นี่คือเหตุผลที่ต้องเก็บข้อมูลแยกจากหน้าตา</b>.'
 },
@@ -358,66 +362,73 @@ renderMenu(dishes);
  t:'ต่อสายให้เครื่องมือทำงานจริง',
  why:'สามส่วนนี้ต้องทำงานร่วมกัน: ช่องค้นหา ปุ่มหมวด และตัวเรียง. <b>ความลับคือให้ทุกอันเรียกฟังก์ชัน <code>apply()</code> เดียวกัน</b> ซึ่งอ่านค่าจากทั้งสามที่แล้วค่อยวาดใหม่. ถ้าแยกกันเขียนจะกัดกันเอง.',
  rule:{t:'จังหวะการฟังเหตุการณ์', d:'<code>input</code> = ทุกตัวอักษรที่พิมพ์ (ใช้กับช่องค้นหา ได้ผลลัพธ์ทันที)<br><code>change</code> = เมื่อเลือกค่าเสร็จ (ใช้กับ select)<br><code>click</code> = คลิก (ใช้กับปุ่มหมวด)'},
- html:`<script>
-/* ---------- สร้างปุ่มหมวดจากข้อมูล ไม่พิมพ์เอง ---------- */
-var cats = ['ทั้งหมด'];
-dishes.forEach(function(d){
-  if(cats.indexOf(d.cat) === -1) cats.push(d.cat);
-});
-
-var activeCat = 'ทั้งหมด';
-
-document.querySelector('#cats').innerHTML = cats.map(function(c){
-  return '<button class="cat' + (c === activeCat ? ' on' : '') + '" data-cat="' + c + '">' + c + '</button>';
-}).join('');
-
-/* ---------- ฟังก์ชันกลาง: อ่านทุกเงื่อนไขแล้ววาดใหม่ ---------- */
-function apply(){
-  var q = document.querySelector('#search').value.toLowerCase().trim();
-  var sort = document.querySelector('#sort').value;
-
-  var list = dishes.filter(function(d){
-    var matchWord = (d.name + d.desc).toLowerCase().indexOf(q) !== -1;
-    var matchCat  = (activeCat === 'ทั้งหมด') || (d.cat === activeCat);
-    return matchWord && matchCat;
-  });
-
-  if(sort === 'low')  list.sort(function(a,b){ return a.price - b.price; });
-  if(sort === 'high') list.sort(function(a,b){ return b.price - a.price; });
-
-  document.querySelector('#count').textContent = 'พบ ' + list.length + ' เมนู';
-
-  if(list.length === 0){
-    grid.innerHTML = '<div class="empty"><b>ไม่พบเมนูที่ค้นหา</b>' +
-                     'ลองใช้คำที่สั้นลง หรือกดหมวด "ทั้งหมด"</div>';
-    return;
-  }
-  renderMenu(list);
-}
-
-/* ---------- ต่อสายเหตุการณ์ ---------- */
-document.querySelector('#search').addEventListener('input', apply);
-document.querySelector('#sort').addEventListener('change', apply);
-
-document.querySelector('#cats').addEventListener('click', function(e){
-  if(!e.target.dataset.cat) return;
-  activeCat = e.target.dataset.cat;
-  document.querySelectorAll('.cat').forEach(function(b){
-    b.classList.toggle('on', b === e.target);
-  });
-  apply();
-});
-
-apply();
-<\/script>`,
- lines:[
-  {c:"cats.indexOf(d.cat) === -1", d:'เช็คว่ายังไม่มีหมวดนี้ในรายการ. <b>สร้างปุ่มหมวดจากข้อมูลจริง</b> — เพิ่มเมนูหมวดใหม่แล้วปุ่มโผล่เอง ไม่ต้องแก้สองที่'},
-  {c:'(d.name + d.desc).toLowerCase()', d:'ต่อชื่อกับคำอธิบายแล้วค้นพร้อมกัน. <b>ทำให้ค้นเจอแม้พิมพ์คำที่อยู่ในคำบรรยาย</b> ซึ่งผู้ใช้มักทำ'},
-  {c:'.indexOf(q) !== -1', d:'"มีคำนี้อยู่ข้างในไหม" — ถ้าไม่เจอจะได้ค่า -1. เขียนสั้นกว่าได้ว่า <code>.includes(q)</code>'},
-  {c:'matchWord && matchCat', d:'<code>&&</code> = ต้องเป็นจริง<b>ทั้งสองอย่าง</b>. นี่คือวิธีรวมหลายเงื่อนไขเข้าด้วยกัน'},
-  {c:'if(sort === "low") list.sort(...)', d:'<b>เรียงหลังกรอง</b> ไม่ใช่ก่อน. และ sort ทำงานกับ <code>list</code> ที่เป็นสำเนา — <b>ข้อมูลต้นฉบับใน <code>dishes</code> ไม่ถูกแตะ</b>'},
-  {c:"addEventListener('click', ...) ที่กล่องพ่อ", d:'ผูกที่กล่องแม่ครั้งเดียว แทนการผูกทีละปุ่ม. <b>ปุ่มที่สร้างใหม่ทีหลังก็ยังทำงาน</b> — เทคนิคที่ช่วยได้มากเมื่อ HTML ถูกสร้างด้วย JavaScript'},
-  {c:'apply();', d:'เรียกครั้งแรกตอนโหลดหน้า <b>เพื่อให้ตัวนับจำนวนแสดงค่าตั้งแต่เริ่ม</b>'}
+ partsLang:'js',
+ partsWhere:'พิมพ์ต่อจาก script ก้อนเดิม',
+ parts:[
+  {c:'<script>', d:''},
+  {c:"var cats = ['ทั้งหมด'];",
+   d:'เริ่มรายการหมวดด้วยคำว่า "ทั้งหมด" ไว้ก่อนหนึ่งตัว <b>เพราะมันไม่ได้มาจากข้อมูล แต่เป็นตัวเลือกที่เราเพิ่มเอง</b>'},
+  {c:'dishes.forEach(function(d){',
+   d:'วนดูอาหารทีละจาน. <code>forEach</code> ต่างจาก <code>map</code> ตรงที่<b>ไม่คืนค่าอะไรกลับมา</b> ใช้เมื่อแค่อยากทำอะไรสักอย่างกับของทุกชิ้น'},
+  {c:'  if(cats.indexOf(d.cat) === -1) cats.push(d.cat);',
+   d:'<code>indexOf</code> คืนตำแหน่งที่เจอ <b>ถ้าไม่เจอจะได้ -1</b>. บรรทัดนี้จึงแปลว่า "ถ้ายังไม่มีหมวดนี้ ให้เพิ่มเข้าไป"<br><b>ผลคือปุ่มหมวดสร้างจากข้อมูลจริง</b> — เพิ่มเมนูหมวดใหม่แล้วปุ่มโผล่เอง ไม่ต้องแก้สองที่'},
+  {c:'});', d:''},
+  {c:"var activeCat = 'ทั้งหมด';",
+   d:'<b>ตัวแปรจำสถานะ</b> ว่าตอนนี้กดหมวดไหนอยู่. ต้องเก็บไว้นอกฟังก์ชันเพราะทั้งช่องค้นหาและปุ่มหมวดต้องอ่านค่านี้'},
+  {c:"document.querySelector('#cats').innerHTML = cats.map(function(c){",
+   d:'สร้างปุ่มจากรายการหมวด — <b>รูปแบบเดียวกับที่วาดการ์ดอาหารในขั้นที่แล้ว</b> คือ map แล้ว join'},
+  {c: "  return '<button class=\"cat' + (c === activeCat ? ' on' : '') +\n" +
+      "         '\" data-cat=\"' + c + '\">' + c + '<\\/button>';",
+   d:'<code>เงื่อนไข ? ค่าเมื่อจริง : ค่าเมื่อเท็จ</code> เรียกว่า ternary — <b>เขียน if-else ในบรรทัดเดียว</b><br>ตรงนี้แปลว่า "ถ้าเป็นหมวดที่กำลังเลือกอยู่ ให้ใส่ class <code>on</code> ด้วย"'},
+  {c: "}).join('');", d:''},
+  {c:'function apply(){',
+   d:'<b>ฟังก์ชันกลาง — หัวใจของขั้นนี้</b>. ช่องค้นหา ปุ่มหมวด และตัวเรียง จะเรียกฟังก์ชันนี้ทั้งหมด<br><b>ถ้าแยกกันเขียนคนละฟังก์ชัน มันจะกัดกันเอง</b> — กรองหมวดแล้วคำค้นหาย'},
+  {c:"  var q = document.querySelector('#search').value.toLowerCase().trim();",
+   d:'อ่านคำค้น แล้วแปลงเป็นตัวพิมพ์เล็กและตัดช่องว่างหัวท้าย<br><b><code>.toLowerCase()</code> ต้องทำทั้งสองฝั่ง</b> ไม่งั้นพิมพ์ตัวใหญ่แล้วหาไม่เจอ'},
+  {c:"  var sort = document.querySelector('#sort').value;",
+   d:'อ่านค่าที่เลือกในช่องเรียงลำดับ'},
+  {c:'  var list = dishes.filter(function(d){',
+   d:'<code>filter</code> = <b>คัดเฉพาะชิ้นที่เงื่อนไขเป็นจริง แล้วได้รายการใหม่</b><br>สำคัญ: <b>ข้อมูลต้นฉบับ <code>dishes</code> ไม่ถูกแตะเลย</b> เราทำงานกับสำเนาเสมอ'},
+  {c:'    var matchWord = (d.name + d.desc).toLowerCase().indexOf(q) !== -1;',
+   d:'ต่อชื่อกับคำอธิบายเข้าด้วยกันแล้วค้นทีเดียว <b>ทำให้ค้นเจอแม้พิมพ์คำที่อยู่ในคำบรรยาย</b><br>เขียนสั้นกว่าได้ว่า <code>.includes(q)</code>'},
+  {c:"    var matchCat  = (activeCat === 'ทั้งหมด') || (d.cat === activeCat);",
+   d:'<code>||</code> = <b>จริงอย่างใดอย่างหนึ่งก็พอ</b><br>แปลว่า "ถ้าเลือกทั้งหมดก็ผ่านหมด หรือถ้าหมวดตรงกันก็ผ่าน"'},
+  {c:'    return matchWord && matchCat;',
+   d:'<code>&&</code> = <b>ต้องจริงทั้งสองอย่าง</b><br>นี่คือจุดที่ทำให้ค้นหาและกรองหมวดทำงานพร้อมกันได้ — <b>เพิ่มเงื่อนไขที่สามก็แค่ต่อ <code>&& matchXxx</code></b>'},
+  {c:'  });', d:''},
+  {c:"  if(sort === 'low')  list.sort(function(a,b){ return a.price - b.price; });",
+   d:'<code>sort</code> ต้องการฟังก์ชันที่บอกว่า "สองตัวนี้ใครมาก่อน"<br><b>ผลลบ = a มาก่อน · ผลบวก = b มาก่อน</b><br>เอาน้อยไปมากใช้ <code>a - b</code> · มากไปน้อยใช้ <code>b - a</code>'},
+  {c:"  if(sort === 'high') list.sort(function(a,b){ return b.price - a.price; });",
+   d:'<b>เรียงหลังกรองเสมอ ไม่ใช่ก่อน</b> — ไม่งั้นเรียงของที่กำลังจะถูกคัดทิ้งไปด้วยโดยเปล่าประโยชน์'},
+  {c:"  document.querySelector('#count').textContent = 'พบ ' + list.length + ' เมนู';",
+   d:'<b>บอกผู้ใช้ว่าเจอกี่รายการ</b>. เล็กน้อยแต่ทำให้เว็บรู้สึกตอบสนอง — ผู้ใช้รู้ทันทีว่าตัวกรองทำงานอยู่'},
+  {c:'  if(list.length === 0){',
+   d:'<b>ดักกรณีไม่เจออะไรเลย</b>. ขาดตรงนี้ผู้ใช้จะเห็นหน้าจอว่างเปล่าแล้วคิดว่าเว็บพัง'},
+  {c:'    grid.innerHTML = \'<div class="empty"><b>ไม่พบเมนูที่ค้นหา<\\/b>\' +\n                     \'ลองใช้คำที่สั้นลง หรือกดหมวด "ทั้งหมด"<\\/div>\';',
+   d:'ข้อความสถานะว่างที่ดี<b>ต้องบอกว่าทำอะไรต่อได้</b> ไม่ใช่แค่ "ไม่พบข้อมูล"'},
+  {c:'    return;',
+   d:'<b>ออกจากฟังก์ชันทันที</b> ไม่ต้องทำบรรทัดที่เหลือ — ถ้าไม่มี return จะไปวาดรายการว่างทับข้อความที่เพิ่งใส่'},
+  {c:'  }', d:''},
+  {c:'  renderMenu(list);',
+   d:'ส่งรายการที่ผ่านการกรองและเรียงแล้ว ไปให้ฟังก์ชันวาดที่เขียนไว้ในขั้นที่ 4<br><b>สังเกตว่าเราไม่ได้เขียนโค้ดวาดใหม่เลย</b> — นี่คือประโยชน์ของการแยกฟังก์ชันวาดออกมาตั้งแต่แรก'},
+  {c:'}', d:''},
+  {c:"document.querySelector('#search').addEventListener('input', apply);",
+   d:'<code>input</code> ทำงาน<b>ทุกตัวอักษรที่พิมพ์</b> — ผลลัพธ์เปลี่ยนทันทีระหว่างพิมพ์'},
+  {c:"document.querySelector('#sort').addEventListener('change', apply);",
+   d:'<code>change</code> ทำงาน<b>เมื่อเลือกค่าเสร็จแล้ว</b> — เหมาะกับ select ที่ไม่ได้พิมพ์ทีละตัว'},
+  {c:"document.querySelector('#cats').addEventListener('click', function(e){",
+   d:'<b>ผูกที่กล่องพ่อครั้งเดียว แทนการผูกทีละปุ่ม</b><br>ข้อดี: ปุ่มที่สร้างใหม่ทีหลังก็ยังทำงาน — จำเป็นมากเมื่อ HTML ถูกสร้างด้วย JavaScript'},
+  {c:'  if(!e.target.dataset.cat) return;',
+   d:'<code>e.target</code> คือของที่ถูกคลิกจริง. <b>ถ้าคลิกโดนช่องว่างไม่ใช่ปุ่ม ให้ออกไปเลย</b> ไม่งั้นจะพัง'},
+  {c:'  activeCat = e.target.dataset.cat;',
+   d:'อ่านค่าจาก <code>data-cat</code> ที่ฝากไว้กับปุ่มตอนสร้าง <b>แล้วอัปเดตสถานะที่จำไว้</b>'},
+  {c:'  document.querySelectorAll(\'.cat\').forEach(function(b){\n    b.classList.toggle(\'on\', b === e.target);\n  });',
+   d:'ไล่ปุ่มทุกอัน <b>ใส่ class <code>on</code> เฉพาะอันที่ถูกคลิก เอาออกจากอันอื่น</b> — วิธีทำ "เลือกได้ทีละอัน" ที่สั้นที่สุด'},
+  {c:'  apply();', d:'เปลี่ยนสถานะแล้วต้องวาดใหม่เสมอ'},
+  {c:'});', d:''},
+  {c:'apply();',
+   d:'<b>เรียกครั้งแรกตอนโหลดหน้า</b> เพื่อให้ตัวนับจำนวนแสดงค่าตั้งแต่เริ่ม ไม่ใช่ว่างจนกว่าจะกดอะไรสักอย่าง'},
+  {c:'<\/script>', d:''},
  ],
  try:'พิมพ์คำค้นก่อน แล้วค่อยกดหมวด — คำค้นต้องยังอยู่และผลลัพธ์กรองสองชั้นพร้อมกัน. <b>ถ้าคำค้นหายแปลว่าเขียนแยกฟังก์ชันกัน</b>.'
 },
@@ -439,72 +450,54 @@ apply();
 .picked .right{ margin-left:auto; display:flex; gap:8px; }
 
 .dish .pick.added{ background:var(--accent); color:#fff; border-color:var(--accent); }`,
- html:`<div class="picked" id="pickedBar">
-  <div class="wrap">
-    <span class="sum">เลือกไว้ <b id="pickCount">0</b> รายการ ·
-      รวม <b id="pickTotal">0</b> บาท</span>
-    <span class="right">
-      <button class="btn quiet" id="clearPick">ล้างทั้งหมด</button>
-      <a class="btn" href="#book">จองโต๊ะพร้อมสั่งล่วงหน้า</a>
-    </span>
-  </div>
-</div>
+ partsLang:'html',
+ partsWhere:'พิมพ์ก่อนปิด &lt;/body&gt;',
+ parts:[
+  {c:'<div class="picked" id="pickedBar">\n  <div class="wrap">\n    <span class="sum">เลือกไว้ <b id="pickCount">0</b> รายการ ·\n      รวม <b id="pickTotal">0</b> บาท</span>\n    <span class="right">\n      <button class="btn quiet" id="clearPick">ล้างทั้งหมด</button>\n      <a class="btn" href="#book">จองโต๊ะพร้อมสั่งล่วงหน้า</a>\n    </span>\n  </div>\n</div>',
+   d:'แถบสรุปที่ติดขอบล่างจอ. <b>ตัวเลขทั้งสองอยู่ใน <code>&lt;b&gt;</code> ที่มี id</b> เพราะเดี๋ยว JavaScript จะเปลี่ยนเฉพาะตัวเลข ไม่แตะข้อความรอบๆ'},
 
-<script>
-/* ---------- โหลดของที่เคยเลือกไว้ ---------- */
-var picked = JSON.parse(localStorage.getItem('picked')) || [];
-
-function savePicked(){
-  localStorage.setItem('picked', JSON.stringify(picked));
-}
-
-function renderPicked(){
-  var total = picked.reduce(function(sum, id){
-    var d = dishes.find(function(x){ return x.id === id; });
-    return sum + (d ? d.price : 0);
-  }, 0);
-
-  document.querySelector('#pickCount').textContent = picked.length;
-  document.querySelector('#pickTotal').textContent = total.toLocaleString('th-TH');
-  document.querySelector('#pickedBar').classList.toggle('show', picked.length > 0);
-
-  document.querySelectorAll('.pick').forEach(function(b){
-    var on = picked.indexOf(Number(b.dataset.id)) !== -1;
-    b.classList.toggle('added', on);
-    b.textContent = on ? 'เลือกแล้ว' : 'เลือก';
-  });
-}
-
-/* ---------- กดเลือก / ยกเลิก ---------- */
-grid.addEventListener('click', function(e){
-  if(!e.target.classList.contains('pick')) return;
-  var id = Number(e.target.dataset.id);
-  var at = picked.indexOf(id);
-  if(at === -1) picked.push(id);
-  else picked.splice(at, 1);
-  savePicked();
-  renderPicked();
-});
-
-document.querySelector('#clearPick').addEventListener('click', function(){
-  picked = [];
-  savePicked();
-  renderPicked();
-});
-
-/* ---------- วาดสถานะปุ่มใหม่ทุกครั้งที่รายการถูกวาดใหม่ ---------- */
-var _render = renderMenu;
-renderMenu = function(list){ _render(list); renderPicked(); };
-renderPicked();
-<\/script>`,
- lines:[
-  {c:'JSON.parse(localStorage.getItem(...)) || []', d:'โหลดของที่เคยเซฟ. <b><code>|| []</code> คือค่าสำรองเมื่อยังไม่เคยเซฟ</b> ขาดแล้วจะได้ null และพังทันทีที่เรียก .length'},
-  {c:'picked.reduce(function(sum, id){...}, 0)', d:'<b>ยุบรายการทั้งหมดเหลือค่าเดียว</b> — ตรงนี้คือรวมราคา. เลข <code>0</code> ท้ายสุดคือค่าเริ่มต้นของ sum'},
-  {c:'dishes.find(function(x){ ... })', d:'หาของชิ้นแรกที่ตรงเงื่อนไข. <b>ใช้แปลง id กลับเป็นข้อมูลเต็ม</b> เพราะเราเก็บแค่ id ไว้'},
-  {c:'picked.splice(at, 1)', d:'ลบออกหนึ่งชิ้นที่ตำแหน่ง <code>at</code>. <b>ใช้ตอนกดซ้ำเพื่อยกเลิก</b>'},
-  {c:'classList.toggle("show", เงื่อนไข)', d:'ใส่ class เมื่อเงื่อนไขจริง เอาออกเมื่อเท็จ. <b>เขียนบรรทัดเดียวแทน if-else</b>'},
-  {c:'total.toLocaleString("th-TH")', d:'ใส่ลูกน้ำคั่นหลักพันให้อัตโนมัติ. <b>1234 กลายเป็น 1,234</b> — รายละเอียดเล็กที่ทำให้ตัวเลขดูเป็นมืออาชีพ'},
-  {c:'var _render = renderMenu; renderMenu = ...', d:'ห่อฟังก์ชันเดิมไว้ แล้ว<b>ให้วาดสถานะปุ่มตามหลังทุกครั้งที่รายการถูกวาดใหม่</b> ไม่งั้นกรองหมวดแล้วปุ่ม "เลือกแล้ว" จะกลับเป็นปกติ'}
+  {c:'<script>', d:''},
+  {c:"var picked = JSON.parse(localStorage.getItem('picked')) || [];",
+   d:'<b>โหลดของที่เคยเลือกไว้ตอนเปิดหน้า</b><br>• <code>localStorage.getItem</code> คืน<b>ข้อความ</b> เสมอ<br>• <code>JSON.parse</code> แปลงข้อความกลับเป็น array<br>• <code>|| []</code> คือ<b>ค่าสำรองเมื่อยังไม่เคยเซฟ</b> — ขาดตรงนี้จะได้ <code>null</code> แล้วพังทันทีที่เรียก <code>.length</code>'},
+  {c:"function savePicked(){\n  localStorage.setItem('picked', JSON.stringify(picked));\n}",
+   d:'<b>ทางกลับกัน</b> — <code>JSON.stringify</code> แปลง array เป็นข้อความก่อนเซฟ เพราะ localStorage เก็บได้แต่ข้อความ<br>แยกเป็นฟังก์ชันเพราะ<b>ต้องเรียกทุกครั้งที่ข้อมูลเปลี่ยน</b> ลืมเรียกที่ใดที่หนึ่งแล้วข้อมูลจะหาย'},
+  {c:'function renderPicked(){',
+   d:'ฟังก์ชันวาดสถานะ "ของที่เลือก" ทั้งหมด <b>เรียกทุกครั้งหลังข้อมูลเปลี่ยน</b> — รูปแบบเดียวกับ <code>renderMenu</code>'},
+  {c:'  var total = picked.reduce(function(sum, id){',
+   d:'<code>reduce</code> = <b>ยุบรายการทั้งหมดให้เหลือค่าเดียว</b><br><code>sum</code> คือค่าสะสม, <code>id</code> คือชิ้นปัจจุบัน'},
+  {c:'    var d = dishes.find(function(x){ return x.id === id; });',
+   d:'<code>find</code> = <b>หาชิ้นแรกที่ตรงเงื่อนไข</b><br>เราเก็บแค่ <code>id</code> ไว้ใน <code>picked</code> จึงต้องแปลงกลับเป็นข้อมูลเต็มเพื่อเอาราคา<br><b>ทำไมไม่เก็บทั้ง object:</b> เพราะถ้าราคาเปลี่ยน ข้อมูลที่เก็บไว้จะเก่าค้าง'},
+  {c:'    return sum + (d ? d.price : 0);',
+   d:'<b>กันกรณีหาไม่เจอ</b> — ถ้า <code>d</code> เป็น undefined ให้บวก 0 แทนที่จะพัง<br>นิสัยนี้สำคัญมากตอนข้อมูลมาจาก localStorage ซึ่งอาจเป็นของเก่า'},
+  {c:'  }, 0);',
+   d:'เลข <code>0</code> ท้ายสุดคือ<b>ค่าเริ่มต้นของ sum</b> — ลืมใส่แล้ว reduce จะเอาชิ้นแรกมาเป็นค่าเริ่มต้น ซึ่งเป็น id ไม่ใช่ราคา'},
+  {c:"  document.querySelector('#pickCount').textContent = picked.length;",
+   d:'<code>.length</code> คือจำนวนชิ้นใน array'},
+  {c:"  document.querySelector('#pickTotal').textContent = total.toLocaleString('th-TH');",
+   d:'<b>ใส่ลูกน้ำคั่นหลักพันอัตโนมัติ</b> — 1234 กลายเป็น 1,234<br>รายละเอียดเล็กที่ทำให้ตัวเลขดูเป็นมืออาชีพทันที'},
+  {c:"  document.querySelector('#pickedBar').classList.toggle('show', picked.length > 0);",
+   d:'<b><code>toggle</code> แบบสองพารามิเตอร์</b> = ใส่ class เมื่อเงื่อนไขจริง เอาออกเมื่อเท็จ<br>เขียนบรรทัดเดียวแทน if-else — แถบจะโผล่เฉพาะตอนมีของเลือกไว้'},
+  {c:"  document.querySelectorAll('.pick').forEach(function(b){\n    var on = picked.indexOf(Number(b.dataset.id)) !== -1;\n    b.classList.toggle('added', on);\n    b.textContent = on ? 'เลือกแล้ว' : 'เลือก';\n  });",
+   d:'ไล่ปุ่มทุกอันแล้วอัปเดตหน้าตาให้ตรงกับข้อมูล<br><b><code>Number()</code> สำคัญมาก</b> — <code>dataset.id</code> คืน<b>ข้อความ</b> เสมอ ถ้าไม่แปลงเป็นตัวเลข <code>indexOf</code> จะหาไม่เจอตลอดกาล และไม่มี error แจ้ง'},
+  {c:'}', d:''},
+  {c:"grid.addEventListener('click', function(e){",
+   d:'ผูกที่กล่องพ่ออีกครั้ง <b>เพราะปุ่ม "เลือก" ถูกสร้างใหม่ทุกครั้งที่กรอง</b> — ผูกทีละปุ่มจะหลุดทันทีที่วาดใหม่'},
+  {c:"  if(!e.target.classList.contains('pick')) return;",
+   d:'คลิกโดนรูปหรือชื่ออาหารก็ไม่ต้องทำอะไร <b>ทำงานเฉพาะเมื่อโดนปุ่มจริง</b>'},
+  {c:'  var id = Number(e.target.dataset.id);\n  var at = picked.indexOf(id);',
+   d:'อ่าน id ของปุ่มที่ถูกกด แล้วเช็คว่ามีอยู่ในรายการที่เลือกไว้แล้วหรือยัง'},
+  {c:'  if(at === -1) picked.push(id);\n  else picked.splice(at, 1);',
+   d:'<b>กดแล้วสลับ</b> — ยังไม่มีก็เพิ่ม (<code>push</code>) มีอยู่แล้วก็ลบออก (<code>splice(ตำแหน่ง, จำนวน)</code>)<br>ทำให้ปุ่มเดียวใช้ได้ทั้งเลือกและยกเลิก'},
+  {c:'  savePicked();\n  renderPicked();',
+   d:'<b>คู่นี้ต้องเรียกติดกันเสมอหลังข้อมูลเปลี่ยน</b> — เซฟก่อน แล้วค่อยวาดใหม่'},
+  {c:'});', d:''},
+  {c:"document.querySelector('#clearPick').addEventListener('click', function(){\n  picked = [];\n  savePicked();\n  renderPicked();\n});",
+   d:'ล้างทั้งหมด = <b>แทนที่ด้วย array ว่าง</b> แล้วเซฟและวาดใหม่ตามสูตรเดิม'},
+  {c:'var _render = renderMenu;\nrenderMenu = function(list){ _render(list); renderPicked(); };',
+   d:'<b>ห่อฟังก์ชันเดิมไว้</b> — เก็บตัวจริงไว้ในชื่อใหม่ แล้วสร้างตัวใหม่ที่เรียกตัวจริงก่อนแล้วค่อยวาดสถานะปุ่มตาม<br><b>ถ้าไม่ทำ:</b> กรองหมวดแล้วปุ่ม "เลือกแล้ว" จะกลับเป็น "เลือก" หมด เพราะปุ่มถูกสร้างใหม่แต่ไม่มีใครไปอัปเดตสถานะ'},
+  {c:'renderPicked();',
+   d:'เรียกครั้งแรกตอนโหลดหน้า <b>เพื่อให้ของที่เคยเลือกไว้ก่อนรีเฟรชแสดงถูกต้องตั้งแต่เริ่ม</b>'},
+  {c:'<\/script>', d:''},
  ],
  try:'กดเลือกสองสามเมนู แล้ว<b>รีเฟรชกระดาน</b> (สลับไปเป้าหมายแล้วกลับมา) — ของที่เลือกต้องยังอยู่. นี่คือสิ่งที่ควรโชว์กรรมการตอนนำเสนอ.'
 },

@@ -101,6 +101,24 @@ function paint(code, lang){
   return s;
 }
 
+/* ---------- ตารางอธิบายทีละบรรทัด ---------- */
+function annoTable(rows){
+  if(!rows || !rows.length) return '';
+  return `<div class="anno">
+    <div class="anno-h">อ่านทีละบรรทัด</div>
+    ${rows.map(r => `<div class="anno-r">
+        <code>${r.c.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}</code>
+        <p>${r.d}</p>
+      </div>`).join('')}
+  </div>`;
+}
+
+/* ---------- ขั้นที่เป็นคำสั่งให้ทำใน VS Code ---------- */
+function doSteps(list){
+  if(!list || !list.length) return '';
+  return `<ol class="dolist">${list.map(x => `<li>${x}</li>`).join('')}</ol>`;
+}
+
 function codeBlock(label, where, code, lang){
   const id = 'c' + Math.random().toString(36).slice(2, 8);
   return `<div class="codewrap">
@@ -130,9 +148,12 @@ function renderSheet(){
       <div class="step-n">ขั้นที่ ${i+1} / ${LAB.steps.length}</div>
       <h2>${s.t}</h2>
       <p class="why">${s.why}</p>
+      ${s.do   ? doSteps(s.do) : ''}
       ${s.rule ? `<div class="rule-box"><div class="rb-t">${s.rule.t}</div>${s.rule.d}</div>` : ''}
       ${s.css  ? codeBlock('CSS', s.cssWhere || 'วางในแท็ก &lt;style&gt;', s.css, 'css') : ''}
+      ${s.cssLines ? annoTable(s.cssLines) : ''}
       ${s.html ? codeBlock('HTML', s.into ? 'วางข้างใน ' + s.into : 'วางในแท็ก &lt;body&gt;', s.html, 'html') : ''}
+      ${s.lines ? annoTable(s.lines) : ''}
       ${s.try  ? `<div class="rule-box try"><div class="rb-t">ลองเอง</div>${s.try}</div>` : ''}
     </div>`).join('');
 

@@ -111,6 +111,34 @@ code{font-family:var(--mono)}
 .tok-com{color:#5c6b7a;font-style:italic}.tok-prop{color:#93c5fd}.tok-val{color:#fca5a5}
 .tok-sel{color:#f0abfc}
 
+/* อธิบายทีละบรรทัด */
+.anno{border:1px solid var(--rule);border-radius:var(--r);overflow:hidden;margin:14px 0}
+.anno-h{padding:7px 14px;background:var(--paper-2);border-bottom:1px solid var(--rule);
+  font-family:var(--mono);font-size:10.5px;letter-spacing:2px;text-transform:uppercase;
+  color:var(--ink-3)}
+.anno-r{display:grid;grid-template-columns:minmax(120px,34%) 1fr;gap:14px;
+  padding:10px 14px;border-bottom:1px solid var(--rule);align-items:start}
+.anno-r:last-child{border-bottom:0}
+.anno-r code{font-family:var(--mono);font-size:12px;color:#9fd0ff;background:#0a0e13;
+  padding:3px 7px;border-radius:5px;display:block;overflow-x:auto;white-space:pre}
+.anno-r p{font-size:13.8px;color:var(--ink-2);line-height:1.6}
+.anno-r p b{color:var(--ink)}
+@media(max-width:640px){ .anno-r{grid-template-columns:1fr;gap:6px} }
+
+/* รายการสิ่งที่ต้องลงมือทำใน VS Code */
+.dolist{margin:14px 0;padding:0;list-style:none;counter-reset:d}
+.dolist li{counter-increment:d;position:relative;padding:9px 0 9px 34px;
+  border-bottom:1px solid var(--rule);font-size:14.5px;color:var(--ink-2)}
+.dolist li:last-child{border-bottom:0}
+.dolist li::before{content:counter(d);position:absolute;left:0;top:9px;
+  width:22px;height:22px;border-radius:6px;background:var(--paper-2);
+  border:1px solid var(--rule-2);color:var(--mark);font-family:var(--mono);
+  font-size:11px;display:grid;place-items:center}
+.dolist li b{color:var(--ink)}
+.dolist kbd{font-family:var(--mono);font-size:11.5px;background:var(--paper-2);
+  border:1px solid var(--rule-2);border-bottom-width:2px;border-radius:5px;
+  padding:1px 6px;color:var(--ink)}
+
 /* ---------- กระดานงาน (ขวา) ---------- */
 .board-head{display:flex;align-items:center;gap:8px;padding:9px 14px;
   border-bottom:1px solid var(--rule);background:var(--paper-2);flex-wrap:wrap}

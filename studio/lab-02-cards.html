@@ -12,6 +12,7 @@
   <div class="mark">WEB <b>STUDIO</b></div>
   <nav>
     <a href="index.html">ห้องปฏิบัติการ</a>
+    <a href="lab-00-first-page.html">LAB 00</a>
     <a href="design-eye.html">ฝึกตาออกแบบ</a>
     <a href="../index.html">คลังความรู้</a>
   </nav>
@@ -115,6 +116,14 @@ body{ background:var(--ground); color:var(--ink); padding:40px 0; }
 }
 .card h3{ font-size:17px; font-weight:700; line-height:1.35; }
 .card .meta{ font-size:13.5px; color:var(--ink-2); }`,
+ cssLines:[
+  {c:'overflow: hidden;', d:'ตัดทุกอย่างที่ล้นออกนอกกล่องทิ้ง. <b>จำเป็นเพื่อให้รูปโค้งตามมุมการ์ด</b> — ไม่มีบรรทัดนี้ รูปจะยื่นออกมาเป็นเหลี่ยมทับมุมมน'},
+  {c:'display: flex; flex-direction: column;', d:'ทำให้เนื้อหาในการ์ดเรียงลงแนวตั้งและ<b>สั่ง gap ได้</b> แทนการใส่ margin ทีละชิ้น'},
+  {c:'aspect-ratio: 3 / 2;', d:'บังคับสัดส่วนกว้างต่อสูง. <b>ทำให้รูปทุกใบสูงเท่ากันเสมอไม่ว่ารูปต้นฉบับจะขนาดไหน</b>'},
+  {c:'object-fit: cover;', d:'ครอบเต็มกรอบโดย<b>ตัดส่วนเกินทิ้งแทนการยืดภาพ</b>. คู่กับ aspect-ratio เสมอ — ขาดอันใดอันหนึ่งรูปจะเพี้ยน'},
+  {c:'flex: 1;', d:'ให้ส่วนเนื้อหายืดกินที่ว่างที่เหลือ. <b>ผลคือการ์ดทุกใบในแถวสูงเท่ากัน</b>แม้ชื่อสินค้าจะยาวไม่เท่ากัน'},
+  {c:'padding: 20px;', d:'ที่ว่างข้างในการ์ด. <b>ค่าต่ำกว่า 16px จะเริ่มดูอึดอัด</b> เป็นข้อผิดพลาดที่พบบ่อยที่สุดในงานการ์ด'}
+ ],
  into:'.deck',
  html:`<article class="card">
   <figure><img src="https://picsum.photos/seed/desk/600/400" alt="โต๊ะไม้สักมือสอง"></figure>

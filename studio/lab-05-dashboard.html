@@ -12,6 +12,7 @@
   <div class="mark">WEB <b>STUDIO</b></div>
   <nav>
     <a href="index.html">ห้องปฏิบัติการ</a>
+    <a href="lab-00-first-page.html">LAB 00</a>
     <a href="design-eye.html">ฝึกตาออกแบบ</a>
     <a href="../index.html">คลังความรู้</a>
   </nav>
@@ -167,6 +168,14 @@ body{ background:var(--ground); color:var(--ink); padding:22px; }
 .axis{ display:flex; justify-content:space-between; font-size:11px;
        color:var(--ink-2); border-top:1px solid var(--line);
        padding-top:6px; margin-top:8px; }`,
+ cssLines:[
+  {c:'align-items: flex-end;', d:'ดันแท่งทุกอันไป<b>เกาะขอบล่าง</b> แท่งจึงงอกขึ้นจากฐานเดียวกันเหมือนกราฟจริง'},
+  {c:'height: 150px;', d:'ความสูงของพื้นที่กราฟ. <b>ต้องกำหนดค่าตายตัว</b>เพราะแท่งใช้เปอร์เซ็นต์ ซึ่งต้องมีของให้เทียบ'},
+  {c:'.col{ height:100%; }', d:'แต่ละคอลัมน์สูงเต็มพื้นที่กราฟ <b>เพื่อให้แท่งข้างในคำนวณเปอร์เซ็นต์จากความสูงเดียวกันทุกอัน</b>'},
+  {c:'style="height: 57%"', d:'ค่านี้มาจาก <code>ค่าของแท่งนี้ ÷ ค่าสูงสุด × 100</code> คำนวณด้วย JavaScript. <b>อย่าใส่ตัวเลขตายตัว</b> ไม่งั้นข้อมูลเปลี่ยนแล้วกราฟล้น'},
+  {c:'.bar.hot{ background: var(--bad); }', d:'แท่งที่ผิดปกติเปลี่ยนสีเลย. <b>ในแดชบอร์ด สีมีหน้าที่บอกสถานะ ไม่ใช่ตกแต่ง</b>'},
+  {c:'content: attr(data-v)', d:'ดึงค่าจาก attribute <code>data-v</code> ของแท็กนั้นมาแสดง. <b>ทำ tooltip ได้โดยไม่ต้องเขียน JavaScript เพิ่มเลย</b>'}
+ ],
  into:'.wrap',
  html:`<div class="panel">
   <h2>จำนวนแจ้งเตือนย้อนหลัง 7 วัน</h2>

@@ -12,6 +12,7 @@
   <div class="mark">WEB <b>STUDIO</b></div>
   <nav>
     <a href="index.html">ห้องปฏิบัติการ</a>
+    <a href="lab-00-first-page.html">LAB 00</a>
     <a href="design-eye.html">ฝึกตาออกแบบ</a>
     <a href="../index.html">คลังความรู้</a>
   </nav>
@@ -113,6 +114,14 @@ label .opt{ font-weight:400; color:var(--ink-2); }
   font-size:15px;
 }
 .hint{ font-size:12.5px; color:var(--ink-2); }`,
+ cssLines:[
+  {c:'.field{ display:flex; flex-direction:column; gap:6px; }', d:'ทำให้ป้าย ช่องกรอก และคำใบ้เรียงลงล่างและ<b>ห่างเท่ากันทุกช่องอัตโนมัติ</b>'},
+  {c:'margin-bottom: 18px;', d:'ระยะระหว่างช่องหนึ่งกับช่องถัดไป. <b>ต้องมากกว่า gap ข้างใน (6px) ชัดเจน</b> ไม่งั้นตาจะแยกไม่ออกว่าอะไรเป็นกลุ่มเดียวกัน'},
+  {c:'height: 46px;', d:'ความสูงช่องกรอก. <b>ต่ำกว่า 40px จะกดพลาดบนมือถือ</b> มาตรฐานพื้นที่กดคือ 44px'},
+  {c:'label for="cid"', d:'ค่านี้ต้องตรงกับ <code>id</code> ของช่อง. ทำแล้ว<b>กดที่ป้ายก็โฟกัสเข้าช่องได้</b> และโปรแกรมอ่านหน้าจอรู้ว่าช่องนี้ถามอะไร'},
+  {c:'inputmode="numeric"', d:'บอกมือถือให้<b>เปิดแป้นตัวเลขแทนแป้นตัวอักษร</b>. รายละเอียดเล็กๆ ที่ทำให้กรอกเร็วขึ้นมาก'},
+  {c:'placeholder="13 หลัก"', d:'ตัวอย่างรูปแบบ <b>ไม่ใช่ป้ายกำกับ</b> — มันหายไปตอนเริ่มพิมพ์ ห้ามใช้แทน label เด็ดขาด'}
+ ],
  into:'.form',
  html:`<div class="field">
   <label for="name">ชื่อ-นามสกุล</label>
